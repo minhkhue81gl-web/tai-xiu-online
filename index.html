@@ -1,174 +1,61 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#07111f" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
-  <title>Tài Xỉu Online</title>
-  <style>
-    :root{--bg:#07111f;--panel:#0d1a2b;--panel2:#132238;--line:#24364f;--text:#f6f8fb;--muted:#9eabc0;--tai:#ff4d6d;--xiu:#2f9df4;--ok:#4ecb71;--warn:#ffb020;--neutral:#b7c2d5}
-    *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#07111f,#0b1422 45%,#07111f);color:var(--text);min-height:100vh}
-    .wrap{max-width:1200px;margin:auto;padding:16px}.header{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}.brand h1{margin:0;font-size:clamp(28px,5vw,48px)}.brand span:nth-child(1){color:#d879ff}.brand span:nth-child(2){color:#ff9f43}.brand p{margin:4px 0 0;color:var(--muted)}
-    .grid{display:grid;grid-template-columns:320px 1fr;gap:16px}.card{background:rgba(13,26,43,.96);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.18)}.card h2,.card h3{margin:0 0 14px}.sectionTitle{font-size:18px;color:#9bd4ff;text-transform:uppercase;letter-spacing:.5px}
-    .btns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{border:0;border-radius:16px;padding:20px 12px;color:white;font-weight:800;font-size:24px;cursor:pointer}.tai{background:linear-gradient(135deg,#ff3d61,#ef6a79)}.xiu{background:linear-gradient(135deg,#2575e8,#51a8f5)}.ghost{background:#17243a;border:1px solid #30425e;color:#fff;font-size:15px;padding:14px}.danger{color:#ff718a}.success{background:linear-gradient(135deg,#2bbf62,#70d58f)}
-    textarea{width:100%;min-height:105px;background:#081321;border:1px solid #33445e;border-radius:14px;color:white;padding:14px;font-size:18px;resize:vertical}.stack{display:grid;gap:12px}.miniGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{background:var(--panel2);padding:16px;border-radius:16px}.stat .label{color:var(--muted);font-size:14px}.stat .value{font-size:30px;font-weight:800;margin-top:6px}.red{color:var(--tai)}.blue{color:var(--xiu)}
-    .recent{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}.ball{min-width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:white}.ball.t{background:var(--tai)}.ball.x{background:var(--xiu)}
-    .road{display:flex;align-items:flex-start;gap:10px;overflow-x:auto;min-height:260px;padding:8px}.col{display:flex;flex-direction:column;gap:8px;min-width:40px}.col .ball{min-width:34px;width:34px;height:34px}
-    table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:10px;border-bottom:1px solid #26374f;text-align:center}th{color:#a8d6ff;background:#102039}.note{color:var(--muted);font-size:13px;line-height:1.5}.footer{text-align:center;color:var(--muted);padding:18px}
-    .toolbar{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.wide{grid-column:1/-1}.status{padding:10px 12px;border-radius:12px;background:#10273d;color:#94d1ff;font-size:14px}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#1a2a40;color:#cfe8ff;font-size:12px}
-    .trendBox{background:linear-gradient(135deg,#10273d,#142f49);border:1px solid #2c5271;border-radius:18px;padding:18px}.trendHead{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.trendName{font-size:30px;font-weight:900}.meter{height:14px;background:#25354b;border-radius:999px;overflow:hidden;margin:14px 0 8px}.meter>div{height:100%;width:50%;background:linear-gradient(90deg,var(--xiu),#d7dce5,var(--tai));transition:.25s}.confidence{font-weight:800}.explain{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.chip{background:#0d1d2f;border:1px solid #29405c;border-radius:12px;padding:10px;text-align:center}.chip small{display:block;color:var(--muted);margin-bottom:4px}.warning{background:#33281a;border:1px solid #6e5427;color:#ffd591;border-radius:14px;padding:12px;line-height:1.45}
-    @media (max-width:860px){.grid{grid-template-columns:1fr}.wrap{padding:12px}.btn{font-size:22px;padding:18px 8px}.road{min-height:220px}.card{border-radius:18px}.explain{grid-template-columns:1fr}}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Tài Xỉu Online V3</title>
+<style>
+:root{--bg:#07111f;--panel:#0d1a2b;--panel2:#132238;--line:#263b58;--text:#f7f9fc;--muted:#9aa9bf;--tai:#ff4d6d;--xiu:#2f9df4;--ok:#4ecb71;--warn:#ffb020;--purple:#b06cff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#10213a,#07111f 48%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);min-height:100vh}.wrap{max-width:1250px;margin:auto;padding:16px}.header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:15px}.brand h1{margin:0;font-size:clamp(28px,5vw,46px)}.brand .a{color:#d879ff}.brand .b{color:#ff9f43}.brand p{margin:4px 0 0;color:var(--muted)}.badge{background:#152640;border:1px solid #35506f;border-radius:999px;padding:8px 12px;font-size:13px}.grid{display:grid;grid-template-columns:315px 1fr;gap:16px}.stack{display:grid;gap:14px}.card{background:rgba(13,26,43,.97);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 14px 35px rgba(0,0,0,.22)}.title{margin:0 0 14px;color:#9bd4ff;font-size:18px;text-transform:uppercase;letter-spacing:.6px}.btns,.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:16px;padding:17px 10px;color:white;font-weight:850;font-size:20px;cursor:pointer}.tai{background:linear-gradient(135deg,#ff395e,#ee6c7b)}.xiu{background:linear-gradient(135deg,#2475e9,#50a8f5)}.green{background:linear-gradient(135deg,#20b95b,#6fd68e)}.ghost{background:#17263d;border:1px solid #324963;font-size:15px;padding:13px}.danger{color:#ff8295}.wide{grid-column:1/-1}textarea{width:100%;min-height:100px;background:#081321;border:1px solid #334b68;border-radius:14px;color:white;padding:14px;font-size:17px;resize:vertical}.status{background:#102940;border:1px solid #1f4563;border-radius:13px;padding:11px 13px;color:#bce4ff}.note{color:var(--muted);font-size:13px;line-height:1.5}.statGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{background:var(--panel2);padding:14px;border-radius:15px}.stat .label{color:var(--muted);font-size:13px}.stat .value{font-size:28px;font-weight:900;margin-top:5px}.red{color:var(--tai)}.blue{color:var(--xiu)}.purple{color:var(--purple)}.recent{display:flex;gap:8px;overflow-x:auto}.ball{min-width:38px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:850}.ball.t{background:var(--tai)}.ball.x{background:var(--xiu)}.road{display:flex;align-items:flex-start;gap:10px;overflow-x:auto;min-height:240px}.col{display:flex;flex-direction:column;gap:8px}.col .ball{width:34px;min-width:34px;height:34px}.hero{background:linear-gradient(135deg,#0c2944,#123a63);border:1px solid #37658e;border-radius:20px;padding:18px}.heroTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.signal{font-size:30px;font-weight:950}.meter{height:14px;background:#25364c;border-radius:999px;overflow:hidden;margin:14px 0}.meter div{height:100%;background:linear-gradient(90deg,var(--xiu),#e8edf5,var(--tai));transition:.25s}.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.chip{background:#0d1e31;border:1px solid #2a4664;border-radius:12px;padding:9px;text-align:center}.chip small{display:block;color:var(--muted);margin-bottom:4px}.alert{border-radius:14px;padding:12px 13px;line-height:1.45}.alert.warn{background:#342819;border:1px solid #765a25;color:#ffdb9b}.alert.ok{background:#143422;border:1px solid #2a7245;color:#b7f4cb}.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.rule{background:#102238;border:1px solid #2a405b;border-radius:15px;padding:13px}.ruleHead{display:flex;justify-content:space-between;gap:8px}.bar{height:8px;background:#26384f;border-radius:99px;overflow:hidden;margin-top:9px}.bar div{height:100%;background:linear-gradient(90deg,#a368ff,#3cc6ff)}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:10px;border-bottom:1px solid #26384f;text-align:center}th{background:#102139;color:#b2dcff}.footer{text-align:center;color:var(--muted);padding:18px}.proBtn{width:100%;background:linear-gradient(135deg,#8a52ff,#2e9df4);margin-top:10px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}.modal.show{display:flex}.modalBox{max-width:620px;width:100%;background:#0d1a2b;border:1px solid #38506e;border-radius:20px;padding:20px}.modalBox h2{margin-top:0}.close{float:right;background:#1c2d45;color:white;border:0;border-radius:10px;padding:8px 12px}.stars{letter-spacing:4px;color:#ffd86a;font-size:22px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.statGrid{grid-template-columns:1fr 1fr}.chips{grid-template-columns:1fr 1fr}.rules{grid-template-columns:1fr}.wrap{padding:11px}.card{border-radius:17px}}
+</style>
 </head>
 <body>
 <div class="wrap">
-  <div class="header">
-    <div class="brand"><h1><span>TÀI XỈU</span> <span>ONLINE</span></h1><p>Ứng dụng thống kê lịch sử, tối ưu cho iPhone</p></div>
-    <div class="pill" id="saveStatus">Đã sẵn sàng</div>
-  </div>
-
-  <div class="grid">
-    <aside class="stack">
-      <section class="card">
-        <h2 class="sectionTitle">Nhập kết quả</h2>
-        <div class="btns">
-          <button class="btn tai" onclick="addResult('T')">● TÀI (T)</button>
-          <button class="btn xiu" onclick="addResult('X')">● XỈU (X)</button>
-        </div>
-        <div style="height:12px"></div>
-        <textarea id="bulk" placeholder="Ví dụ: T X T T X hoặc TXTTX"></textarea>
-        <div style="height:10px"></div>
-        <button class="btn success" style="width:100%;font-size:17px;padding:14px" onclick="addBulk()">THÊM CHUỖI</button>
-      </section>
-
-      <section class="card">
-        <h2 class="sectionTitle" style="color:#dcf56a">Thao tác</h2>
-        <div class="toolbar">
-          <button class="btn ghost" onclick="undo()">↶ Hoàn tác</button>
-          <button class="btn ghost" onclick="copyData()">⧉ Sao chép</button>
-          <button class="btn ghost" onclick="downloadData()">⇩ Xuất CSV</button>
-          <button class="btn ghost" onclick="exportJson()">⇩ Sao lưu JSON</button>
-          <button class="btn ghost" onclick="document.getElementById('importFile').click()">⇧ Nhập JSON</button>
-          <button class="btn ghost" onclick="loadSample()">⚗ Dữ liệu mẫu</button>
-          <input id="importFile" type="file" accept="application/json,.json" hidden onchange="importJson(event)">
-          <button class="btn ghost danger wide" onclick="clearAll()">🗑 Xóa tất cả</button>
-        </div>
-      </section>
-
-      <section class="card">
-        <h2 class="sectionTitle">Thông tin</h2>
-        <div class="stack" id="sideInfo"></div>
-      </section>
-    </aside>
-
-    <main class="stack">
-      <section class="card">
-        <h2 class="sectionTitle">Xu hướng tham khảo</h2>
-        <div id="trendPanel"></div>
-      </section>
-
-      <section class="card">
-        <h2 class="sectionTitle">Backtest quy tắc xu hướng</h2>
-        <div id="backtestPanel"></div>
-      </section>
-
-      <section class="card">
-        <h2 class="sectionTitle">Kết quả gần nhất <span class="note">(mới nhất bên phải)</span></h2>
-        <div class="recent" id="recent"></div>
-      </section>
-
-      <section class="miniGrid">
-        <div class="stat"><div class="label">Tổng số ván</div><div class="value" id="total">0</div></div>
-        <div class="stat"><div class="label">Số lần đổi cầu</div><div class="value" id="switches">0</div></div>
-        <div class="stat"><div class="label">Tài</div><div class="value red" id="taiCount">0</div><div class="note" id="taiPct">0%</div></div>
-        <div class="stat"><div class="label">Xỉu</div><div class="value blue" id="xiuCount">0</div><div class="note" id="xiuPct">0%</div></div>
-      </section>
-
-      <section class="card">
-        <h2 class="sectionTitle">Biểu đồ cầu</h2>
-        <div class="road" id="road"></div>
-      </section>
-
-      <section class="card">
-        <h2 class="sectionTitle">Nhận diện cầu</h2>
-        <div id="patterns" class="stack"></div>
-      </section>
-
-      <section class="card">
-        <h2 class="sectionTitle">Thống kê theo khoảng</h2>
-        <div style="overflow-x:auto"><table><thead><tr><th>Khoảng</th><th>Số ván</th><th>Tài</th><th>Xỉu</th><th>Tỷ lệ Tài</th><th>Chênh lệch</th></tr></thead><tbody id="rangeStats"></tbody></table></div>
-      </section>
-    </main>
-  </div>
-  <div class="footer">Dữ liệu chỉ lưu trên thiết bị của bạn. “Xu hướng” và backtest chỉ mô tả dữ liệu cũ, không phải xác suất thật hay cam kết ván kế tiếp.</div>
-</div>
-
+<div class="header"><div class="brand"><h1><span class="a">TÀI XỈU</span> <span class="b">ONLINE V3</span></h1><p>Thống kê mẫu, so sánh quy tắc và backtest ngay trên thiết bị</p></div><div class="badge" id="saveStatus">Đã sẵn sàng</div></div>
+<div class="grid">
+<aside class="stack">
+<section class="card"><h2 class="title">Nhập kết quả</h2><div class="btns"><button class="btn tai" onclick="addResult('T')">● TÀI</button><button class="btn xiu" onclick="addResult('X')">● XỈU</button></div><div style="height:10px"></div><textarea id="bulk" placeholder="Ví dụ: T X T T X hoặc TXTTX"></textarea><button class="btn green" style="width:100%;margin-top:10px" onclick="addBulk()">THÊM CHUỖI</button></section>
+<section class="card"><h2 class="title">Thao tác</h2><div class="two"><button class="btn ghost" onclick="undo()">↶ Hoàn tác</button><button class="btn ghost" onclick="copyData()">⧉ Sao chép</button><button class="btn ghost" onclick="exportCsv()">⇩ Xuất CSV</button><button class="btn ghost" onclick="exportJson()">⇩ Sao lưu JSON</button><button class="btn ghost" onclick="document.getElementById('importFile').click()">⇧ Nhập JSON</button><button class="btn ghost" onclick="loadSample()">⚗ Dữ liệu mẫu</button><input id="importFile" hidden type="file" accept=".json,application/json" onchange="importJson(event)"><button class="btn ghost danger wide" onclick="clearAll()">🗑 Xóa tất cả</button></div></section>
+<section class="card"><h2 class="title">Thông tin</h2><div class="stack" id="sideInfo"></div></section>
+</aside>
+<main class="stack">
+<section class="card"><h2 class="title">Trung tâm phân tích V3</h2><div id="signalPanel"></div><button class="btn proBtn" onclick="openAnalysis()">🔍 PHÂN TÍCH NGAY</button></section>
+<section class="card"><h2 class="title">So sánh quy tắc lịch sử</h2><div class="rules" id="rulePanel"></div><div class="note" style="margin-top:10px">Tỷ lệ “đúng” chỉ là backtest trên dữ liệu bạn đã nhập, không phải xác suất thật của ván tiếp theo.</div></section>
+<section class="card"><h2 class="title">Cảnh báo cầu</h2><div id="breakPanel"></div></section>
+<section class="card"><h2 class="title">Kết quả gần nhất</h2><div class="recent" id="recent"></div></section>
+<section class="statGrid"><div class="stat"><div class="label">Tổng ván</div><div class="value" id="total">0</div></div><div class="stat"><div class="label">Đổi cầu</div><div class="value purple" id="switches">0</div></div><div class="stat"><div class="label">Tài</div><div class="value red" id="taiCount">0</div><div class="note" id="taiPct"></div></div><div class="stat"><div class="label">Xỉu</div><div class="value blue" id="xiuCount">0</div><div class="note" id="xiuPct"></div></div></section>
+<section class="card"><h2 class="title">Biểu đồ cầu</h2><div class="road" id="road"></div></section>
+<section class="card"><h2 class="title">Nhận diện mẫu</h2><div class="stack" id="patterns"></div></section>
+<section class="card"><h2 class="title">Thống kê theo khoảng</h2><div style="overflow:auto"><table><thead><tr><th>Khoảng</th><th>Số ván</th><th>Tài</th><th>Xỉu</th><th>Tỷ lệ Tài</th><th>Chênh lệch</th></tr></thead><tbody id="rangeStats"></tbody></table></div></section>
+</main></div><div class="footer">V3 là công cụ mô tả và kiểm tra quy tắc trên lịch sử. Không có mô hình nào bảo đảm dự đoán đúng kết quả ngẫu nhiên.</div></div>
+<div class="modal" id="analysisModal"><div class="modalBox"><button class="close" onclick="closeAnalysis()">Đóng</button><h2>Phân tích chi tiết</h2><div id="analysisText"></div></div></div>
 <script>
-const KEY='tai_xiu_online_v2';
-let data=[];
-try{data=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('tai_xiu_online_v1')||'[]');if(!Array.isArray(data))data=[];}catch(e){data=[];}
-const $=id=>document.getElementById(id);
-function save(){localStorage.setItem(KEY,JSON.stringify(data));$('saveStatus').textContent='Đã lưu '+new Date().toLocaleTimeString('vi-VN');}
-function addResult(v){data.push(v);save();render();}
-function addBulk(){const raw=$('bulk').value.toUpperCase();const vals=[...raw].filter(c=>c==='T'||c==='X');if(!vals.length){alert('Chỉ nhập T hoặc X.');return;}data.push(...vals);$('bulk').value='';save();render();}
-function undo(){if(data.length){data.pop();save();render();}}
-function clearAll(){if(confirm('Xóa toàn bộ lịch sử?')){data=[];save();render();}}
-function loadSample(){data='TXT TTT XX T X T X T XX TTTT X X T X T X T T X'.replace(/[^TX]/g,'').split('');save();render();}
-function copyData(){navigator.clipboard?.writeText(data.join(' ')).then(()=>alert('Đã sao chép chuỗi.')).catch(()=>prompt('Sao chép chuỗi:',data.join(' ')));}
-function downloadData(){const rows=['STT,Ket qua',...data.map((v,i)=>`${i+1},${v}`)];const blob=new Blob(['\ufeff'+rows.join('\n')],{type:'text/csv;charset=utf-8'});downloadBlob(blob,'lich-su-tai-xiu.csv');}
-function exportJson(){const payload={version:2,exportedAt:new Date().toISOString(),results:data};downloadBlob(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),'sao-luu-tai-xiu.json');}
-function importJson(ev){const file=ev.target.files?.[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const obj=JSON.parse(r.result);const vals=Array.isArray(obj)?obj:obj.results;if(!Array.isArray(vals))throw new Error();const clean=vals.map(String).map(v=>v.toUpperCase()).filter(v=>v==='T'||v==='X');if(!clean.length)throw new Error();if(confirm(`Nhập ${clean.length} kết quả và thay thế dữ liệu hiện tại?`)){data=clean;save();render();}}catch(e){alert('File JSON không hợp lệ.');}ev.target.value='';};r.readAsText(file);}
-function downloadBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);}
-function pct(n,d){return d?((n/d)*100).toFixed(2)+'%':'0%';}
-function longest(v,arr=data){let m=0,c=0;for(const x of arr){if(x===v){c++;m=Math.max(m,c)}else c=0}return m;}
-function currentRun(arr=data){if(!arr.length)return {v:'—',n:0};const v=arr[arr.length-1];let n=0;for(let i=arr.length-1;i>=0&&arr[i]===v;i--)n++;return{v,n};}
-function switches(arr=data){let n=0;for(let i=1;i<arr.length;i++)if(arr[i]!==arr[i-1])n++;return n;}
-function isAlternating(n=6,arr=data){if(arr.length<n)return false;const a=arr.slice(-n);for(let i=1;i<a.length;i++)if(a[i]===a[i-1])return false;return true;}
-function isTwoTwo(arr=data){if(arr.length<8)return false;const a=arr.slice(-8);return a[0]===a[1]&&a[2]===a[3]&&a[4]===a[5]&&a[6]===a[7]&&a[0]!==a[2]&&a[2]!==a[4]&&a[4]!==a[6];}
-function makeRoad(){const cols=[];for(const v of data){if(!cols.length||cols[cols.length-1][0]!==v)cols.push([v]);else cols[cols.length-1].push(v);}return cols;}
-function windowBias(arr,n){const a=arr.slice(-n);if(!a.length)return 0;const t=a.filter(v=>v==='T').length;return (t-(a.length-t))/a.length;}
-function trendSignal(arr){
-  if(arr.length<10)return {side:'C',label:'Chưa đủ dữ liệu',score:0,strength:'Thấp',details:{b10:0,b20:0,b50:0},reason:'Cần tối thiểu 10 ván.'};
-  const b10=windowBias(arr,10),b20=windowBias(arr,20),b50=windowBias(arr,50);
-  const run=currentRun(arr);let runAdj=0;if(run.n>=3)runAdj=(run.v==='T'?1:-1)*Math.min(run.n-2,3)*0.035;
-  const altAdj=isAlternating(6,arr)?0:0;
-  const score=Math.max(-1,Math.min(1,b10*.50+b20*.30+b50*.20+runAdj+altAdj));
-  const abs=Math.abs(score);const side=abs<.10?'C':score>0?'T':'X';
-  const strength=abs<.10?'Cân bằng':abs<.22?'Yếu':abs<.38?'Vừa':'Mạnh';
-  const label=side==='T'?'Nghiêng Tài':side==='X'?'Nghiêng Xỉu':'Cân bằng';
-  return {side,label,score,strength,details:{b10,b20,b50},reason:'Tổng hợp 10/20/50 ván và chuỗi hiện tại.'};
-}
-function backtest(arr){
-  let correct=0,total=0,neutral=0;
-  for(let i=10;i<arr.length;i++){
-    const s=trendSignal(arr.slice(0,i));
-    if(s.side==='C'){neutral++;continue;}
-    total++;if(s.side===arr[i])correct++;
-  }
-  return {correct,total,neutral,accuracy:total?correct/total:0};
-}
-function biasText(v){const p=(v*100).toFixed(0);return `${p>0?'+':''}${p}%`;}
-function renderTrend(){
-  const s=trendSignal(data);const pos=((s.score+1)/2*100).toFixed(0);const cls=s.side==='T'?'red':s.side==='X'?'blue':'';
-  $('trendPanel').innerHTML=`<div class="trendBox"><div class="trendHead"><div><div class="note">Kết luận từ dữ liệu lịch sử</div><div class="trendName ${cls}">${s.label}</div></div><div class="confidence">Mức: ${s.strength}</div></div><div class="meter"><div style="width:${pos}%"></div></div><div class="explain"><div class="chip"><small>10 ván</small>${biasText(s.details.b10)}</div><div class="chip"><small>20 ván</small>${biasText(s.details.b20)}</div><div class="chip"><small>50 ván</small>${biasText(s.details.b50)}</div></div><div class="warning" style="margin-top:12px">Không đọc con số này như xác suất ván kế tiếp. Ví dụ “nghiêng Tài” chỉ có nghĩa dữ liệu gần đây thiên về Tài theo quy tắc của ứng dụng.</div></div>`;
-  const b=backtest(data);
-  $('backtestPanel').innerHTML=b.total<5?`<div class="status">Chưa đủ lịch sử để backtest đáng tin cậy. Hãy nhập thêm dữ liệu.</div>`:`<div class="miniGrid"><div class="stat"><div class="label">Tín hiệu đã kiểm tra</div><div class="value">${b.total}</div></div><div class="stat"><div class="label">Khớp kết quả kế tiếp</div><div class="value">${b.correct}</div></div><div class="stat"><div class="label">Tỷ lệ khớp lịch sử</div><div class="value">${pct(b.correct,b.total)}</div></div><div class="stat"><div class="label">Lần trung lập</div><div class="value">${b.neutral}</div></div></div><div class="warning" style="margin-top:12px">Backtest chỉ đánh giá quy tắc trên dữ liệu đã nhập. Tỷ lệ cao trong mẫu nhỏ có thể do ngẫu nhiên và không bảo đảm tiếp tục đúng.</div>`;
-}
-function render(){const t=data.filter(x=>x==='T').length,x=data.length-t,run=currentRun();
- $('total').textContent=data.length;$('switches').textContent=switches();$('taiCount').textContent=t;$('xiuCount').textContent=x;$('taiPct').textContent=pct(t,data.length);$('xiuPct').textContent=pct(x,data.length);
- $('recent').innerHTML=data.slice(-24).map(v=>`<div class="ball ${v==='T'?'t':'x'}">${v}</div>`).join('')||'<span class="note">Chưa có dữ liệu</span>';
- $('road').innerHTML=makeRoad().map(col=>`<div class="col">${col.map(v=>`<div class="ball ${v==='T'?'t':'x'}">${v}</div>`).join('')}</div>`).join('')||'<span class="note">Biểu đồ sẽ xuất hiện sau khi nhập dữ liệu.</span>';
- $('sideInfo').innerHTML=`<div class="status">Ván gần nhất: <b>${data.at(-1)||'—'}</b></div><div class="status">Chuỗi hiện tại: <b>${run.v} (${run.n})</b></div><div class="status">Chuỗi Tài dài nhất: <b>${longest('T')}</b></div><div class="status">Chuỗi Xỉu dài nhất: <b>${longest('X')}</b></div>`;
- const p=[];p.push(`<div class="status">Cầu bệt hiện tại: <b>${run.n>=3?run.v+' '+run.n+' ván':'Chưa rõ'}</b></div>`);p.push(`<div class="status">Cầu 1-1: <b>${isAlternating()?'Đang xuất hiện':'Không xuất hiện'}</b></div>`);p.push(`<div class="status">Cầu 2-2: <b>${isTwoTwo()?'Đang xuất hiện':'Không xuất hiện'}</b></div>`);p.push(`<div class="status">Cầu dài nhất: <b>Tài ${longest('T')} - Xỉu ${longest('X')}</b></div>`);$('patterns').innerHTML=p.join('');
- $('rangeStats').innerHTML=[10,20,50,100].map(n=>{const a=data.slice(-n),tt=a.filter(v=>v==='T').length,xx=a.length-tt,d=a.length?((tt-xx)/a.length*100):0;return `<tr><td>${n} ván gần nhất</td><td>${a.length}</td><td class="red">${tt}</td><td class="blue">${xx}</td><td>${pct(tt,a.length)}</td><td>${d>0?'+':''}${d.toFixed(2)}%</td></tr>`}).join('');
- renderTrend();
-}
-render();
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+const KEY='tai_xiu_online_v3';let data=[];try{data=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('tai_xiu_online_v2')||localStorage.getItem('tai_xiu_online_v1')||'[]');if(!Array.isArray(data))data=[]}catch(e){data=[]}
+const $=id=>document.getElementById(id);const pct=(n,d)=>d?((n/d)*100).toFixed(2)+'%':'0%';
+function save(){localStorage.setItem(KEY,JSON.stringify(data));$('saveStatus').textContent='Đã lưu '+new Date().toLocaleTimeString('vi-VN')}
+function addResult(v){data.push(v);save();render()}function addBulk(){const a=[...$('bulk').value.toUpperCase()].filter(c=>c==='T'||c==='X');if(!a.length)return alert('Chỉ nhập T hoặc X.');data.push(...a);$('bulk').value='';save();render()}function undo(){if(data.length){data.pop();save();render()}}function clearAll(){if(confirm('Xóa toàn bộ lịch sử?')){data=[];save();render()}}function loadSample(){data='TTTXXTXTXXTTTTXTXTXXTTXTTXXXT'.split('');save();render()}
+function copyData(){navigator.clipboard?.writeText(data.join(' ')).then(()=>alert('Đã sao chép.')).catch(()=>prompt('Sao chép:',data.join(' ')))}function dl(blob,n){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}function exportCsv(){dl(new Blob(['\ufeffSTT,Ket qua\n'+data.map((v,i)=>`${i+1},${v}`).join('\n')],{type:'text/csv'}),'lich-su-v3.csv')}function exportJson(){dl(new Blob([JSON.stringify({version:3,exportedAt:new Date().toISOString(),results:data},null,2)],{type:'application/json'}),'sao-luu-v3.json')}function importJson(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result),a=(Array.isArray(o)?o:o.results).map(String).map(v=>v.toUpperCase()).filter(v=>v==='T'||v==='X');if(!a.length)throw 0;if(confirm(`Thay dữ liệu bằng ${a.length} ván?`)){data=a;save();render()}}catch(_){alert('JSON không hợp lệ')}e.target.value=''};r.readAsText(f)}
+function currentRun(a=data){if(!a.length)return{v:'—',n:0};const v=a.at(-1);let n=0;for(let i=a.length-1;i>=0&&a[i]===v;i--)n++;return{v,n}}function longest(v,a=data){let m=0,c=0;for(const x of a){if(x===v){c++;m=Math.max(m,c)}else c=0}return m}function switches(a=data){let n=0;for(let i=1;i<a.length;i++)if(a[i]!==a[i-1])n++;return n}function road(){const c=[];for(const v of data){if(!c.length||c.at(-1)[0]!==v)c.push([v]);else c.at(-1).push(v)}return c}function bias(a,n){const s=a.slice(-n);if(!s.length)return 0;const t=s.filter(v=>v==='T').length;return(t-(s.length-t))/s.length}function alt(a,n=6){if(a.length<n)return false;const s=a.slice(-n);return s.every((v,i)=>i===0||v!==s[i-1])}function twoTwo(a){if(a.length<8)return false;const s=a.slice(-8);return s[0]===s[1]&&s[2]===s[3]&&s[4]===s[5]&&s[6]===s[7]&&s[0]!==s[2]&&s[2]!==s[4]&&s[4]!==s[6]}function threeOne(a){if(a.length<8)return false;const s=a.slice(-8),runs=[];let c=1;for(let i=1;i<s.length;i++){if(s[i]===s[i-1])c++;else{runs.push(c);c=1}}runs.push(c);return runs.slice(-4).join(',')==='3,1,3,1'||runs.slice(-4).join(',')==='1,3,1,3'}
+function signal(a){if(a.length<10)return{side:'C',score:0,label:'Chưa đủ dữ liệu',strength:'Thấp',conf:0};const b10=bias(a,10),b20=bias(a,20),b50=bias(a,50),r=currentRun(a);let adj=0;if(r.n>=3)adj=(r.v==='T'?1:-1)*Math.min(.12,(r.n-2)*.035);const score=Math.max(-1,Math.min(1,b10*.5+b20*.3+b50*.2+adj));const z=Math.abs(score),side=z<.1?'C':score>0?'T':'X';return{side,score,label:side==='T'?'Nghiêng Tài':side==='X'?'Nghiêng Xỉu':'Cân bằng',strength:z<.1?'Cân bằng':z<.22?'Yếu':z<.38?'Vừa':'Mạnh',conf:Math.round(Math.min(85,45+z*70)),b10,b20,b50}}
+const predictors={
+'Xu hướng đa khung':a=>signal(a).side,
+'Theo bệt':a=>{const r=currentRun(a);return r.n>=3?r.v:'C'},
+'Theo đảo 1-1':a=>alt(a,5)?(a.at(-1)==='T'?'X':'T'):'C',
+'Theo tần suất 10':a=>{if(a.length<10)return'C';const b=bias(a,10);return Math.abs(b)<.2?'C':b>0?'T':'X'}
+};
+function testRule(fn,a=data){let ok=0,total=0,neutral=0;for(let i=10;i<a.length;i++){const p=fn(a.slice(0,i));if(p==='C'){neutral++;continue}total++;if(p===a[i])ok++}return{ok,total,neutral,acc:total?ok/total:0}}
+function bestRule(){return Object.entries(predictors).map(([name,fn])=>({name,...testRule(fn)})).filter(x=>x.total>=3).sort((a,b)=>b.acc-a.acc)[0]||null}
+function breakAlert(){if(data.length<2)return{type:'warn',text:'Chưa đủ dữ liệu để phát hiện cầu gãy.'};const r=currentRun();const prev=data.slice(0,-1),pr=currentRun(prev);if(pr.n>=3&&data.at(-1)!==pr.v)return{type:'warn',text:`Cầu bệt ${pr.v==='T'?'Tài':'Xỉu'} ${pr.n} ván vừa gãy.`};if(alt(prev,6)&&data.at(-1)===data.at(-2))return{type:'warn',text:'Cầu 1-1 vừa gãy; mẫu hiện tại đang chuyển trạng thái.'};return{type:'ok',text:'Chưa ghi nhận mẫu cầu rõ ràng vừa bị gãy.'}}
+function renderSignal(){const s=signal(data),pos=Math.round((s.score+1)*50),c=s.side==='T'?'red':s.side==='X'?'blue':'';$('signalPanel').innerHTML=`<div class="hero"><div class="heroTop"><div><div class="note">Tín hiệu mô tả lịch sử</div><div class="signal ${c}">${s.label}</div></div><div><div class="stars">${'★'.repeat(Math.max(1,Math.round(s.conf/20)))}${'☆'.repeat(5-Math.max(1,Math.round(s.conf/20)))}</div><b>Độ ổn định mẫu: ${s.conf}%</b></div></div><div class="meter"><div style="width:${pos}%"></div></div><div class="chips"><div class="chip"><small>10 ván</small>${Math.round((s.b10||0)*100)}%</div><div class="chip"><small>20 ván</small>${Math.round((s.b20||0)*100)}%</div><div class="chip"><small>50 ván</small>${Math.round((s.b50||0)*100)}%</div><div class="chip"><small>Mức tín hiệu</small>${s.strength}</div></div><div class="alert warn" style="margin-top:12px">“Độ ổn định” không phải xác suất thắng. Nó chỉ đo mức nhất quán giữa các cửa sổ dữ liệu gần đây.</div></div>`}
+function renderRules(){$('rulePanel').innerHTML=Object.entries(predictors).map(([name,fn])=>{const r=testRule(fn),w=Math.round(r.acc*100);return`<div class="rule"><div class="ruleHead"><b>${name}</b><span>${r.total?w+'%':'—'}</span></div><div class="note">${r.ok}/${r.total} lần khớp · ${r.neutral} lần trung lập</div><div class="bar"><div style="width:${w}%"></div></div></div>`}).join('')}
+function render(){const t=data.filter(v=>v==='T').length,x=data.length-t,r=currentRun();$('total').textContent=data.length;$('switches').textContent=switches();$('taiCount').textContent=t;$('xiuCount').textContent=x;$('taiPct').textContent=pct(t,data.length);$('xiuPct').textContent=pct(x,data.length);$('recent').innerHTML=data.slice(-25).map(v=>`<div class="ball ${v==='T'?'t':'x'}">${v}</div>`).join('')||'<span class="note">Chưa có dữ liệu</span>';$('road').innerHTML=road().map(c=>`<div class="col">${c.map(v=>`<div class="ball ${v==='T'?'t':'x'}">${v}</div>`).join('')}</div>`).join('')||'<span class="note">Chưa có dữ liệu</span>';$('sideInfo').innerHTML=`<div class="status">Ván gần nhất: <b>${data.at(-1)||'—'}</b></div><div class="status">Chuỗi hiện tại: <b>${r.v} (${r.n})</b></div><div class="status">Chuỗi dài nhất: <b>T ${longest('T')} · X ${longest('X')}</b></div>`;$('patterns').innerHTML=`<div class="status">Cầu bệt: <b>${r.n>=3?r.v+' '+r.n+' ván':'Chưa rõ'}</b></div><div class="status">Cầu 1-1: <b>${alt(data)?'Đang xuất hiện':'Không xuất hiện'}</b></div><div class="status">Cầu 2-2: <b>${twoTwo(data)?'Đang xuất hiện':'Không xuất hiện'}</b></div><div class="status">Cầu 3-1 / 1-3: <b>${threeOne(data)?'Có dấu hiệu':'Không xuất hiện'}</b></div>`;$('rangeStats').innerHTML=[10,20,50,100].map(n=>{const a=data.slice(-n),tt=a.filter(v=>v==='T').length,xx=a.length-tt,d=a.length?(tt-xx)/a.length*100:0;return`<tr><td>${n} ván</td><td>${a.length}</td><td class="red">${tt}</td><td class="blue">${xx}</td><td>${pct(tt,a.length)}</td><td>${d>0?'+':''}${d.toFixed(2)}%</td></tr>`}).join('');const br=breakAlert();$('breakPanel').innerHTML=`<div class="alert ${br.type}">${br.text}</div>`;renderSignal();renderRules()}
+function openAnalysis(){const s=signal(data),b=bestRule(),r=currentRun(),br=breakAlert();let text=`<p><b>Kết luận:</b> ${s.label} — mức ${s.strength}.</p><p><b>Độ ổn định mẫu:</b> ${s.conf}% (không phải xác suất thắng).</p><p><b>Chuỗi hiện tại:</b> ${r.v} (${r.n} ván).</p><p><b>Cảnh báo:</b> ${br.text}</p>`;if(b)text+=`<p><b>Quy tắc khớp lịch sử tốt nhất:</b> ${b.name} — ${(b.acc*100).toFixed(1)}% trên ${b.total} tín hiệu.</p>`;else text+='<p>Chưa đủ dữ liệu để chọn quy tắc tốt nhất.</p>';text+='<div class="alert warn">Kết quả trò chơi có thể độc lập và ngẫu nhiên. Không dùng phân tích này như cam kết hoặc “kèo chắc”.</div>';$('analysisText').innerHTML=text;$('analysisModal').classList.add('show')}function closeAnalysis(){$('analysisModal').classList.remove('show')}
+render();if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
 </script>
-</body>
-</html>
+</body></html>
