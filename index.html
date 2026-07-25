@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#07111f" />
+  <title>Tài Xỉu Online</title>
+  <style>
+    :root{--bg:#07111f;--panel:#0d1a2b;--panel2:#132238;--line:#24364f;--text:#f6f8fb;--muted:#9eabc0;--tai:#ff4d6d;--xiu:#2f9df4;--ok:#4ecb71;--warn:#ffb020}
+    *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:linear-gradient(180deg,#07111f,#0b1422 45%,#07111f);color:var(--text);min-height:100vh}
+    .wrap{max-width:1200px;margin:auto;padding:16px}.header{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}.brand h1{margin:0;font-size:clamp(28px,5vw,48px)}.brand span:nth-child(1){color:#d879ff}.brand span:nth-child(2){color:#ff9f43}.brand p{margin:4px 0 0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:320px 1fr;gap:16px}.card{background:rgba(13,26,43,.96);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.18)}.card h2,.card h3{margin:0 0 14px}.sectionTitle{font-size:18px;color:#9bd4ff;text-transform:uppercase;letter-spacing:.5px}
+    .btns{display:grid;grid-template-columns:1fr 1fr;gap:12px}.btn{border:0;border-radius:16px;padding:20px 12px;color:white;font-weight:800;font-size:24px;cursor:pointer}.tai{background:linear-gradient(135deg,#ff3d61,#ef6a79)}.xiu{background:linear-gradient(135deg,#2575e8,#51a8f5)}.ghost{background:#17243a;border:1px solid #30425e;color:#fff;font-size:15px;padding:14px}.danger{color:#ff718a}.success{background:linear-gradient(135deg,#2bbf62,#70d58f)}
+    textarea{width:100%;min-height:105px;background:#081321;border:1px solid #33445e;border-radius:14px;color:white;padding:14px;font-size:18px;resize:vertical}.stack{display:grid;gap:12px}.miniGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat{background:var(--panel2);padding:16px;border-radius:16px}.stat .label{color:var(--muted);font-size:14px}.stat .value{font-size:30px;font-weight:800;margin-top:6px}.red{color:var(--tai)}.blue{color:var(--xiu)}
+    .recent{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}.ball{min-width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:white}.ball.t{background:var(--tai)}.ball.x{background:var(--xiu)}
+    .road{display:flex;align-items:flex-start;gap:10px;overflow-x:auto;min-height:260px;padding:8px}.col{display:flex;flex-direction:column;gap:8px;min-width:40px}.col .ball{min-width:34px;width:34px;height:34px}
+    table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:10px;border-bottom:1px solid #26374f;text-align:center}th{color:#a8d6ff;background:#102039}.note{color:var(--muted);font-size:13px;line-height:1.5}.footer{text-align:center;color:var(--muted);padding:18px}
+    .toolbar{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.wide{grid-column:1/-1}.status{padding:10px 12px;border-radius:12px;background:#10273d;color:#94d1ff;font-size:14px}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#1a2a40;color:#cfe8ff;font-size:12px}
+    @media (max-width:860px){.grid{grid-template-columns:1fr}.wrap{padding:12px}.btn{font-size:22px;padding:18px 8px}.road{min-height:220px}.card{border-radius:18px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="brand"><h1><span>TÀI XỈU</span> <span>ONLINE</span></h1><p>Ứng dụng thống kê lịch sử, tối ưu cho iPhone</p></div>
+    <div class="pill" id="saveStatus">Đã sẵn sàng</div>
+  </div>
+
+  <div class="grid">
+    <aside class="stack">
+      <section class="card">
+        <h2 class="sectionTitle">Nhập kết quả</h2>
+        <div class="btns">
+          <button class="btn tai" onclick="addResult('T')">● TÀI (T)</button>
+          <button class="btn xiu" onclick="addResult('X')">● XỈU (X)</button>
+        </div>
+        <div style="height:12px"></div>
+        <textarea id="bulk" placeholder="Ví dụ: T X T T X hoặc TXTTX"></textarea>
+        <div style="height:10px"></div>
+        <button class="btn success" style="width:100%;font-size:17px;padding:14px" onclick="addBulk()">THÊM CHUỖI</button>
+      </section>
+
+      <section class="card">
+        <h2 class="sectionTitle" style="color:#dcf56a">Thao tác</h2>
+        <div class="toolbar">
+          <button class="btn ghost" onclick="undo()">↶ Hoàn tác</button>
+          <button class="btn ghost" onclick="copyData()">⧉ Sao chép</button>
+          <button class="btn ghost" onclick="downloadData()">⇩ Xuất dữ liệu</button>
+          <button class="btn ghost" onclick="loadSample()">⚗ Dữ liệu mẫu</button>
+          <button class="btn ghost danger wide" onclick="clearAll()">🗑 Xóa tất cả</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="sectionTitle">Thông tin</h2>
+        <div class="stack" id="sideInfo"></div>
+      </section>
+    </aside>
+
+    <main class="stack">
+      <section class="card">
+        <h2 class="sectionTitle">Kết quả gần nhất <span class="note">(mới nhất bên phải)</span></h2>
+        <div class="recent" id="recent"></div>
+      </section>
+
+      <section class="miniGrid">
+        <div class="stat"><div class="label">Tổng số ván</div><div class="value" id="total">0</div></div>
+        <div class="stat"><div class="label">Số lần đổi cầu</div><div class="value" id="switches">0</div></div>
+        <div class="stat"><div class="label">Tài</div><div class="value red" id="taiCount">0</div><div class="note" id="taiPct">0%</div></div>
+        <div class="stat"><div class="label">Xỉu</div><div class="value blue" id="xiuCount">0</div><div class="note" id="xiuPct">0%</div></div>
+      </section>
+
+      <section class="card">
+        <h2 class="sectionTitle">Biểu đồ cầu</h2>
+        <div class="road" id="road"></div>
+      </section>
+
+      <section class="card">
+        <h2 class="sectionTitle">Nhận diện cầu</h2>
+        <div id="patterns" class="stack"></div>
+      </section>
+
+      <section class="card">
+        <h2 class="sectionTitle">Thống kê theo khoảng</h2>
+        <div style="overflow-x:auto"><table><thead><tr><th>Khoảng</th><th>Số ván</th><th>Tài</th><th>Xỉu</th><th>Tỷ lệ Tài</th><th>Chênh lệch</th></tr></thead><tbody id="rangeStats"></tbody></table></div>
+      </section>
+    </main>
+  </div>
+  <div class="footer">Dữ liệu chỉ lưu trên thiết bị của bạn. Đây là công cụ thống kê lịch sử, không dự đoán chắc chắn kết quả tiếp theo.</div>
+</div>
+
+<script>
+const KEY='tai_xiu_online_v1';
+let data=[];
+try{data=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(data))data=[];}catch(e){data=[];}
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(KEY,JSON.stringify(data));$('saveStatus').textContent='Đã lưu '+new Date().toLocaleTimeString('vi-VN');}
+function addResult(v){data.push(v);save();render();}
+function addBulk(){const raw=$('bulk').value.toUpperCase();const vals=[...raw].filter(c=>c==='T'||c==='X');if(!vals.length){alert('Chỉ nhập T hoặc X.');return;}data.push(...vals);$('bulk').value='';save();render();}
+function undo(){if(data.length){data.pop();save();render();}}
+function clearAll(){if(confirm('Xóa toàn bộ lịch sử?')){data=[];save();render();}}
+function loadSample(){data='TXT TTT XX T X T X T XX TTTT X X T X'.replace(/[^TX]/g,'').split('');save();render();}
+function copyData(){navigator.clipboard?.writeText(data.join(' ')).then(()=>alert('Đã sao chép chuỗi.')).catch(()=>prompt('Sao chép chuỗi:',data.join(' ')));}
+function downloadData(){const blob=new Blob([data.join(',')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='lich-su-tai-xiu.csv';a.click();URL.revokeObjectURL(a.href);}
+function pct(n,d){return d?((n/d)*100).toFixed(2)+'%':'0%';}
+function longest(v){let m=0,c=0;for(const x of data){if(x===v){c++;m=Math.max(m,c)}else c=0}return m;}
+function currentRun(){if(!data.length)return {v:'—',n:0};const v=data[data.length-1];let n=0;for(let i=data.length-1;i>=0&&data[i]===v;i--)n++;return{v,n};}
+function switches(){let n=0;for(let i=1;i<data.length;i++)if(data[i]!==data[i-1])n++;return n;}
+function isAlternating(n=6){if(data.length<n)return false;const a=data.slice(-n);for(let i=1;i<a.length;i++)if(a[i]===a[i-1])return false;return true;}
+function isTwoTwo(){if(data.length<8)return false;const a=data.slice(-8);return a[0]===a[1]&&a[2]===a[3]&&a[4]===a[5]&&a[6]===a[7]&&a[0]!==a[2]&&a[2]!==a[4]&&a[4]!==a[6];}
+function makeRoad(){const cols=[];for(const v of data){if(!cols.length||cols[cols.length-1][0]!==v)cols.push([v]);else cols[cols.length-1].push(v);}return cols;}
+function render(){const t=data.filter(x=>x==='T').length,x=data.length-t,run=currentRun();
+ $('total').textContent=data.length;$('switches').textContent=switches();$('taiCount').textContent=t;$('xiuCount').textContent=x;$('taiPct').textContent=pct(t,data.length);$('xiuPct').textContent=pct(x,data.length);
+ $('recent').innerHTML=data.slice(-24).map(v=>`<div class="ball ${v==='T'?'t':'x'}">${v}</div>`).join('')||'<span class="note">Chưa có dữ liệu</span>';
+ $('road').innerHTML=makeRoad().map(col=>`<div class="col">${col.map(v=>`<div class="ball ${v==='T'?'t':'x'}">${v}</div>`).join('')}</div>`).join('')||'<span class="note">Biểu đồ sẽ xuất hiện sau khi nhập dữ liệu.</span>';
+ $('sideInfo').innerHTML=`<div class="status">Ván gần nhất: <b>${data.at(-1)||'—'}</b></div><div class="status">Chuỗi hiện tại: <b>${run.v} (${run.n})</b></div><div class="status">Chuỗi Tài dài nhất: <b>${longest('T')}</b></div><div class="status">Chuỗi Xỉu dài nhất: <b>${longest('X')}</b></div>`;
+ const p=[];p.push(`<div class="status">Cầu bệt hiện tại: <b>${run.n>=3?run.v+' '+run.n+' ván':'Chưa rõ'}</b></div>`);p.push(`<div class="status">Cầu 1-1: <b>${isAlternating()?'Đang xuất hiện':'Không xuất hiện'}</b></div>`);p.push(`<div class="status">Cầu 2-2: <b>${isTwoTwo()?'Đang xuất hiện':'Không xuất hiện'}</b></div>`);p.push(`<div class="status">Cầu dài nhất: <b>Tài ${longest('T')} - Xỉu ${longest('X')}</b></div>`);$('patterns').innerHTML=p.join('');
+ $('rangeStats').innerHTML=[10,20,50,100].map(n=>{const a=data.slice(-n),tt=a.filter(v=>v==='T').length,xx=a.length-tt,d=a.length?((tt-xx)/a.length*100):0;return `<tr><td>${n} ván gần nhất</td><td>${a.length}</td><td class="red">${tt}</td><td class="blue">${xx}</td><td>${pct(tt,a.length)}</td><td>${d>0?'+':''}${d.toFixed(2)}%</td></tr>`}).join('');
+}
+render();
+</script>
+</body>
+</html>
