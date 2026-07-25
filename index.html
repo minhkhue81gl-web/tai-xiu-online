@@ -1,61 +1,136 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07111f">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
-<title>Tài Xỉu Online V3</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#08111f" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icon-192.png" />
+<title>Tài Xỉu Online V5</title>
 <style>
-:root{--bg:#07111f;--panel:#0d1a2b;--panel2:#132238;--line:#263b58;--text:#f7f9fc;--muted:#9aa9bf;--tai:#ff4d6d;--xiu:#2f9df4;--ok:#4ecb71;--warn:#ffb020;--purple:#b06cff}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#10213a,#07111f 48%);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);min-height:100vh}.wrap{max-width:1250px;margin:auto;padding:16px}.header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:15px}.brand h1{margin:0;font-size:clamp(28px,5vw,46px)}.brand .a{color:#d879ff}.brand .b{color:#ff9f43}.brand p{margin:4px 0 0;color:var(--muted)}.badge{background:#152640;border:1px solid #35506f;border-radius:999px;padding:8px 12px;font-size:13px}.grid{display:grid;grid-template-columns:315px 1fr;gap:16px}.stack{display:grid;gap:14px}.card{background:rgba(13,26,43,.97);border:1px solid var(--line);border-radius:20px;padding:16px;box-shadow:0 14px 35px rgba(0,0,0,.22)}.title{margin:0 0 14px;color:#9bd4ff;font-size:18px;text-transform:uppercase;letter-spacing:.6px}.btns,.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:16px;padding:17px 10px;color:white;font-weight:850;font-size:20px;cursor:pointer}.tai{background:linear-gradient(135deg,#ff395e,#ee6c7b)}.xiu{background:linear-gradient(135deg,#2475e9,#50a8f5)}.green{background:linear-gradient(135deg,#20b95b,#6fd68e)}.ghost{background:#17263d;border:1px solid #324963;font-size:15px;padding:13px}.danger{color:#ff8295}.wide{grid-column:1/-1}textarea{width:100%;min-height:100px;background:#081321;border:1px solid #334b68;border-radius:14px;color:white;padding:14px;font-size:17px;resize:vertical}.status{background:#102940;border:1px solid #1f4563;border-radius:13px;padding:11px 13px;color:#bce4ff}.note{color:var(--muted);font-size:13px;line-height:1.5}.statGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{background:var(--panel2);padding:14px;border-radius:15px}.stat .label{color:var(--muted);font-size:13px}.stat .value{font-size:28px;font-weight:900;margin-top:5px}.red{color:var(--tai)}.blue{color:var(--xiu)}.purple{color:var(--purple)}.recent{display:flex;gap:8px;overflow-x:auto}.ball{min-width:38px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:850}.ball.t{background:var(--tai)}.ball.x{background:var(--xiu)}.road{display:flex;align-items:flex-start;gap:10px;overflow-x:auto;min-height:240px}.col{display:flex;flex-direction:column;gap:8px}.col .ball{width:34px;min-width:34px;height:34px}.hero{background:linear-gradient(135deg,#0c2944,#123a63);border:1px solid #37658e;border-radius:20px;padding:18px}.heroTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.signal{font-size:30px;font-weight:950}.meter{height:14px;background:#25364c;border-radius:999px;overflow:hidden;margin:14px 0}.meter div{height:100%;background:linear-gradient(90deg,var(--xiu),#e8edf5,var(--tai));transition:.25s}.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.chip{background:#0d1e31;border:1px solid #2a4664;border-radius:12px;padding:9px;text-align:center}.chip small{display:block;color:var(--muted);margin-bottom:4px}.alert{border-radius:14px;padding:12px 13px;line-height:1.45}.alert.warn{background:#342819;border:1px solid #765a25;color:#ffdb9b}.alert.ok{background:#143422;border:1px solid #2a7245;color:#b7f4cb}.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.rule{background:#102238;border:1px solid #2a405b;border-radius:15px;padding:13px}.ruleHead{display:flex;justify-content:space-between;gap:8px}.bar{height:8px;background:#26384f;border-radius:99px;overflow:hidden;margin-top:9px}.bar div{height:100%;background:linear-gradient(90deg,#a368ff,#3cc6ff)}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:10px;border-bottom:1px solid #26384f;text-align:center}th{background:#102139;color:#b2dcff}.footer{text-align:center;color:var(--muted);padding:18px}.proBtn{width:100%;background:linear-gradient(135deg,#8a52ff,#2e9df4);margin-top:10px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}.modal.show{display:flex}.modalBox{max-width:620px;width:100%;background:#0d1a2b;border:1px solid #38506e;border-radius:20px;padding:20px}.modalBox h2{margin-top:0}.close{float:right;background:#1c2d45;color:white;border:0;border-radius:10px;padding:8px 12px}.stars{letter-spacing:4px;color:#ffd86a;font-size:22px}
-@media(max-width:900px){.grid{grid-template-columns:1fr}.statGrid{grid-template-columns:1fr 1fr}.chips{grid-template-columns:1fr 1fr}.rules{grid-template-columns:1fr}.wrap{padding:11px}.card{border-radius:17px}}
+:root{--bg:#08111f;--panel:#0f1b2d;--panel2:#13233a;--line:#29405f;--text:#f5f7fb;--muted:#9fb0c7;--tai:#ff4f74;--xiu:#3da5ff;--green:#35d07f;--yellow:#ffc857;--orange:#ff9f43;--danger:#ff6b6b;--shadow:0 18px 50px rgba(0,0,0,.28)}
+*{box-sizing:border-box}html,body{margin:0;background:linear-gradient(180deg,#07101d,#0b1628 55%,#08111f);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}button,input,textarea{font:inherit}.wrap{max-width:1320px;margin:auto;padding:18px}.topbar{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:16px}.brand h1{margin:0;font-size:clamp(26px,5vw,44px);letter-spacing:.5px;background:linear-gradient(90deg,#c86bff,#ff9f43);-webkit-background-clip:text;color:transparent}.brand p{margin:4px 0 0;color:var(--muted)}.badge{padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:#0d192a;color:#9ed3ff;font-weight:800}.grid{display:grid;grid-template-columns:360px 1fr;gap:16px}.panel{background:linear-gradient(180deg,var(--panel),#0b1728);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:var(--shadow)}.title{font-size:18px;font-weight:900;letter-spacing:.5px;color:#9ed3ff;margin-bottom:14px}.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}.bigbtn{border:0;border-radius:18px;padding:22px 14px;color:#fff;font-weight:900;font-size:24px;cursor:pointer;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}.tai{background:linear-gradient(135deg,#ff365f,#ff6f86)}.xiu{background:linear-gradient(135deg,#1977f3,#49b7ff)}textarea,input{width:100%;margin-top:12px;background:#07101d;border:1px solid var(--line);color:var(--text);border-radius:14px;padding:14px;outline:none}textarea{min-height:92px;resize:vertical}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.btn{border:1px solid var(--line);background:#12223a;color:var(--text);border-radius:13px;padding:12px;font-weight:800;cursor:pointer}.btn.green{background:linear-gradient(135deg,#19b864,#5fe49a);border:0}.btn.danger{color:#ff879b}.btn.yellow{color:#ffd978}.mini{font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px}.right{display:grid;gap:16px}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}.scorebox{display:grid;grid-template-columns:150px 1fr;gap:18px;align-items:center}.ring{width:140px;height:140px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--green) 0deg,#1d2c44 0deg);position:relative}.ring:after{content:"";position:absolute;inset:13px;background:#0e1a2b;border-radius:50%}.ring span{position:relative;z-index:1;text-align:center}.ring b{font-size:34px}.signal{font-size:28px;font-weight:900}.signal.taiText{color:var(--tai)}.signal.xiuText{color:var(--xiu)}.signal.neutral{color:#c9d5e5}.meter{height:16px;border-radius:999px;background:#1a2940;overflow:hidden;display:flex;margin:12px 0}.meter .mt{background:var(--tai)}.meter .mx{background:var(--xiu)}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:14px}.card .k{color:var(--muted);font-size:13px}.card .v{font-size:24px;font-weight:900;margin-top:4px}.beads{display:flex;gap:8px;flex-wrap:wrap}.bead{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:900}.bead.t{background:var(--tai)}.bead.x{background:var(--xiu)}.road{display:grid;grid-auto-flow:column;grid-auto-columns:42px;grid-template-rows:repeat(6,42px);gap:5px;overflow-x:auto;min-height:280px;padding-bottom:8px}.road .cell{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:900}.road .t{background:var(--tai)}.road .x{background:var(--xiu)}.rulegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.rule{background:#10213a;border:1px solid var(--line);border-radius:14px;padding:14px}.rule .bar{height:8px;border-radius:999px;background:#1b2c45;overflow:hidden;margin-top:8px}.rule .fill{height:100%;background:linear-gradient(90deg,#7b61ff,#45caff)}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:680px}th,td{padding:11px;border-bottom:1px solid var(--line);text-align:center}th{color:#9ed3ff;background:#10213a}.notice{background:#3a2b16;border:1px solid #8a6427;color:#ffe1a6;padding:12px;border-radius:14px;line-height:1.45}.modal{position:fixed;inset:0;background:rgba(2,7,14,.72);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.modal.show{display:flex}.modalbox{max-width:680px;width:100%;background:#0c192b;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}.modalbox h2{margin-top:0}.close{float:right}.footer{color:var(--muted);text-align:center;padding:20px 0 6px}.pill{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:7px 10px;background:#0d1b2e;color:#c7d4e8;font-size:12px;font-weight:800}.risk-low{color:var(--green)}.risk-med{color:var(--yellow)}.risk-high{color:var(--danger)}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}.scorebox{grid-template-columns:110px 1fr}.ring{width:105px;height:105px}.stats{grid-template-columns:1fr 1fr}.rulegrid{grid-template-columns:1fr}.wrap{padding:10px}.panel{padding:14px}.bigbtn{font-size:22px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-<div class="header"><div class="brand"><h1><span class="a">TÀI XỈU</span> <span class="b">ONLINE V3</span></h1><p>Thống kê mẫu, so sánh quy tắc và backtest ngay trên thiết bị</p></div><div class="badge" id="saveStatus">Đã sẵn sàng</div></div>
-<div class="grid">
-<aside class="stack">
-<section class="card"><h2 class="title">Nhập kết quả</h2><div class="btns"><button class="btn tai" onclick="addResult('T')">● TÀI</button><button class="btn xiu" onclick="addResult('X')">● XỈU</button></div><div style="height:10px"></div><textarea id="bulk" placeholder="Ví dụ: T X T T X hoặc TXTTX"></textarea><button class="btn green" style="width:100%;margin-top:10px" onclick="addBulk()">THÊM CHUỖI</button></section>
-<section class="card"><h2 class="title">Thao tác</h2><div class="two"><button class="btn ghost" onclick="undo()">↶ Hoàn tác</button><button class="btn ghost" onclick="copyData()">⧉ Sao chép</button><button class="btn ghost" onclick="exportCsv()">⇩ Xuất CSV</button><button class="btn ghost" onclick="exportJson()">⇩ Sao lưu JSON</button><button class="btn ghost" onclick="document.getElementById('importFile').click()">⇧ Nhập JSON</button><button class="btn ghost" onclick="loadSample()">⚗ Dữ liệu mẫu</button><input id="importFile" hidden type="file" accept=".json,application/json" onchange="importJson(event)"><button class="btn ghost danger wide" onclick="clearAll()">🗑 Xóa tất cả</button></div></section>
-<section class="card"><h2 class="title">Thông tin</h2><div class="stack" id="sideInfo"></div></section>
-</aside>
-<main class="stack">
-<section class="card"><h2 class="title">Trung tâm phân tích V3</h2><div id="signalPanel"></div><button class="btn proBtn" onclick="openAnalysis()">🔍 PHÂN TÍCH NGAY</button></section>
-<section class="card"><h2 class="title">So sánh quy tắc lịch sử</h2><div class="rules" id="rulePanel"></div><div class="note" style="margin-top:10px">Tỷ lệ “đúng” chỉ là backtest trên dữ liệu bạn đã nhập, không phải xác suất thật của ván tiếp theo.</div></section>
-<section class="card"><h2 class="title">Cảnh báo cầu</h2><div id="breakPanel"></div></section>
-<section class="card"><h2 class="title">Kết quả gần nhất</h2><div class="recent" id="recent"></div></section>
-<section class="statGrid"><div class="stat"><div class="label">Tổng ván</div><div class="value" id="total">0</div></div><div class="stat"><div class="label">Đổi cầu</div><div class="value purple" id="switches">0</div></div><div class="stat"><div class="label">Tài</div><div class="value red" id="taiCount">0</div><div class="note" id="taiPct"></div></div><div class="stat"><div class="label">Xỉu</div><div class="value blue" id="xiuCount">0</div><div class="note" id="xiuPct"></div></div></section>
-<section class="card"><h2 class="title">Biểu đồ cầu</h2><div class="road" id="road"></div></section>
-<section class="card"><h2 class="title">Nhận diện mẫu</h2><div class="stack" id="patterns"></div></section>
-<section class="card"><h2 class="title">Thống kê theo khoảng</h2><div style="overflow:auto"><table><thead><tr><th>Khoảng</th><th>Số ván</th><th>Tài</th><th>Xỉu</th><th>Tỷ lệ Tài</th><th>Chênh lệch</th></tr></thead><tbody id="rangeStats"></tbody></table></div></section>
-</main></div><div class="footer">V3 là công cụ mô tả và kiểm tra quy tắc trên lịch sử. Không có mô hình nào bảo đảm dự đoán đúng kết quả ngẫu nhiên.</div></div>
-<div class="modal" id="analysisModal"><div class="modalBox"><button class="close" onclick="closeAnalysis()">Đóng</button><h2>Phân tích chi tiết</h2><div id="analysisText"></div></div></div>
+  <div class="topbar">
+    <div class="brand"><h1>TÀI XỈU ONLINE V5</h1><p>Dashboard thống kê lịch sử • PWA • Offline • Không phải công cụ bảo đảm thắng</p></div>
+    <div class="badge">V5.0</div>
+  </div>
+  <div class="grid">
+    <aside class="panel">
+      <div class="title">NHẬP KẾT QUẢ</div>
+      <div class="btnrow"><button class="bigbtn tai" id="btnT">● TÀI (T)</button><button class="bigbtn xiu" id="btnX">● XỈU (X)</button></div>
+      <textarea id="seq" placeholder="Ví dụ: T X T T X hoặc TXTTX"></textarea>
+      <button class="btn green" id="addSeq" style="width:100%;margin-top:10px">THÊM CHUỖI</button>
+      <div class="actions">
+        <button class="btn" id="undo">↶ Hoàn tác</button><button class="btn" id="copy">⧉ Sao chép</button>
+        <button class="btn" id="sample">🧪 Dữ liệu mẫu</button><button class="btn" id="analyze">🔍 Phân tích ngay</button>
+        <button class="btn" id="exportCsv">⇩ Xuất CSV</button><button class="btn" id="backup">💾 Sao lưu JSON</button>
+        <button class="btn" id="restore">↥ Khôi phục JSON</button><button class="btn danger" id="clear">🗑 Xóa tất cả</button>
+      </div>
+      <input type="file" id="restoreFile" accept="application/json" hidden />
+      <div class="mini">Dữ liệu chỉ được lưu trên thiết bị. V5 sử dụng mô hình chấm điểm thống kê và backtest lịch sử, không truy cập hay tự đặt cược trên bất kỳ sàn nào.</div>
+    </aside>
+    <main class="right">
+      <section class="hero">
+        <div class="panel">
+          <div class="title">AI SCORE TỔNG HỢP</div>
+          <div class="scorebox">
+            <div class="ring" id="ring"><span><b id="score">50</b><br><small>/100</small></span></div>
+            <div>
+              <div class="pill" id="riskPill">RISK: Chưa đủ dữ liệu</div>
+              <div class="signal neutral" id="signal">Cân bằng</div>
+              <div id="reason" class="mini">Nhập thêm dữ liệu để hệ thống đánh giá xu hướng.</div>
+              <div class="meter"><div class="mt" id="mt" style="width:50%"></div><div class="mx" id="mx" style="width:50%"></div></div>
+              <div class="mini"><b id="pt">Tài 50%</b> • <b id="px">Xỉu 50%</b></div>
+            </div>
+          </div>
+          <div class="notice" style="margin-top:14px">Điểm AI là chỉ số tổng hợp từ lịch sử bạn nhập, không phải xác suất thật của ván kế tiếp và không phải “kèo chắc”.</div>
+        </div>
+        <div class="panel">
+          <div class="title">TỔNG QUAN</div>
+          <div class="stats">
+            <div class="card"><div class="k">Tổng số ván</div><div class="v" id="total">0</div></div>
+            <div class="card"><div class="k">Tài</div><div class="v" id="taiCount" style="color:var(--tai)">0</div></div>
+            <div class="card"><div class="k">Xỉu</div><div class="v" id="xiuCount" style="color:var(--xiu)">0</div></div>
+            <div class="card"><div class="k">Đổi cầu</div><div class="v" id="switches">0</div></div>
+          </div>
+          <div class="mini" id="summary" style="margin-top:12px">Chưa có dữ liệu.</div>
+        </div>
+      </section>
+
+      <section class="panel"><div class="title">KẾT QUẢ GẦN NHẤT</div><div class="beads" id="beads"></div></section>
+      <section class="panel"><div class="title">BIỂU ĐỒ CẦU</div><div class="road" id="road"></div></section>
+      <section class="panel"><div class="title">SO SÁNH QUY TẮC LỊCH SỬ</div><div class="rulegrid" id="rules"></div></section>
+      <section class="panel"><div class="title">THỐNG KÊ THEO KHOẢNG</div><div class="tablewrap"><table><thead><tr><th>Khoảng</th><th>Số ván</th><th>Tài</th><th>Xỉu</th><th>Tỷ lệ Tài</th><th>Chênh lệch</th></tr></thead><tbody id="rangeRows"></tbody></table></div></section>
+    </main>
+  </div>
+  <div class="footer">V5 phân tích mô tả và backtest dữ liệu quá khứ; không bảo đảm kết quả tương lai.</div>
+</div>
+<div class="modal" id="modal"><div class="modalbox"><button class="btn close" id="closeModal">Đóng</button><h2>Phân tích chi tiết V5</h2><div id="detail"></div></div></div>
 <script>
-const KEY='tai_xiu_online_v3';let data=[];try{data=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('tai_xiu_online_v2')||localStorage.getItem('tai_xiu_online_v1')||'[]');if(!Array.isArray(data))data=[]}catch(e){data=[]}
-const $=id=>document.getElementById(id);const pct=(n,d)=>d?((n/d)*100).toFixed(2)+'%':'0%';
-function save(){localStorage.setItem(KEY,JSON.stringify(data));$('saveStatus').textContent='Đã lưu '+new Date().toLocaleTimeString('vi-VN')}
-function addResult(v){data.push(v);save();render()}function addBulk(){const a=[...$('bulk').value.toUpperCase()].filter(c=>c==='T'||c==='X');if(!a.length)return alert('Chỉ nhập T hoặc X.');data.push(...a);$('bulk').value='';save();render()}function undo(){if(data.length){data.pop();save();render()}}function clearAll(){if(confirm('Xóa toàn bộ lịch sử?')){data=[];save();render()}}function loadSample(){data='TTTXXTXTXXTTTTXTXTXXTTXTTXXXT'.split('');save();render()}
-function copyData(){navigator.clipboard?.writeText(data.join(' ')).then(()=>alert('Đã sao chép.')).catch(()=>prompt('Sao chép:',data.join(' ')))}function dl(blob,n){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}function exportCsv(){dl(new Blob(['\ufeffSTT,Ket qua\n'+data.map((v,i)=>`${i+1},${v}`).join('\n')],{type:'text/csv'}),'lich-su-v3.csv')}function exportJson(){dl(new Blob([JSON.stringify({version:3,exportedAt:new Date().toISOString(),results:data},null,2)],{type:'application/json'}),'sao-luu-v3.json')}function importJson(e){const f=e.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result),a=(Array.isArray(o)?o:o.results).map(String).map(v=>v.toUpperCase()).filter(v=>v==='T'||v==='X');if(!a.length)throw 0;if(confirm(`Thay dữ liệu bằng ${a.length} ván?`)){data=a;save();render()}}catch(_){alert('JSON không hợp lệ')}e.target.value=''};r.readAsText(f)}
-function currentRun(a=data){if(!a.length)return{v:'—',n:0};const v=a.at(-1);let n=0;for(let i=a.length-1;i>=0&&a[i]===v;i--)n++;return{v,n}}function longest(v,a=data){let m=0,c=0;for(const x of a){if(x===v){c++;m=Math.max(m,c)}else c=0}return m}function switches(a=data){let n=0;for(let i=1;i<a.length;i++)if(a[i]!==a[i-1])n++;return n}function road(){const c=[];for(const v of data){if(!c.length||c.at(-1)[0]!==v)c.push([v]);else c.at(-1).push(v)}return c}function bias(a,n){const s=a.slice(-n);if(!s.length)return 0;const t=s.filter(v=>v==='T').length;return(t-(s.length-t))/s.length}function alt(a,n=6){if(a.length<n)return false;const s=a.slice(-n);return s.every((v,i)=>i===0||v!==s[i-1])}function twoTwo(a){if(a.length<8)return false;const s=a.slice(-8);return s[0]===s[1]&&s[2]===s[3]&&s[4]===s[5]&&s[6]===s[7]&&s[0]!==s[2]&&s[2]!==s[4]&&s[4]!==s[6]}function threeOne(a){if(a.length<8)return false;const s=a.slice(-8),runs=[];let c=1;for(let i=1;i<s.length;i++){if(s[i]===s[i-1])c++;else{runs.push(c);c=1}}runs.push(c);return runs.slice(-4).join(',')==='3,1,3,1'||runs.slice(-4).join(',')==='1,3,1,3'}
-function signal(a){if(a.length<10)return{side:'C',score:0,label:'Chưa đủ dữ liệu',strength:'Thấp',conf:0};const b10=bias(a,10),b20=bias(a,20),b50=bias(a,50),r=currentRun(a);let adj=0;if(r.n>=3)adj=(r.v==='T'?1:-1)*Math.min(.12,(r.n-2)*.035);const score=Math.max(-1,Math.min(1,b10*.5+b20*.3+b50*.2+adj));const z=Math.abs(score),side=z<.1?'C':score>0?'T':'X';return{side,score,label:side==='T'?'Nghiêng Tài':side==='X'?'Nghiêng Xỉu':'Cân bằng',strength:z<.1?'Cân bằng':z<.22?'Yếu':z<.38?'Vừa':'Mạnh',conf:Math.round(Math.min(85,45+z*70)),b10,b20,b50}}
-const predictors={
-'Xu hướng đa khung':a=>signal(a).side,
-'Theo bệt':a=>{const r=currentRun(a);return r.n>=3?r.v:'C'},
-'Theo đảo 1-1':a=>alt(a,5)?(a.at(-1)==='T'?'X':'T'):'C',
-'Theo tần suất 10':a=>{if(a.length<10)return'C';const b=bias(a,10);return Math.abs(b)<.2?'C':b>0?'T':'X'}
-};
-function testRule(fn,a=data){let ok=0,total=0,neutral=0;for(let i=10;i<a.length;i++){const p=fn(a.slice(0,i));if(p==='C'){neutral++;continue}total++;if(p===a[i])ok++}return{ok,total,neutral,acc:total?ok/total:0}}
-function bestRule(){return Object.entries(predictors).map(([name,fn])=>({name,...testRule(fn)})).filter(x=>x.total>=3).sort((a,b)=>b.acc-a.acc)[0]||null}
-function breakAlert(){if(data.length<2)return{type:'warn',text:'Chưa đủ dữ liệu để phát hiện cầu gãy.'};const r=currentRun();const prev=data.slice(0,-1),pr=currentRun(prev);if(pr.n>=3&&data.at(-1)!==pr.v)return{type:'warn',text:`Cầu bệt ${pr.v==='T'?'Tài':'Xỉu'} ${pr.n} ván vừa gãy.`};if(alt(prev,6)&&data.at(-1)===data.at(-2))return{type:'warn',text:'Cầu 1-1 vừa gãy; mẫu hiện tại đang chuyển trạng thái.'};return{type:'ok',text:'Chưa ghi nhận mẫu cầu rõ ràng vừa bị gãy.'}}
-function renderSignal(){const s=signal(data),pos=Math.round((s.score+1)*50),c=s.side==='T'?'red':s.side==='X'?'blue':'';$('signalPanel').innerHTML=`<div class="hero"><div class="heroTop"><div><div class="note">Tín hiệu mô tả lịch sử</div><div class="signal ${c}">${s.label}</div></div><div><div class="stars">${'★'.repeat(Math.max(1,Math.round(s.conf/20)))}${'☆'.repeat(5-Math.max(1,Math.round(s.conf/20)))}</div><b>Độ ổn định mẫu: ${s.conf}%</b></div></div><div class="meter"><div style="width:${pos}%"></div></div><div class="chips"><div class="chip"><small>10 ván</small>${Math.round((s.b10||0)*100)}%</div><div class="chip"><small>20 ván</small>${Math.round((s.b20||0)*100)}%</div><div class="chip"><small>50 ván</small>${Math.round((s.b50||0)*100)}%</div><div class="chip"><small>Mức tín hiệu</small>${s.strength}</div></div><div class="alert warn" style="margin-top:12px">“Độ ổn định” không phải xác suất thắng. Nó chỉ đo mức nhất quán giữa các cửa sổ dữ liệu gần đây.</div></div>`}
-function renderRules(){$('rulePanel').innerHTML=Object.entries(predictors).map(([name,fn])=>{const r=testRule(fn),w=Math.round(r.acc*100);return`<div class="rule"><div class="ruleHead"><b>${name}</b><span>${r.total?w+'%':'—'}</span></div><div class="note">${r.ok}/${r.total} lần khớp · ${r.neutral} lần trung lập</div><div class="bar"><div style="width:${w}%"></div></div></div>`}).join('')}
-function render(){const t=data.filter(v=>v==='T').length,x=data.length-t,r=currentRun();$('total').textContent=data.length;$('switches').textContent=switches();$('taiCount').textContent=t;$('xiuCount').textContent=x;$('taiPct').textContent=pct(t,data.length);$('xiuPct').textContent=pct(x,data.length);$('recent').innerHTML=data.slice(-25).map(v=>`<div class="ball ${v==='T'?'t':'x'}">${v}</div>`).join('')||'<span class="note">Chưa có dữ liệu</span>';$('road').innerHTML=road().map(c=>`<div class="col">${c.map(v=>`<div class="ball ${v==='T'?'t':'x'}">${v}</div>`).join('')}</div>`).join('')||'<span class="note">Chưa có dữ liệu</span>';$('sideInfo').innerHTML=`<div class="status">Ván gần nhất: <b>${data.at(-1)||'—'}</b></div><div class="status">Chuỗi hiện tại: <b>${r.v} (${r.n})</b></div><div class="status">Chuỗi dài nhất: <b>T ${longest('T')} · X ${longest('X')}</b></div>`;$('patterns').innerHTML=`<div class="status">Cầu bệt: <b>${r.n>=3?r.v+' '+r.n+' ván':'Chưa rõ'}</b></div><div class="status">Cầu 1-1: <b>${alt(data)?'Đang xuất hiện':'Không xuất hiện'}</b></div><div class="status">Cầu 2-2: <b>${twoTwo(data)?'Đang xuất hiện':'Không xuất hiện'}</b></div><div class="status">Cầu 3-1 / 1-3: <b>${threeOne(data)?'Có dấu hiệu':'Không xuất hiện'}</b></div>`;$('rangeStats').innerHTML=[10,20,50,100].map(n=>{const a=data.slice(-n),tt=a.filter(v=>v==='T').length,xx=a.length-tt,d=a.length?(tt-xx)/a.length*100:0;return`<tr><td>${n} ván</td><td>${a.length}</td><td class="red">${tt}</td><td class="blue">${xx}</td><td>${pct(tt,a.length)}</td><td>${d>0?'+':''}${d.toFixed(2)}%</td></tr>`}).join('');const br=breakAlert();$('breakPanel').innerHTML=`<div class="alert ${br.type}">${br.text}</div>`;renderSignal();renderRules()}
-function openAnalysis(){const s=signal(data),b=bestRule(),r=currentRun(),br=breakAlert();let text=`<p><b>Kết luận:</b> ${s.label} — mức ${s.strength}.</p><p><b>Độ ổn định mẫu:</b> ${s.conf}% (không phải xác suất thắng).</p><p><b>Chuỗi hiện tại:</b> ${r.v} (${r.n} ván).</p><p><b>Cảnh báo:</b> ${br.text}</p>`;if(b)text+=`<p><b>Quy tắc khớp lịch sử tốt nhất:</b> ${b.name} — ${(b.acc*100).toFixed(1)}% trên ${b.total} tín hiệu.</p>`;else text+='<p>Chưa đủ dữ liệu để chọn quy tắc tốt nhất.</p>';text+='<div class="alert warn">Kết quả trò chơi có thể độc lập và ngẫu nhiên. Không dùng phân tích này như cam kết hoặc “kèo chắc”.</div>';$('analysisText').innerHTML=text;$('analysisModal').classList.add('show')}function closeAnalysis(){$('analysisModal').classList.remove('show')}
-render();if('serviceWorker'in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+const KEY='tai_xiu_history_v5';
+let history=[];
+try{history=JSON.parse(localStorage.getItem(KEY)||localStorage.getItem('tai_xiu_history_v3')||localStorage.getItem('tai_xiu_history_v2')||'[]')}catch(e){history=[]}
+history=Array.isArray(history)?history.filter(v=>v==='T'||v==='X'):[];
+const $=s=>document.querySelector(s);
+function save(){localStorage.setItem(KEY,JSON.stringify(history));render()}
+function add(v){history.push(v);save()}
+function parseSeq(s){return (s.toUpperCase().match(/[TX]/g)||[])}
+function pct(a,b){return b?Math.round(a/b*100):0}
+function currentRun(arr=history){if(!arr.length)return {v:'-',n:0};let v=arr[arr.length-1],n=1;for(let i=arr.length-2;i>=0&&arr[i]===v;i--)n++;return {v,n}}
+function longest(v){let m=0,c=0;for(const x of history){c=x===v?c+1:0;m=Math.max(m,c)}return m}
+function switches(){let n=0;for(let i=1;i<history.length;i++)if(history[i]!==history[i-1])n++;return n}
+function windowStat(n){const a=history.slice(-n),t=a.filter(x=>x==='T').length;return {n:a.length,t,x:a.length-t,tp:pct(t,a.length)}}
+function patternAlternating(arr){if(arr.length<4)return 0;let ok=0;for(let i=1;i<arr.length;i++)if(arr[i]!==arr[i-1])ok++;return ok/(arr.length-1)}
+function blockPattern(arr,size){if(arr.length<size*2)return 0;let matches=0,total=0;for(let i=size;i<arr.length;i++){if(arr[i]===arr[i-size])matches++;total++}return total?matches/total:0}
+function predictorTrend(prefix){const w10=prefix.slice(-10),w20=prefix.slice(-20),w50=prefix.slice(-50);let s=0;for(const [a,w] of [[w10,3],[w20,2],[w50,1]]){if(!a.length)continue;const t=a.filter(x=>x==='T').length/a.length;s+=(t-.5)*2*w}return s>0.18?'T':s<-0.18?'X':null}
+function predictorFollow(prefix){if(!prefix.length)return null;const r=currentRun(prefix);return r.n>=2?r.v:null}
+function predictorReverse(prefix){if(!prefix.length)return null;const r=currentRun(prefix);return r.n>=3?(r.v==='T'?'X':'T'):null}
+function predictorAlt(prefix){if(prefix.length<5)return null;const a=prefix.slice(-6);return patternAlternating(a)>.75?(prefix[prefix.length-1]==='T'?'X':'T'):null}
+const predictors=[['Xu hướng đa khung',predictorTrend],['Theo bệt',predictorFollow],['Đảo sau bệt',predictorReverse],['Cầu 1-1',predictorAlt]];
+function backtest(fn){let hit=0,total=0;for(let i=5;i<history.length;i++){const p=fn(history.slice(0,i));if(!p)continue;total++;if(p===history[i])hit++}return {hit,total,rate:total?hit/total:0}}
+function analysis(){
+ const n=history.length;if(!n)return {score:50,tProb:50,signal:'Cân bằng',strength:'Chưa đủ dữ liệu',risk:'Chưa đủ dữ liệu',reason:'Nhập thêm dữ liệu để hệ thống đánh giá.',stability:0,best:null};
+ const s10=windowStat(10),s20=windowStat(20),s50=windowStat(50),run=currentRun();
+ let raw=((s10.tp-50)*.45+(s20.tp-50)*.35+(s50.tp-50)*.20);
+ if(run.n>=3)raw+=(run.v==='T'?1:-1)*Math.min(8,run.n*1.2);
+ const alt=patternAlternating(history.slice(-8));if(alt>.75)raw+=(history.at(-1)==='T'?-5:5);
+ const bt=predictors.map(([name,fn])=>({name,...backtest(fn),next:fn(history)}));
+ const active=bt.filter(x=>x.next&&x.total>=3);for(const r of active)raw+=(r.next==='T'?1:-1)*(r.rate-.5)*20;
+ const tProb=Math.max(15,Math.min(85,Math.round(50+raw)));
+ const score=Math.round(50+Math.abs(tProb-50));
+ const signal=tProb>=57?'Nghiêng Tài':tProb<=43?'Nghiêng Xỉu':'Cân bằng';
+ const strength=Math.abs(tProb-50)>=22?'Mạnh':Math.abs(tProb-50)>=12?'Vừa':Math.abs(tProb-50)>=6?'Yếu':'Cân bằng';
+ const risk=active.length<2?'Cao':Math.abs(tProb-50)<8?'Cao':Math.abs(tProb-50)<16?'Trung bình':'Thấp';
+ const best=[...bt].filter(x=>x.total).sort((a,b)=>b.rate-a.rate)[0]||null;
+ const stability=Math.round((1-Math.min(1,switches()/Math.max(1,n-1)))*60+Math.abs(tProb-50)*.8);
+ const reason=`10 ván: ${s10.tp}% Tài; 20 ván: ${s20.tp}% Tài; 50 ván: ${s50.tp}% Tài; chuỗi hiện tại ${run.v} (${run.n}).`;
+ return {score,tProb,signal,strength,risk,reason,stability,best,bt};
+}
+function buildRoad(){const cols=[];if(!history.length)return cols;for(const v of history){if(!cols.length||cols.at(-1)[0]!==v)cols.push([v]);else cols.at(-1).push(v)}return cols}
+function render(){
+ const n=history.length,t=history.filter(x=>x==='T').length,x=n-t,a=analysis();
+ $('#total').textContent=n;$('#taiCount').textContent=t;$('#xiuCount').textContent=x;$('#switches').textContent=switches();
+ $('#beads').innerHTML=history.slice(-40).map(v=>`<span class="bead ${v==='T'?'t':'x'}">${v}</span>`).join('')||'<span class="mini">Chưa có dữ liệu</span>';
+ const road=buildRoad();$('#road').innerHTML=road.map(col=>col.slice(0,6).map(v=>`<span class="cell ${v==='T'?'t':'x'}">${v}</span>`).join('')).join('');
+ const tp=a.tProb;$('#mt').style.width=tp+'%';$('#mx').style.width=(100-tp)+'%';$('#pt').textContent=`Tài ${tp}%`;$('#px').textContent=`Xỉu ${100-tp}%`;
+ $('#score').textContent=a.score;$('#ring').style.background=`conic-gradient(${a.signal.includes('Tài')?'var(--tai)':a.signal.includes('Xỉu')?'var(--xiu)':'var(--green)'} ${a.score*3.6}deg,#1d2c44 0deg)`;
+ const sig=$('#signal');sig.textContent=`${a.signal} — ${a.strength}`;sig.className='signal '+(a.signal.includes('Tài')?'taiText':a.signal.includes('Xỉu')?'xiuText':'neutral');
+ $('#reason').textContent=a.reason;$('#riskPill').innerHTML=`RISK: <span class="${a.risk==='Thấp'?'risk-low':a.risk==='Trung bình'?'risk-med':'risk-high'}">${a.risk}</span>`;
+ const run=currentRun();$('#summary').textContent=n?`Ván gần nhất ${history.at(-1)} • Chuỗi ${run.v} (${run.n}) • Dài nhất Tài ${longest('T')} / Xỉu ${longest('X')} • Độ ổn định mẫu ${a.stability}%`:'Chưa có dữ liệu.';
+ $('#rules').innerHTML=(a.bt||predictors.map(([name,fn])=>({name,...backtest(fn),next:fn(history)}))).map(r=>`<div class="rule"><b>${r.name}</b><span style="float:right">${Math.round(r.rate*100)}%</span><div class="mini">${r.hit}/${r.total} lần khớp • Tín hiệu kế: ${r.next||'Không có'}</div><div class="bar"><div class="fill" style="width:${Math.round(r.rate*100)}%"></div></div></div>`).join('');
+ $('#rangeRows').innerHTML=[10,20,50,100,500].map(k=>{const s=windowStat(k),d=s.n?Math.round((s.tp-50)*2):0;return `<tr><td>${k} ván gần nhất</td><td>${s.n}</td><td style="color:var(--tai)">${s.t}</td><td style="color:var(--xiu)">${s.x}</td><td>${s.tp}%</td><td>${d>0?'+':''}${d}%</td></tr>`}).join('');
+}
+function detail(){const a=analysis(),r=currentRun(),best=a.best;$('#detail').innerHTML=`<p><b>Kết luận:</b> ${a.signal} — mức ${a.strength}.</p><p><b>AI Score:</b> ${a.score}/100. <b>Độ ổn định mẫu:</b> ${a.stability}%.</p><p><b>Chuỗi hiện tại:</b> ${r.v} (${r.n} ván).</p><p><b>Quy tắc khớp lịch sử tốt nhất:</b> ${best?`${best.name} — ${Math.round(best.rate*100)}% trên ${best.total} tín hiệu`:'Chưa đủ dữ liệu'}.</p><p><b>Lý do tổng hợp:</b> ${a.reason}</p><div class="notice">Không dùng phân tích này như cam kết thắng hoặc tín hiệu đặt cược chắc chắn.</div>`;$('#modal').classList.add('show')}
+$('#btnT').onclick=()=>add('T');$('#btnX').onclick=()=>add('X');$('#addSeq').onclick=()=>{const a=parseSeq($('#seq').value);if(a.length){history.push(...a);$('#seq').value='';save()}};$('#undo').onclick=()=>{history.pop();save()};$('#clear').onclick=()=>{if(confirm('Xóa toàn bộ lịch sử?')){history=[];save()}};$('#sample').onclick=()=>{history='TXTXXTTTXTXTXXTTTTXXTXTXXT'.split('');save()};$('#copy').onclick=async()=>{await navigator.clipboard.writeText(history.join(''));alert('Đã sao chép chuỗi')};$('#analyze').onclick=detail;$('#closeModal').onclick=()=>$('#modal').classList.remove('show');$('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('show')};
+$('#exportCsv').onclick=()=>{let csv='van,ket_qua\n'+history.map((v,i)=>`${i+1},${v}`).join('\n');download('tai-xiu-v5.csv',csv,'text/csv')};$('#backup').onclick=()=>download('tai-xiu-v5-backup.json',JSON.stringify({version:5,history,exportedAt:new Date().toISOString()},null,2),'application/json');$('#restore').onclick=()=>$('#restoreFile').click();$('#restoreFile').onchange=async e=>{try{const obj=JSON.parse(await e.target.files[0].text());const arr=Array.isArray(obj)?obj:obj.history;if(!Array.isArray(arr))throw 0;history=arr.filter(v=>v==='T'||v==='X');save()}catch{alert('File JSON không hợp lệ')}};
+function download(name,data,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type}));a.download=name;a.click();URL.revokeObjectURL(a.href)}
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+render();
 </script>
-</body></html>
+</body>
+</html>

@@ -1,13 +1,11 @@
 {
-  "name": "Tài Xỉu Online V3",
-  "short_name": "Tài Xỉu V3",
-  "start_url": "./?v=3",
-  "scope": "./",
-  "display": "standalone",
-  "background_color": "#07111f",
-  "theme_color": "#07111f",
-  "description": "Công cụ thống kê lịch sử Tài/Xỉu, phân tích mẫu và backtest trên thiết bị.",
-  "icons": [
+  "name":"Tài Xỉu Online V5",
+  "short_name":"Tài Xỉu V5",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#08111f",
+  "theme_color":"#08111f",
+  "icons":[
     {"src":"icon-192.png","sizes":"192x192","type":"image/png"},
     {"src":"icon-512.png","sizes":"512x512","type":"image/png"}
   ]
