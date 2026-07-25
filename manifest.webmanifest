@@ -1,12 +1,1 @@
-{
-  "name":"Tài Xỉu Online V6",
-  "short_name":"Tài Xỉu V6",
-  "start_url":"./",
-  "display":"standalone",
-  "background_color":"#07111f",
-  "theme_color":"#07111f",
-  "icons":[
-    {"src":"icon-192.png","sizes":"192x192","type":"image/png"},
-    {"src":"icon-512.png","sizes":"512x512","type":"image/png"}
-  ]
-}
+{"name":"Tài Xỉu Online V7","short_name":"TX V7","start_url":"./","display":"standalone","background_color":"#07111f","theme_color":"#0b1220","icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png"}]}
