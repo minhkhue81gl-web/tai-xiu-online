@@ -1,22 +1,24 @@
-# Tài Xỉu Online V10 Ultimate
+# TXA V30 Quantum Analytics
 
-Ứng dụng web/PWA chạy offline để nhập và phân tích chuỗi Tài/Xỉu.
+Ứng dụng PWA tĩnh, chạy ngoại tuyến và lưu dữ liệu trên trình duyệt.
 
-## Chạy nhanh
+## Điểm mới của V30
+- 18 mô hình thống kê và mô phỏng chuỗi.
+- Trọng số mô hình thích nghi theo walk-forward validation.
+- Cổng an toàn tín hiệu: có thể trả về **CHƯA RÕ** thay vì ép chọn.
+- Confidence, entropy, tự tương quan, runs test và drift detection.
+- Xếp hạng mô hình, Brier score, Monte Carlo 50.000 lần.
+- Nhật ký tín hiệu, CSV, sao lưu/khôi phục JSON.
+- 3 chế độ giao diện và hỗ trợ PWA offline.
 
-Mở `index.html` bằng trình duyệt. Để PWA và service worker hoạt động đầy đủ, hãy triển khai thư mục này lên GitHub Pages hoặc một web server tĩnh.
+## Cách chạy
+Mở `index.html` bằng trình duyệt. Để PWA và service worker hoạt động đầy đủ, nên chạy qua máy chủ tĩnh, ví dụ:
 
-## Chức năng
+```bash
+python3 -m http.server 8080
+```
 
-- Nhập tay hoặc nhập chuỗi hàng loạt.
-- 12 mô hình: đa khung, theo bệt, đảo bệt, cầu 1-1, Markov bậc 1/2, Bayesian, cửa sổ thích nghi, runs test, entropy, tự tương quan, change-point.
-- Backtest walk-forward.
-- Trọng số theo hiệu suất ngoài mẫu và số lượng mẫu.
-- Nhật ký tín hiệu khóa trước khi có kết quả.
-- Biểu đồ xu hướng, phân bố chuỗi, heatmap.
-- Sao lưu/khôi phục JSON, xuất CSV và báo cáo HTML.
-- Lưu dữ liệu trong localStorage.
+Sau đó mở `http://localhost:8080`.
 
-## Giới hạn quan trọng
-
-Ứng dụng mô tả và kiểm định dữ liệu lịch sử. Nó không thể đảm bảo dự đoán chính xác một kết quả ngẫu nhiên độc lập.
+## Lưu ý quan trọng
+V30 chỉ phân tích dữ liệu lịch sử. Các điểm số và mức nghiêng không phải bảo đảm dự đoán đúng kết quả ngẫu nhiên.

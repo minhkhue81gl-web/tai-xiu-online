@@ -1,9 +1,1 @@
-{
-  "name":"Tài Xỉu Online V10 Ultimate",
-  "short_name":"TX V10",
-  "start_url":"./index.html",
-  "display":"standalone",
-  "background_color":"#070b17",
-  "theme_color":"#070b17",
-  "icons":[{"src":"assets/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
-}
+{"name":"TXA V30 Quantum Analytics","short_name":"TXA V30","start_url":"./","display":"standalone","background_color":"#07101f","theme_color":"#07101f","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml"}]}

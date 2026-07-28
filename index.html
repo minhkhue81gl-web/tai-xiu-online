@@ -3,126 +3,68 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#070b17" />
-  <meta name="description" content="Tài Xỉu Online V10 Ultimate - công cụ thống kê chuỗi, kiểm định mô hình và nhật ký tín hiệu chạy offline." />
+  <meta name="theme-color" content="#07101f" />
+  <title>TXA V30 Quantum Analytics</title>
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="styles.css" />
-  <title>Tài Xỉu Online V10 Ultimate</title>
 </head>
 <body>
-  <header class="topbar">
-    <div>
-      <div class="eyebrow">PHÂN TÍCH CHUỖI • KIỂM ĐỊNH • NHẬT KÝ</div>
-      <h1>TÀI XỈU ONLINE <span>V10 ULTIMATE</span></h1>
-      <p class="muted">Cùng dữ liệu → cùng kết quả. Không dùng dữ liệu tương lai khi backtest.</p>
+<header class="topbar">
+  <div><div class="eyebrow">TAIXIU ANALYTICS</div><h1>TXA V30 Quantum Analytics</h1></div>
+  <div class="toolbar">
+    <select id="modeSelect"><option value="simple">Đơn giản</option><option value="standard" selected>Tiêu chuẩn</option><option value="expert">Chuyên sâu</option></select>
+    <button id="themeBtn" class="ghost">Đổi giao diện</button>
+  </div>
+</header>
+<main class="layout">
+  <section class="hero card">
+    <div class="hero-label">VÁN TIẾP THEO NGHIÊNG VỀ</div>
+    <div id="mainPrediction" class="prediction neutral">CHƯA RÕ</div>
+    <div class="meter"><span id="probBar"></span></div>
+    <div class="score-row">
+      <div><span>Điểm V30</span><strong id="ensembleScore">50/100</strong></div>
+      <div><span>Đồng thuận</span><strong id="consensus">0/18</strong></div>
+      <div><span>Mức nghiêng</span><strong id="strength">Chưa đủ dữ liệu</strong></div>
+      <div><span>Độ tin cậy</span><strong id="confidence">0%</strong></div>
+      <div><span>Trạng thái</span><strong id="signalState">NO SIGNAL</strong></div>
     </div>
-    <div class="statusBox">
-      <b><i class="dot"></i> OFFLINE READY</b>
-      <span id="statusTotal">0 ván</span>
-      <span id="statusTime">Chưa cập nhật</span>
-    </div>
-  </header>
+    <div id="warning" class="warning">Chỉ là phân tích thống kê lịch sử; không bảo đảm kết quả tương lai.</div>
+  </section>
 
-  <main class="shell">
-    <section class="panel inputPanel">
-      <div class="panelTitle"><h2>Nhập dữ liệu</h2><span>Mới nhất ở bên phải</span></div>
-      <div class="quickButtons">
-        <button class="btn tai" id="addTai">+ TÀI</button>
-        <button class="btn xiu" id="addXiu">+ XỈU</button>
-        <button class="btn" id="undoBtn">Hoàn tác</button>
-        <button class="btn danger" id="clearBtn">Xóa tất cả</button>
-      </div>
-      <label class="fieldLabel" for="sequenceInput">Nhập chuỗi hàng loạt (T/X, có thể cách nhau bằng dấu phẩy hoặc khoảng trắng)</label>
-      <textarea id="sequenceInput" rows="3" placeholder="Ví dụ: T X X T T X hoặc TXXTTX"></textarea>
-      <div class="quickButtons compact">
-        <button class="btn primary" id="appendSequence">Thêm chuỗi</button>
-        <button class="btn" id="replaceSequence">Thay toàn bộ</button>
-        <label class="btn fileBtn">Chọn ảnh<input id="imageInput" type="file" accept="image/*" hidden /></label>
-        <button class="btn" id="demoBtn">Dữ liệu mẫu</button>
-      </div>
-      <div id="imageReview" class="imageReview hidden">
-        <img id="previewImage" alt="Ảnh người dùng chọn" />
-        <div>
-          <b>Quy trình xác nhận ảnh</b>
-          <p>Ảnh chỉ dùng để đối chiếu. Hãy nhập chuỗi đã đọc vào ô phía trên rồi kiểm tra trước khi phân tích.</p>
-          <button class="btn" id="closeImage">Đóng ảnh</button>
-        </div>
-      </div>
-      <div id="chips" class="chips empty">Chưa có dữ liệu.</div>
-    </section>
+  <section class="card input-panel">
+    <div class="section-head"><div><h2>Dữ liệu đầu vào</h2><p>Nhập T/X, Tài/Xỉu hoặc 1/0. Tối thiểu 20 ván để kích hoạt V30.</p></div><button id="sampleBtn" class="ghost">Dữ liệu mẫu</button></div>
+    <textarea id="sequenceInput" rows="4" placeholder="T X T T X X T ..."></textarea>
+    <div class="actions"><button id="analyzeBtn" class="primary">Phân tích V30</button><button id="addTBtn">+ Tài</button><button id="addXBtn">+ Xỉu</button><button id="undoBtn" class="ghost">Hoàn tác</button><button id="clearBtn" class="danger ghost">Xóa</button></div>
+    <div class="meta-row"><span>Số ván: <b id="roundCount">0</b></span><span>Tài: <b id="taiCount">0</b></span><span>Xỉu: <b id="xiuCount">0</b></span><span>Checksum: <b id="checksum">—</b></span></div>
+  </section>
 
-    <section class="panel verdictPanel">
-      <div class="panelTitle"><h2>Kết luận tổng hợp</h2><span id="modelCount">0 mô hình đủ dữ liệu</span></div>
-      <div class="verdictGrid">
-        <div class="bigVerdict">
-          <div class="caption">Tín hiệu mô tả</div>
-          <div id="verdictText" class="verdict neutral">CHƯA ĐỦ DỮ LIỆU</div>
-          <div id="confidenceText" class="confidence">Độ đồng thuận: 0%</div>
-          <p id="verdictReason" class="muted">Cần ít nhất 8 ván để tạo báo cáo.</p>
-        </div>
-        <div class="voteBox">
-          <div><b class="cTai">TÀI</b><strong id="taiVotes">0</strong></div>
-          <div><b class="cXiu">XỈU</b><strong id="xiuVotes">0</strong></div>
-          <div><b>TRUNG LẬP</b><strong id="neutralVotes">0</strong></div>
-        </div>
-      </div>
-      <div class="disclaimer">Đây là thống kê lịch sử và kiểm định mô hình, không phải cam kết kết quả ván kế tiếp.</div>
-    </section>
+  <section class="grid four standard expert">
+    <article class="card metric-card"><span>Entropy</span><strong id="entropyValue">—</strong><small>Độ ngẫu nhiên</small></article>
+    <article class="card metric-card"><span>Tự tương quan</span><strong id="autocorrValue">—</strong><small>Liên hệ liền kề</small></article>
+    <article class="card metric-card"><span>Runs Z</span><strong id="runsValue">—</strong><small>Kiểm định chuỗi</small></article>
+    <article class="card metric-card"><span>Drift</span><strong id="driftValue">—</strong><small>Biến động phân phối</small></article>
+  </section>
 
-    <section class="panel modelsPanel">
-      <div class="panelTitle"><h2>12 mô hình phân tích</h2><span>Trọng số dựa trên out-of-sample + số mẫu</span></div>
-      <div id="modelCards" class="modelCards"></div>
-    </section>
+  <section class="grid two standard expert">
+    <article class="card"><div class="section-head"><h2>18 mô hình V30</h2><span id="modelSummary" class="pill">Chưa phân tích</span></div><div id="modelList" class="model-list"></div></article>
+    <article class="card"><div class="section-head"><h2>Giải thích quyết định</h2></div><ul id="reasons" class="reason-list"><li>Nhập dữ liệu để bắt đầu.</li></ul></article>
+  </section>
 
-    <section class="panel statsPanel">
-      <div class="panelTitle"><h2>Thống kê đa khung</h2><span>10 • 20 • 50 • 100 • 500 • Toàn bộ</span></div>
-      <div class="tableWrap"><table id="windowTable"><thead><tr><th>Khoảng</th><th>Số ván</th><th>Tài</th><th>Xỉu</th><th>Tỷ lệ Tài</th><th>Chênh lệch</th></tr></thead><tbody></tbody></table></div>
-    </section>
+  <section class="grid two expert">
+    <article class="card"><div class="section-head"><h2>Xếp hạng mô hình</h2><button id="runBacktestBtn" class="ghost">Huấn luyện trọng số</button></div><div id="ranking" class="ranking"></div></article>
+    <article class="card"><div class="section-head"><h2>Walk-forward validation</h2></div><div class="backtest-stats"><div><span>Số dự báo</span><strong id="btCount">0</strong></div><div><span>Độ chính xác</span><strong id="btAccuracy">—</strong></div><div><span>Brier score</span><strong id="btBrier">—</strong></div><div><span>Chuỗi đúng dài nhất</span><strong id="btStreak">0</strong></div></div><canvas id="backtestChart" width="1200" height="250"></canvas></article>
+  </section>
 
-    <section class="panel patternPanel">
-      <div class="panelTitle"><h2>Nhận diện mẫu</h2><span>Chuỗi, cầu, entropy và kiểm định ngẫu nhiên</span></div>
-      <div id="patternGrid" class="patternGrid"></div>
-    </section>
+  <section class="card standard expert"><div class="section-head"><div><h2>Biểu đồ chuỗi</h2><p>100 ván gần nhất.</p></div></div><canvas id="sequenceChart" width="1200" height="280"></canvas></section>
 
-    <section class="panel chartsPanel">
-      <div class="panelTitle"><h2>Biểu đồ & heatmap</h2><span>Không cần thư viện ngoài</span></div>
-      <div class="chartGrid">
-        <div class="chartCard"><h3>Xu hướng trượt 20 ván</h3><canvas id="trendCanvas" width="800" height="260"></canvas></div>
-        <div class="chartCard"><h3>Phân bố độ dài chuỗi</h3><canvas id="runCanvas" width="800" height="260"></canvas></div>
-      </div>
-      <div class="heatmapWrap"><h3>Heatmap độ dài bệt</h3><div id="heatmap" class="heatmap"></div></div>
-    </section>
+  <section class="grid two expert">
+    <article class="card"><div class="section-head"><h2>Mô phỏng Monte Carlo</h2><button id="runMonteBtn" class="ghost">Chạy 50.000 lần</button></div><div class="monte-box"><div><span>Tài</span><strong id="mcTai">—</strong></div><div><span>Xỉu</span><strong id="mcXiu">—</strong></div></div><p id="mcNote" class="muted">Mô phỏng theo xác suất ước lượng, không phải xác suất thật.</p></article>
+    <article class="card"><div class="section-head"><h2>Cổng an toàn tín hiệu</h2></div><div id="gateList" class="gate-list"></div></article>
+  </section>
 
-    <section class="panel backtestPanel">
-      <div class="panelTitle"><h2>Backtest walk-forward</h2><span>Chỉ dùng dữ liệu có trước tại từng thời điểm</span></div>
-      <div class="tableWrap"><table id="backtestTable"><thead><tr><th>Mô hình</th><th>Đúng</th><th>Kiểm tra</th><th>Tỷ lệ</th><th>Độ tin cậy mẫu</th><th>Trọng số</th></tr></thead><tbody></tbody></table></div>
-    </section>
-
-    <section class="panel logPanel">
-      <div class="panelTitle"><h2>Nhật ký tín hiệu khóa</h2><span>Tín hiệu được lưu trước khi có kết quả mới</span></div>
-      <div class="quickButtons compact"><button class="btn primary" id="lockSignalBtn">Khóa tín hiệu hiện tại</button><button class="btn" id="clearLogBtn">Xóa nhật ký</button></div>
-      <div class="tableWrap"><table id="signalTable"><thead><tr><th>Thời gian</th><th>Tín hiệu</th><th>Đồng thuận</th><th>Kết quả</th><th>Trạng thái</th></tr></thead><tbody></tbody></table></div>
-    </section>
-
-    <section class="panel toolsPanel">
-      <div class="panelTitle"><h2>Dữ liệu & báo cáo</h2><span>Lưu trên thiết bị</span></div>
-      <div class="toolGrid">
-        <button class="btn primary" id="saveJson">Sao lưu JSON</button>
-        <label class="btn fileBtn">Khôi phục JSON<input id="restoreJson" type="file" accept="application/json" hidden /></label>
-        <button class="btn" id="exportCsv">Xuất CSV</button>
-        <button class="btn" id="exportReport">Xuất báo cáo HTML</button>
-        <button class="btn" id="newSession">Phiên mới</button>
-        <button class="btn" id="compareSessions">So sánh phiên</button>
-      </div>
-      <div id="sessionSummary" class="sessionSummary"></div>
-    </section>
-  </main>
-
-  <footer>
-    <span>Tài Xỉu Online V10 Ultimate</span><span>Phiên bản 10.0.0</span><span>PWA offline</span>
-  </footer>
-
-  <script src="app.js"></script>
+  <section class="card standard expert"><div class="section-head"><h2>Nhật ký tín hiệu</h2><div class="actions compact"><button id="lockSignalBtn">Khóa tín hiệu</button><button id="exportBtn" class="ghost">Xuất CSV</button><button id="backupBtn" class="ghost">Sao lưu JSON</button><label class="file-btn">Khôi phục<input id="restoreInput" type="file" accept="application/json"></label></div></div><div class="table-wrap"><table><thead><tr><th>Thời gian</th><th>Số ván</th><th>Nghiêng về</th><th>Điểm</th><th>Tin cậy</th><th>Kết quả thực tế</th></tr></thead><tbody id="journalBody"><tr><td colspan="6" class="muted">Chưa có tín hiệu.</td></tr></tbody></table></div></section>
+</main>
+<footer>TXA V30 Quantum Analytics • Offline PWA • Dữ liệu lưu cục bộ</footer>
+<script src="app.js"></script>
 </body>
 </html>
