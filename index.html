@@ -1,99 +1,128 @@
 <!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#04101d">
-<title>Tài Xỉu Online V9 Pro Max</title>
-<link rel="manifest" href="manifest.webmanifest">
-<style>
-:root{--bg:#04101d;--panel:#0b1c31;--panel2:#102844;--line:#24587f;--text:#edf7ff;--muted:#91a9bd;--tai:#2383ff;--xiu:#f04d59;--good:#44d680;--warn:#ffd166;--violet:#8d62ff;--cyan:#22d3ee;--shadow:0 16px 42px rgba(0,0,0,.32)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:radial-gradient(circle at 16% -10%,#12375c 0,#07192a 30%,var(--bg) 62%);min-height:100vh}button,input,textarea,select{font:inherit}.app{max-width:1320px;margin:auto;padding:14px}.top{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-bottom:12px}.brand h1{margin:0;font-size:clamp(25px,4vw,43px)}.brand b{color:var(--cyan)}.brand p{margin:4px 0 0;color:#a8d9ff}.status{display:flex;gap:8px;align-items:center;color:#8ddfb0;font-size:13px}.dot{width:9px;height:9px;background:#44d680;border-radius:50%;box-shadow:0 0 12px #44d680}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid #2a638f;background:#0b223b;color:#eff8ff;border-radius:12px;padding:10px 13px;cursor:pointer}.btn:hover{filter:brightness(1.12)}.btn.primary{background:linear-gradient(135deg,#155fb1,#1688f7)}.btn.green{background:linear-gradient(135deg,#0c7544,#16a660)}.btn.red{background:linear-gradient(135deg,#8f2029,#c9343f)}.btn.gold{background:linear-gradient(135deg,#7b5705,#b98208)}.grid{display:grid;grid-template-columns:1.05fr 1.5fr;gap:12px}.panel{background:linear-gradient(180deg,rgba(17,43,72,.97),rgba(7,24,42,.97));border:1px solid #24587f;border-radius:18px;box-shadow:var(--shadow);padding:15px;min-width:0}.panel h2{font-size:16px;color:#aed8ff;letter-spacing:.45px;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center}.badge{display:inline-flex;padding:4px 8px;border-radius:999px;background:#173b5a;color:#b9deff;font-size:12px}.result-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:7px;min-height:84px}.ball{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-weight:900;box-shadow:inset 0 -5px 13px rgba(0,0,0,.28)}.ball.t{background:linear-gradient(145deg,#3c9aff,#1556ad)}.ball.x{background:linear-gradient(145deg,#ff6b73,#a9232c)}.input-row{display:flex;gap:8px;margin-top:12px}.input-row button{flex:1;padding:12px;border:0;border-radius:12px;color:#fff;font-weight:900}.tbtn{background:var(--tai)}.xbtn{background:var(--xiu)}.undo{background:#3a5269}.signal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.signal{border:1px solid #2c638f;border-radius:15px;padding:13px;background:linear-gradient(180deg,#0d263f,#091b2f)}.signal h3{margin:0 0 10px;font-size:14px;color:#d5ecff}.call{font-size:23px;font-weight:950;margin:4px 0}.score{color:var(--warn);font-weight:850}.meter{height:9px;background:#203b56;border-radius:99px;overflow:hidden;margin:10px 0}.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),#55b5ff);border-radius:inherit}.consensus{margin-top:10px;padding:13px;border:1px solid #446c87;border-radius:14px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:#091b2f}.consensus strong{font-size:20px}.consensus .verdict{padding:10px 16px;border-radius:12px;background:#4a3a0b;color:#ffd76a;text-align:center;font-weight:900}.wide{grid-column:1/-1}.triple{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:12px}.chart-box{height:250px;position:relative;overflow:hidden}.chart-box svg{width:100%;height:100%}.heat{display:grid;grid-template-columns:70px repeat(5,1fr);gap:4px}.heat div{padding:10px 5px;border-radius:7px;text-align:center;background:#102842}.heat .head{color:#bfe2ff;background:#173652}.heat .tcell{background:#125aa8}.heat .xcell{background:#a52b35}.heat .hot{outline:2px solid #ffd166}.stats{width:100%;border-collapse:collapse;font-size:14px}.stats th,.stats td{padding:9px 7px;border-bottom:1px solid #2a5275;text-align:center}.stats th{color:#add7ff;white-space:nowrap}.info-list{display:grid;gap:7px}.info-item{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #284d6d}.models{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.model{border:1px solid #2a587c;border-radius:12px;padding:10px;background:#0a1c30}.model-top{display:flex;justify-content:space-between;gap:8px}.small{font-size:12px;color:var(--muted)}.ledger{max-height:280px;overflow:auto}.ledger-row{display:grid;grid-template-columns:90px 1fr 75px 70px;gap:8px;padding:9px 0;border-bottom:1px solid #294c6c;align-items:center;font-size:13px}.ok{color:#53de8c}.bad{color:#ff6a74}.pending{color:#ffd166}.footer-actions{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;margin-top:12px}.footer-actions button{min-height:62px}.footer{text-align:center;color:#7f9ab2;font-size:13px;margin:13px 0 2px}.modal{position:fixed;inset:0;background:rgba(0,0,0,.74);display:none;place-items:center;padding:16px;z-index:20}.modal.open{display:grid}.modal-card{width:min(820px,100%);max-height:92vh;overflow:auto;background:#0b1d31;border:1px solid #2e658e;border-radius:18px;padding:18px}.modal-card h2{margin-top:0}.modal textarea{width:100%;min-height:110px;background:#071321;border:1px solid #2b5778;border-radius:12px;color:#fff;padding:12px}.preview{display:block;max-width:100%;max-height:340px;margin:10px auto;border-radius:12px}.chip-editor{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.chip{border:0;width:38px;height:38px;border-radius:50%;color:#fff;font-weight:900;cursor:pointer}.chip.t{background:var(--tai)}.chip.x{background:var(--xiu)}.muted{color:var(--muted)}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.gauge{width:150px;height:80px;margin:auto;border-radius:150px 150px 0 0;background:conic-gradient(from 270deg,var(--warn) 0deg,var(--good) var(--deg),#233b51 var(--deg) 180deg,transparent 180deg);position:relative;overflow:hidden}.gauge:after{content:"";position:absolute;left:22px;right:22px;bottom:0;height:58px;border-radius:100px 100px 0 0;background:#0b1d31}.gauge-label{text-align:center;margin-top:-34px;position:relative;font-size:28px;font-weight:950}.notice{padding:10px;border-left:4px solid var(--warn);background:#3a300e;border-radius:8px;color:#ffe59a;font-size:13px}
-@media(max-width:1000px){.grid,.triple{grid-template-columns:1fr}.signal-grid{grid-template-columns:1fr 1fr}.result-grid{grid-template-columns:repeat(10,1fr)}.footer-actions{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:600px){.top{align-items:flex-start;flex-direction:column}.signal-grid,.models,.two{grid-template-columns:1fr}.result-grid{grid-template-columns:repeat(7,1fr)}.footer-actions{grid-template-columns:1fr 1fr}.stats{font-size:12px}.stats th,.stats td{padding:7px 3px}.consensus{grid-template-columns:1fr}.ledger-row{grid-template-columns:70px 1fr 54px 52px}.brand p{font-size:13px}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#070b17" />
+  <meta name="description" content="Tài Xỉu Online V10 Ultimate - công cụ thống kê chuỗi, kiểm định mô hình và nhật ký tín hiệu chạy offline." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Tài Xỉu Online V10 Ultimate</title>
 </head>
 <body>
-<div class="app">
-<header class="top">
-  <div><div class="brand"><h1>TÀI XỈU ONLINE <b>V9 PRO MAX</b></h1><p>Phân tích đa mô hình • Walk-forward backtest • Chạy offline</p></div><div class="status"><i class="dot"></i><span id="onlineText">Sẵn sàng</span></div></div>
-  <div class="actions"><button class="btn" id="imageBtn">Đọc ảnh</button><button class="btn" id="backupBtn">Sao lưu</button><button class="btn" id="restoreBtn">Khôi phục</button></div>
-</header>
-<main class="grid">
-<section class="panel"><h2>KẾT QUẢ GẦN NHẤT <span class="badge" id="countBadge">0 ván</span></h2><div class="result-grid" id="results"></div><div class="input-row"><button class="tbtn" data-add="T">+ TÀI</button><button class="xbtn" data-add="X">+ XỈU</button><button class="undo" id="undoBtn">Hoàn tác</button></div></section>
-<section class="panel"><h2>TỔNG HỢP TÍN HIỆU <span class="badge">7 mô hình</span></h2><div class="signal-grid" id="signalGrid"></div><div class="consensus"><div><div class="muted" id="voteText">Chưa có dữ liệu</div><strong id="finalCall">CHƯA ĐỦ DỮ LIỆU</strong></div><div class="verdict" id="verdict">CHỜ XÁC NHẬN</div></div></section>
-<section class="wide triple">
-  <div class="panel"><h2>PHÂN BỐ ĐỘ DÀI CHUỖI</h2><div class="chart-box" id="runChart"></div></div>
-  <div class="panel"><h2>XU HƯỚNG TRƯỢT 20 VÁN</h2><div class="chart-box" id="trendChart"></div></div>
-  <div class="panel"><h2>HEATMAP CHUỖI</h2><div class="heat" id="heatmap"></div></div>
-</section>
-<section class="panel"><h2>SO SÁNH CỬA SỔ THỐNG KÊ</h2><div style="overflow:auto"><table class="stats"><thead><tr><th>Khoảng</th><th>Số ván</th><th>Tài</th><th>Xỉu</th><th>Tỷ lệ Tài</th><th>Chênh lệch</th></tr></thead><tbody id="statsBody"></tbody></table></div></section>
-<section class="panel"><h2>NHẬN DIỆN MẪU & CHẤT LƯỢNG DỮ LIỆU</h2><div class="two"><div class="info-list" id="patterns"></div><div><div class="gauge" id="qualityGauge"></div><div class="gauge-label" id="qualityValue">0</div><p class="muted" style="text-align:center">Điểm chất lượng mẫu</p></div></div></section>
-<section class="wide triple">
-  <div class="panel"><h2>XẾP HẠNG MÔ HÌNH</h2><div class="models" id="modelRank"></div></div>
-  <div class="panel"><h2>NHẬT KÝ TÍN HIỆU ĐÃ KHÓA</h2><div class="ledger" id="ledger"></div><button class="btn green" id="lockBtn" style="width:100%;margin-top:10px">Khóa tín hiệu hiện tại</button></div>
-  <div class="panel"><h2>THÔNG TIN PHIÊN</h2><div class="info-list" id="sessionInfo"></div><div class="notice" style="margin-top:12px">Tỷ lệ backtest là độ khớp lịch sử, không phải xác suất chắc chắn của ván tiếp theo.</div></div>
-</section>
-</main>
-<div class="footer-actions"><button class="btn primary" id="manualBtn">Nhập chuỗi</button><button class="btn" id="sessionBtn">Phiên mới</button><button class="btn green" id="csvBtn">Xuất CSV</button><button class="btn gold" id="demoBtn">Dữ liệu mẫu</button><button class="btn" id="settingsBtn">Cài đặt</button><button class="btn red" id="clearBtn">Xóa tất cả</button></div>
-<div class="footer">V9 Pro Max 9.0 • PWA offline • Dữ liệu chỉ lưu trên thiết bị</div>
-</div>
-<div class="modal" id="modal"><div class="modal-card"><h2 id="modalTitle">Nội dung</h2><div id="modalContent"></div><div class="actions" style="margin-top:14px"><button class="btn primary" id="modalOk">Xác nhận</button><button class="btn" id="modalClose">Đóng</button></div></div></div>
-<input id="fileInput" type="file" hidden>
-<script>
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const KEY='tx_v9_pro_max';
-let state=load();
-function defaultState(){return{version:'9.0',data:[],ledger:[],session:{id:Date.now(),startedAt:new Date().toISOString(),name:'Phiên 1'},settings:{minSample:12,showLast:60}}}
-function load(){try{const x=JSON.parse(localStorage.getItem(KEY));return x&&x.data?Object.assign(defaultState(),x):defaultState()}catch{return defaultState()}}
-function save(){localStorage.setItem(KEY,JSON.stringify(state))}
-function now(){return new Date().toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
-function runs(a){if(!a.length)return[];let o=[],v=a[0],n=1;for(let i=1;i<a.length;i++){if(a[i]===v)n++;else{o.push({v,n});v=a[i];n=1}}o.push({v,n});return o}
-function pct(n,d){return d?100*n/d:0}
-function opposite(v){return v==='T'?'X':'T'}
-function predictorTrend(a){if(a.length<6)return null;let s=0;[10,20,50].forEach(n=>{const w=a.slice(-n),t=w.filter(v=>v==='T').length,x=w.length-t;s+=t>x?1:x>t?-1:0});return s>0?'T':s<0?'X':null}
-function predictorFollow(a){return a.length?a.at(-1):null}
-function predictorReverse(a){return a.length>=2&&a.at(-1)===a.at(-2)?opposite(a.at(-1)):null}
-function predictorAlt(a){return a.length>=2&&a.at(-1)!==a.at(-2)?opposite(a.at(-1)):null}
-function predictorMarkov1(a){if(a.length<8)return null;const last=a.at(-1),c={T:0,X:0};for(let i=1;i<a.length;i++)if(a[i-1]===last)c[a[i]]++;return c.T===c.X?null:c.T>c.X?'T':'X'}
-function predictorMarkov2(a){if(a.length<12)return null;const key=a.slice(-2).join(''),c={T:0,X:0};for(let i=2;i<a.length;i++)if(a.slice(i-2,i).join('')===key)c[a[i]]++;return c.T===c.X?null:c.T>c.X?'T':'X'}
-function predictorBayes(a){if(a.length<10)return null;const w=a.slice(-30),t=w.filter(v=>v==='T').length;const p=(t+2)/(w.length+4);return p>.54?'T':p<.46?'X':null}
-const MODELS=[['Xu hướng đa khung','trend',predictorTrend],['Theo bệt','follow',predictorFollow],['Đảo sau bệt','reverse',predictorReverse],['Cầu 1–1','alt',predictorAlt],['Markov bậc 1','m1',predictorMarkov1],['Markov bậc 2','m2',predictorMarkov2],['Bayesian 30 ván','bayes',predictorBayes]];
-function walkForward(fn,a=state.data){let hit=0,total=0,last20=[];for(let i=1;i<a.length;i++){const p=fn(a.slice(0,i));if(p){total++;const ok=p===a[i];if(ok)hit++;last20.push(ok?1:0)}}last20=last20.slice(-20);return{hit,total,rate:pct(hit,total),recent:pct(last20.reduce((x,y)=>x+y,0),last20.length)}}
-function weight(r){const sample=Math.min(1,r.total/40),recent=r.recent||r.rate;return Math.max(0,(recent-45)/20)*sample}
-function analyse(){let votes={T:0,X:0},items=[];MODELS.forEach(([name,key,fn])=>{const pred=fn(state.data),r=walkForward(fn),w=weight(r);if(pred)votes[pred]+=w;items.push({name,key,pred,r,w})});const diff=Math.abs(votes.T-votes.X),sum=votes.T+votes.X;let call=null;if(sum>0&&diff/sum>.18)call=votes.T>votes.X?'T':'X';const conf=sum?Math.min(82,50+diff/sum*32):0;return{votes,items,call,conf}}
-function gradePending(result){for(const row of state.ledger){if(row.status==='pending'&&row.afterCount===state.data.length-1){row.actual=result;row.status=row.call===result?'hit':'miss'}}}
-function add(v){gradePending(v);state.data.push(v);save();render()}
-function windowStat(n){const a=state.data.slice(-n),t=a.filter(v=>v==='T').length,x=a.length-t;return{n:a.length,t,x,p:pct(t,a.length),d:pct(t-x,a.length)}}
-function svgBars(){const rs=runs(state.data),lens=[1,2,3,4,5],counts=lens.map(l=>({l,t:rs.filter(r=>r.v==='T'&&(l<5?r.n===l:r.n>=5)).length,x:rs.filter(r=>r.v==='X'&&(l<5?r.n===l:r.n>=5)).length})),m=Math.max(1,...counts.flatMap(c=>[c.t,c.x]));let s='<svg viewBox="0 0 420 240" role="img"><line x1="35" y1="205" x2="405" y2="205" stroke="#31556f"/>';counts.forEach((c,i)=>{const x=45+i*72,ht=c.t/m*160,hx=c.x/m*160;s+=`<rect x="${x}" y="${205-ht}" width="25" height="${ht}" rx="4" fill="#2383ff"/><rect x="${x+29}" y="${205-hx}" width="25" height="${hx}" rx="4" fill="#f04d59"/><text x="${x+12}" y="${198-ht}" fill="#dcefff" text-anchor="middle" font-size="12">${c.t}</text><text x="${x+42}" y="${198-hx}" fill="#dcefff" text-anchor="middle" font-size="12">${c.x}</text><text x="${x+27}" y="225" fill="#9eb6ca" text-anchor="middle" font-size="12">${c.l===5?'5+':c.l}</text>`});return s+'</svg>'}
-function svgTrend(){const a=state.data,pts=[];for(let i=0;i<a.length;i++){const w=a.slice(Math.max(0,i-19),i+1),t=w.filter(v=>v==='T').length;pts.push(pct(t,w.length))}const view=pts.slice(-60),W=520,H=240;const path=view.map((p,i)=>`${i?'L':'M'} ${20+i*(W-40)/Math.max(1,view.length-1)} ${H-25-p*(H-50)/100}`).join(' ');return `<svg viewBox="0 0 ${W} ${H}"><line x1="20" y1="120" x2="500" y2="120" stroke="#385d78" stroke-dasharray="5 5"/><path d="${path||'M20 120'}" fill="none" stroke="#22d3ee" stroke-width="3"/><text x="24" y="30" fill="#9eb6ca" font-size="12">100%</text><text x="24" y="118" fill="#9eb6ca" font-size="12">50%</text><text x="24" y="220" fill="#9eb6ca" font-size="12">0%</text></svg>`}
-function renderHeat(){const rs=runs(state.data),heads=['','1','2','3','4','5+'];let html=heads.map(x=>`<div class="head">${x}</div>`).join('');['T','X'].forEach(v=>{html+=`<div class="head">${v==='T'?'Tài':'Xỉu'}</div>`;[1,2,3,4,5].forEach(l=>{const c=rs.filter(r=>r.v===v&&(l<5?r.n===l:r.n>=5)).length;html+=`<div class="${v==='T'?'tcell':'xcell'} ${c===Math.max(0,...rs.filter(r=>r.v===v).map(r=>r.n))?'hot':''}">${c}</div>`})});$('#heatmap').innerHTML=html}
-function quality(){const n=state.data.length,unique=runs(state.data).length;let q=Math.min(100,n*1.5);if(n<20)q*=.6;if(unique<4)q*=.7;return Math.round(q)}
-function render(){const a=state.data,an=analyse(),rs=runs(a),cur=rs.at(-1);$('#countBadge').textContent=a.length+' ván';$('#onlineText').textContent='Cập nhật '+now();$('#results').innerHTML=a.slice(-state.settings.showLast).map(v=>`<div class="ball ${v==='T'?'t':'x'}">${v}</div>`).join('')||'<span class="muted">Chưa có dữ liệu</span>';
-$('#signalGrid').innerHTML=an.items.slice(0,4).map(m=>`<article class="signal"><h3>${m.name}</h3><div class="call" style="color:${m.pred==='T'?'var(--good)':m.pred==='X'?'#ff6670':'var(--muted)'}">${m.pred?(m.pred==='T'?'TÀI':'XỈU'):'CHƯA CÓ'}</div><div class="score">Walk-forward ${m.r.rate.toFixed(1)}%</div><div class="meter"><i style="width:${Math.min(100,m.r.rate)}%"></i></div><div class="small">${m.r.hit}/${m.r.total} lần khớp • trọng số ${m.w.toFixed(2)}</div></article>`).join('');
-$('#voteText').textContent=`Trọng số: Tài ${an.votes.T.toFixed(2)} • Xỉu ${an.votes.X.toFixed(2)} • Đồng thuận ${an.conf.toFixed(0)}%`;$('#finalCall').textContent=an.call?(an.call==='T'?'NGHIÊNG TÀI':'NGHIÊNG XỈU'):'CHƯA CÓ LỢI THẾ RÕ';$('#finalCall').style.color=an.call==='T'?'var(--good)':an.call==='X'?'#ff6670':'var(--warn)';$('#verdict').textContent=an.conf>=65?'TÍN HIỆU TƯƠNG ĐỐI RÕ':an.conf>=55?'CẦN THẬN TRỌNG':'CHỜ XÁC NHẬN';
-$('#runChart').innerHTML=svgBars();$('#trendChart').innerHTML=svgTrend();renderHeat();
-$('#statsBody').innerHTML=[10,20,50,100,500].map(n=>{const s=windowStat(n);return `<tr><td>${n} ván gần nhất</td><td>${s.n}</td><td>${s.t}</td><td>${s.x}</td><td>${s.p.toFixed(1)}%</td><td>${s.d>=0?'+':''}${s.d.toFixed(1)}%</td></tr>`}).join('');
-const longT=Math.max(0,...rs.filter(r=>r.v==='T').map(r=>r.n)),longX=Math.max(0,...rs.filter(r=>r.v==='X').map(r=>r.n));$('#patterns').innerHTML=`<div class="info-item"><span>Chuỗi hiện tại</span><b>${cur?(cur.v==='T'?'Tài ':'Xỉu ')+cur.n:'—'}</b></div><div class="info-item"><span>Chuỗi dài nhất</span><b>Tài ${longT} • Xỉu ${longX}</b></div><div class="info-item"><span>Cầu 1–1</span><b>${a.length>=4&&a.slice(-4).every((v,i,z)=>i===0||v!==z[i-1])?'Đang hình thành':'Không rõ'}</b></div><div class="info-item"><span>Dữ liệu tối thiểu</span><b>${a.length>=state.settings.minSample?'Đạt':'Thiếu'}</b></div>`;
-const q=quality();$('#qualityValue').textContent=q;$('#qualityGauge').style.setProperty('--deg',(q*1.8)+'deg');
-$('#modelRank').innerHTML=[...an.items].sort((x,y)=>y.w-x.w).map((m,i)=>`<div class="model"><div class="model-top"><b>${i+1}. ${m.name}</b><span>${m.pred||'—'}</span></div><div class="meter"><i style="width:${Math.min(100,m.r.rate)}%"></i></div><div class="small">Toàn bộ ${m.r.rate.toFixed(1)}% • 20 gần nhất ${m.r.recent.toFixed(1)}% • n=${m.r.total}</div></div>`).join('');
-$('#ledger').innerHTML=state.ledger.slice().reverse().map(r=>`<div class="ledger-row"><span>${r.time}</span><b>${r.call==='T'?'Tài':'Xỉu'}</b><span>${r.actual? (r.actual==='T'?'Tài':'Xỉu'):'—'}</span><b class="${r.status==='hit'?'ok':r.status==='miss'?'bad':'pending'}">${r.status==='hit'?'Đúng':r.status==='miss'?'Sai':'Chờ'}</b></div>`).join('')||'<div class="muted">Chưa khóa tín hiệu nào</div>';
-$('#sessionInfo').innerHTML=`<div class="info-item"><span>Tên phiên</span><b>${state.session.name}</b></div><div class="info-item"><span>Bắt đầu</span><b>${new Date(state.session.startedAt).toLocaleString('vi-VN')}</b></div><div class="info-item"><span>Số ván</span><b>${a.length}</b></div><div class="info-item"><span>Tín hiệu đã khóa</span><b>${state.ledger.length}</b></div>`}
-function modal(title,html,onOk){$('#modalTitle').textContent=title;$('#modalContent').innerHTML=html;$('#modal').classList.add('open');$('#modalOk').onclick=onOk||(()=>$('#modal').classList.remove('open'))}
-$('#modalClose').onclick=()=>$('#modal').classList.remove('open');
-$$('[data-add]').forEach(b=>b.onclick=()=>add(b.dataset.add));$('#undoBtn').onclick=()=>{state.data.pop();save();render()};
-$('#lockBtn').onclick=()=>{const an=analyse();if(!an.call)return alert('Chưa có tín hiệu đủ rõ để khóa.');if(state.ledger.some(r=>r.status==='pending'))return alert('Đang có một tín hiệu chờ kết quả.');state.ledger.push({id:Date.now(),time:now(),call:an.call,confidence:an.conf,afterCount:state.data.length,status:'pending'});save();render()};
-$('#manualBtn').onclick=()=>modal('Nhập chuỗi T/X','<p class="muted">Nhập theo thứ tự cũ → mới. Có thể dùng dấu cách, dấu phẩy hoặc viết liền.</p><textarea id="seqInput" placeholder="T X X T T X"></textarea>',()=>{const v=($('#seqInput').value.toUpperCase().match(/[TX]/g)||[]);state.data.push(...v);save();render();$('#modal').classList.remove('open')});
-$('#imageBtn').onclick=()=>{const f=$('#fileInput');f.accept='image/*';f.onchange=()=>{const file=f.files[0];if(!file)return;const url=URL.createObjectURL(file);modal('Đọc ảnh & xác nhận chuỗi',`<p class="muted">Bản offline không dùng AI máy chủ. Xem ảnh, nhập chuỗi đã đọc rồi kiểm tra từng nút trước khi phân tích.</p><img src="${url}" class="preview"><textarea id="imgSeq" placeholder="Ví dụ: T X T T X"></textarea><div class="chip-editor" id="chipEditor"></div><button class="btn" id="previewSeq">Tạo bản xem trước</button>`,()=>{const vals=[...$('#chipEditor').querySelectorAll('.chip')].map(x=>x.dataset.v);const fallback=($('#imgSeq').value.toUpperCase().match(/[TX]/g)||[]);state.data.push(...(vals.length?vals:fallback));save();render();URL.revokeObjectURL(url);$('#modal').classList.remove('open')});setTimeout(()=>{$('#previewSeq').onclick=()=>{const vals=($('#imgSeq').value.toUpperCase().match(/[TX]/g)||[]);$('#chipEditor').innerHTML=vals.map((v,i)=>`<button class="chip ${v==='T'?'t':'x'}" data-v="${v}" data-i="${i}">${v}</button>`).join('');$$('#chipEditor .chip').forEach(c=>c.onclick=()=>{c.dataset.v=opposite(c.dataset.v);c.textContent=c.dataset.v;c.className='chip '+(c.dataset.v==='T'?'t':'x')})}},0)};f.click()};
-$('#backupBtn').onclick=()=>download(JSON.stringify(state,null,2),'tai-xiu-v9-pro-max-backup.json','application/json');
-$('#restoreBtn').onclick=()=>{const f=$('#fileInput');f.accept='.json';f.onchange=()=>{const file=f.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(!Array.isArray(j.data))throw 0;state=Object.assign(defaultState(),j);state.data=state.data.filter(v=>v==='T'||v==='X');save();render()}catch{alert('Tệp sao lưu không hợp lệ')}};r.readAsText(file)};f.click()};
-function download(content,name,type){const b=new Blob([content],{type}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-$('#csvBtn').onclick=()=>{let csv='STT,Ket qua\n'+state.data.map((v,i)=>`${i+1},${v==='T'?'Tai':'Xiu'}`).join('\n');csv+='\n\nThoi gian,Du doan,Ket qua,Trang thai\n'+state.ledger.map(r=>`${r.time},${r.call},${r.actual||''},${r.status}`).join('\n');download('\ufeff'+csv,'tai-xiu-v9-pro-max.csv','text/csv;charset=utf-8')};
-$('#sessionBtn').onclick=()=>{const name=prompt('Tên phiên mới:','Phiên '+(new Date().toLocaleDateString('vi-VN')));if(!name)return;state.session={id:Date.now(),startedAt:new Date().toISOString(),name};state.data=[];state.ledger=[];save();render()};
-$('#demoBtn').onclick=()=>{state.data='TXXTTXTXTTXXXTXXTTTXXTXTXTTXXTXXTTXTX'.split('');save();render()};
-$('#settingsBtn').onclick=()=>modal('Cài đặt',`<label>Số mẫu tối thiểu</label><input id="minSample" type="number" min="6" max="100" value="${state.settings.minSample}" style="width:100%;padding:10px;margin:8px 0 14px;background:#071321;color:#fff;border:1px solid #2b5778;border-radius:10px"><label>Số kết quả hiển thị</label><input id="showLast" type="number" min="20" max="200" value="${state.settings.showLast}" style="width:100%;padding:10px;margin-top:8px;background:#071321;color:#fff;border:1px solid #2b5778;border-radius:10px">`,()=>{state.settings.minSample=+$('#minSample').value||12;state.settings.showLast=+$('#showLast').value||60;save();render();$('#modal').classList.remove('open')});
-$('#clearBtn').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu và nhật ký?')){state=defaultState();save();render()}};
-render();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
-</script>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">PHÂN TÍCH CHUỖI • KIỂM ĐỊNH • NHẬT KÝ</div>
+      <h1>TÀI XỈU ONLINE <span>V10 ULTIMATE</span></h1>
+      <p class="muted">Cùng dữ liệu → cùng kết quả. Không dùng dữ liệu tương lai khi backtest.</p>
+    </div>
+    <div class="statusBox">
+      <b><i class="dot"></i> OFFLINE READY</b>
+      <span id="statusTotal">0 ván</span>
+      <span id="statusTime">Chưa cập nhật</span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="panel inputPanel">
+      <div class="panelTitle"><h2>Nhập dữ liệu</h2><span>Mới nhất ở bên phải</span></div>
+      <div class="quickButtons">
+        <button class="btn tai" id="addTai">+ TÀI</button>
+        <button class="btn xiu" id="addXiu">+ XỈU</button>
+        <button class="btn" id="undoBtn">Hoàn tác</button>
+        <button class="btn danger" id="clearBtn">Xóa tất cả</button>
+      </div>
+      <label class="fieldLabel" for="sequenceInput">Nhập chuỗi hàng loạt (T/X, có thể cách nhau bằng dấu phẩy hoặc khoảng trắng)</label>
+      <textarea id="sequenceInput" rows="3" placeholder="Ví dụ: T X X T T X hoặc TXXTTX"></textarea>
+      <div class="quickButtons compact">
+        <button class="btn primary" id="appendSequence">Thêm chuỗi</button>
+        <button class="btn" id="replaceSequence">Thay toàn bộ</button>
+        <label class="btn fileBtn">Chọn ảnh<input id="imageInput" type="file" accept="image/*" hidden /></label>
+        <button class="btn" id="demoBtn">Dữ liệu mẫu</button>
+      </div>
+      <div id="imageReview" class="imageReview hidden">
+        <img id="previewImage" alt="Ảnh người dùng chọn" />
+        <div>
+          <b>Quy trình xác nhận ảnh</b>
+          <p>Ảnh chỉ dùng để đối chiếu. Hãy nhập chuỗi đã đọc vào ô phía trên rồi kiểm tra trước khi phân tích.</p>
+          <button class="btn" id="closeImage">Đóng ảnh</button>
+        </div>
+      </div>
+      <div id="chips" class="chips empty">Chưa có dữ liệu.</div>
+    </section>
+
+    <section class="panel verdictPanel">
+      <div class="panelTitle"><h2>Kết luận tổng hợp</h2><span id="modelCount">0 mô hình đủ dữ liệu</span></div>
+      <div class="verdictGrid">
+        <div class="bigVerdict">
+          <div class="caption">Tín hiệu mô tả</div>
+          <div id="verdictText" class="verdict neutral">CHƯA ĐỦ DỮ LIỆU</div>
+          <div id="confidenceText" class="confidence">Độ đồng thuận: 0%</div>
+          <p id="verdictReason" class="muted">Cần ít nhất 8 ván để tạo báo cáo.</p>
+        </div>
+        <div class="voteBox">
+          <div><b class="cTai">TÀI</b><strong id="taiVotes">0</strong></div>
+          <div><b class="cXiu">XỈU</b><strong id="xiuVotes">0</strong></div>
+          <div><b>TRUNG LẬP</b><strong id="neutralVotes">0</strong></div>
+        </div>
+      </div>
+      <div class="disclaimer">Đây là thống kê lịch sử và kiểm định mô hình, không phải cam kết kết quả ván kế tiếp.</div>
+    </section>
+
+    <section class="panel modelsPanel">
+      <div class="panelTitle"><h2>12 mô hình phân tích</h2><span>Trọng số dựa trên out-of-sample + số mẫu</span></div>
+      <div id="modelCards" class="modelCards"></div>
+    </section>
+
+    <section class="panel statsPanel">
+      <div class="panelTitle"><h2>Thống kê đa khung</h2><span>10 • 20 • 50 • 100 • 500 • Toàn bộ</span></div>
+      <div class="tableWrap"><table id="windowTable"><thead><tr><th>Khoảng</th><th>Số ván</th><th>Tài</th><th>Xỉu</th><th>Tỷ lệ Tài</th><th>Chênh lệch</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section class="panel patternPanel">
+      <div class="panelTitle"><h2>Nhận diện mẫu</h2><span>Chuỗi, cầu, entropy và kiểm định ngẫu nhiên</span></div>
+      <div id="patternGrid" class="patternGrid"></div>
+    </section>
+
+    <section class="panel chartsPanel">
+      <div class="panelTitle"><h2>Biểu đồ & heatmap</h2><span>Không cần thư viện ngoài</span></div>
+      <div class="chartGrid">
+        <div class="chartCard"><h3>Xu hướng trượt 20 ván</h3><canvas id="trendCanvas" width="800" height="260"></canvas></div>
+        <div class="chartCard"><h3>Phân bố độ dài chuỗi</h3><canvas id="runCanvas" width="800" height="260"></canvas></div>
+      </div>
+      <div class="heatmapWrap"><h3>Heatmap độ dài bệt</h3><div id="heatmap" class="heatmap"></div></div>
+    </section>
+
+    <section class="panel backtestPanel">
+      <div class="panelTitle"><h2>Backtest walk-forward</h2><span>Chỉ dùng dữ liệu có trước tại từng thời điểm</span></div>
+      <div class="tableWrap"><table id="backtestTable"><thead><tr><th>Mô hình</th><th>Đúng</th><th>Kiểm tra</th><th>Tỷ lệ</th><th>Độ tin cậy mẫu</th><th>Trọng số</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section class="panel logPanel">
+      <div class="panelTitle"><h2>Nhật ký tín hiệu khóa</h2><span>Tín hiệu được lưu trước khi có kết quả mới</span></div>
+      <div class="quickButtons compact"><button class="btn primary" id="lockSignalBtn">Khóa tín hiệu hiện tại</button><button class="btn" id="clearLogBtn">Xóa nhật ký</button></div>
+      <div class="tableWrap"><table id="signalTable"><thead><tr><th>Thời gian</th><th>Tín hiệu</th><th>Đồng thuận</th><th>Kết quả</th><th>Trạng thái</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section class="panel toolsPanel">
+      <div class="panelTitle"><h2>Dữ liệu & báo cáo</h2><span>Lưu trên thiết bị</span></div>
+      <div class="toolGrid">
+        <button class="btn primary" id="saveJson">Sao lưu JSON</button>
+        <label class="btn fileBtn">Khôi phục JSON<input id="restoreJson" type="file" accept="application/json" hidden /></label>
+        <button class="btn" id="exportCsv">Xuất CSV</button>
+        <button class="btn" id="exportReport">Xuất báo cáo HTML</button>
+        <button class="btn" id="newSession">Phiên mới</button>
+        <button class="btn" id="compareSessions">So sánh phiên</button>
+      </div>
+      <div id="sessionSummary" class="sessionSummary"></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Tài Xỉu Online V10 Ultimate</span><span>Phiên bản 10.0.0</span><span>PWA offline</span>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>

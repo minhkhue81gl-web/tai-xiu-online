@@ -1,12 +1,9 @@
 {
-  "name":"Tài Xỉu Online V9 Pro Max",
-  "short_name":"TX V9 Max",
+  "name":"Tài Xỉu Online V10 Ultimate",
+  "short_name":"TX V10",
   "start_url":"./index.html",
   "display":"standalone",
-  "background_color":"#04101d",
-  "theme_color":"#04101d",
-  "icons":[
-    {"src":"icon-192.png","sizes":"192x192","type":"image/png"},
-    {"src":"icon-512.png","sizes":"512x512","type":"image/png"}
-  ]
+  "background_color":"#070b17",
+  "theme_color":"#070b17",
+  "icons":[{"src":"assets/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }
