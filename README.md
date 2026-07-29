@@ -1,21 +1,33 @@
-# TXA V20 Focus Edition
+# TXA V20 Focus Production Edition
 
-Phiên bản V20 chỉ giữ lại khu vực **“Ván tiếp theo nghiêng về”** trên một màn hình.
+Ứng dụng PWA chạy ngoại tuyến, chỉ tập trung vào khu vực **“Ván tiếp theo nghiêng về”**.
 
-## Cách chạy
+## Điểm nâng cấp production
 
-Mở trực tiếp file `index.html` bằng Chrome, Edge hoặc Safari.
+- Mã nguồn tách module rõ ràng.
+- IndexedDB lưu lịch sử ổn định hơn localStorage.
+- PWA + Service Worker dùng ngoại tuyến.
+- Sao lưu/khôi phục JSON có kiểm tra schema.
+- Cài đặt ngưỡng tín hiệu và số mẫu tối thiểu.
+- Responsive, hỗ trợ reduced-motion và rung phản hồi.
+- Có kiểm thử cơ bản cho lõi phân tích.
 
-## Tính năng
+## Chạy ứng dụng
 
-- Nhập kết quả Tài/Xỉu thủ công
-- Hiển thị Tài, Xỉu hoặc Chưa rõ
-- Điểm tín hiệu, đồng thuận 12 mô hình, độ ổn định và xu hướng
-- Lưu dữ liệu tự động bằng localStorage
-- Hoàn tác kết quả gần nhất
-- Responsive cho điện thoại và máy tính
-- Không cần cài đặt thư viện hay máy chủ
+Do Service Worker cần HTTP, nên chạy bằng máy chủ tĩnh:
+
+```bash
+python3 -m http.server 8080
+```
+
+Sau đó mở `http://localhost:8080`.
+
+## Chạy kiểm thử
+
+```bash
+node tests/engine.test.mjs
+```
 
 ## Lưu ý
 
-Ứng dụng chỉ phân tích dữ liệu lịch sử đã nhập. Kết quả “nghiêng về” không phải dự đoán chắc chắn.
+Ứng dụng chỉ phân tích chuỗi dữ liệu lịch sử. Điểm tín hiệu không phải xác suất thắng và không bảo đảm kết quả tiếp theo.
