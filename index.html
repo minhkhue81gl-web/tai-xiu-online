@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
-  <title>TXA V20 Focus Production</title>
+  <title>TXA V20 Focus Production Compact</title>
 </head>
 <body>
   <div class="app-shell">
@@ -57,11 +57,6 @@
           <button id="undoBtn" class="result-btn undo" type="button"><strong>HOÀN TÁC</strong><span>Xóa ván cuối</span></button>
         </div>
 
-        <div class="utility-row">
-          <button id="backupBtn" type="button">Sao lưu JSON</button>
-          <label class="file-label">Khôi phục JSON<input id="restoreInput" type="file" accept="application/json"></label>
-          <button id="clearBtn" type="button">Xóa dữ liệu</button>
-        </div>
       </section>
 
       <p class="disclaimer">Chỉ phân tích dữ liệu lịch sử. Không bảo đảm kết quả của ván tiếp theo.</p>
@@ -79,6 +74,11 @@
         <input id="minSamples" type="number" min="8" max="100" step="1">
       </label>
       <label class="switch-row"><input id="hapticsToggle" type="checkbox"> Rung phản hồi khi nhập</label>
+      <div class="dialog-tools">
+        <button id="backupBtn" type="button">Sao lưu JSON</button>
+        <label class="file-label">Khôi phục JSON<input id="restoreInput" type="file" accept="application/json"></label>
+        <button id="clearBtn" class="danger" type="button">Xóa dữ liệu</button>
+      </div>
       <menu><button value="cancel">Hủy</button><button id="saveSettingsBtn" value="default">Lưu</button></menu>
     </form>
   </dialog>
