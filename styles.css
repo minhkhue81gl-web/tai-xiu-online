@@ -71,29 +71,3 @@
   .metrics{margin:5px 0}.metrics article{padding:4px 1px}.metrics strong{font-size:.92rem}.history-panel{padding:4px 6px}
   .result-btn{min-height:42px}.result-btn strong{font-size:.68rem}.result-btn span{display:none}.disclaimer{font-size:.46rem}
 }
-
-/* ===== Modern UI Patch ===== */
-:root{
- --bg:#07111d;
- --card:#0b1726;
- --border:#8aa8d633;
- --accent:#20ff59;
-}
-body{
- background:radial-gradient(circle at top,#0c2444,#050b14 70%);
-}
-.main-card,.card,main{
- border-radius:24px!important;
- border:1px solid rgba(180,210,255,.35)!important;
- box-shadow:0 0 40px rgba(0,0,0,.35);
- backdrop-filter:blur(10px);
-}
-.predict-text,.prediction,.result{
- font-size:clamp(54px,10vw,96px)!important;
- font-weight:900!important;
- text-shadow:0 0 18px rgba(255,255,255,.35);
-}
-button{
- border-radius:18px!important;
- font-weight:700!important;
-}
