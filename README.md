@@ -6,8 +6,8 @@ Phiên bản thu gọn để toàn bộ màn hình chính nằm gọn trong mộ
 - Bố cục tự co theo chiều cao màn hình bằng `100dvh`.
 - Ba chỉ số nằm ngang trên điện thoại.
 - Đồng hồ, lịch sử và nút nhập được thu nhỏ linh hoạt.
-- Sao lưu và khôi phục nằm trong phần Cài đặt. Nút **XÓA HẾT** được đặt ngay trên màn hình chính và có xác nhận trước khi xóa.
-- Vẫn giữ IndexedDB, PWA, rung phản hồi, nhập Tài/Xỉu, hoàn tác và xóa toàn bộ lịch sử.
+- Sao lưu, khôi phục và xóa dữ liệu chuyển vào phần Cài đặt để màn hình chính gọn hơn.
+- Vẫn giữ IndexedDB, PWA, rung phản hồi, nhập Tài/Xỉu và hoàn tác.
 
 ## Chạy ứng dụng
 Nên chạy bằng một web server cục bộ để PWA và ES Modules hoạt động ổn định, ví dụ:
