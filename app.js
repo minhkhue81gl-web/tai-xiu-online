@@ -1,23 +1,367 @@
-const $=s=>document.querySelector(s),clamp=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),mean=a=>a.length?a.reduce((s,x)=>s+x,0)/a.length:.5;
-const state={sequence:JSON.parse(localStorage.getItem('v30.sequence')||'[]'),journal:JSON.parse(localStorage.getItem('v30.journal')||'[]'),weights:JSON.parse(localStorage.getItem('v30.weights')||'null'),last:null,validation:null};
-const MODEL_NAMES=['Tần suất co rút','Xu hướng 5 ván','Xu hướng 12 ván','Xu hướng 30 ván','Markov bậc 1','Markov bậc 2','Markov bậc 3','Bayesian Beta','Bệt thích nghi','Đảo nhịp 1–1','Đảo nhịp 2–2','Entropy bias','Tự tương quan','Change-point','Cửa sổ thích nghi','Pattern tương tự','HMM mô phỏng','Ensemble meta'];
-function save(){localStorage.setItem('v30.sequence',JSON.stringify(state.sequence));localStorage.setItem('v30.journal',JSON.stringify(state.journal));localStorage.setItem('v30.weights',JSON.stringify(state.weights))}
-function parseInput(v){return v.toUpperCase().split(/[\s,;|/]+/).map(x=>['T','TAI','TÀI','1'].includes(x)?1:['X','XIU','XỈU','0'].includes(x)?0:null).filter(x=>x!==null)}
-function entropy(s){if(!s.length)return 1;const p=mean(s);return p===0||p===1?0:-(p*Math.log2(p)+(1-p)*Math.log2(1-p))}
-function autocorr(s,lag=1){if(s.length<lag+3)return 0;const m=mean(s);let n=0,d=0;for(let i=lag;i<s.length;i++)n+=(s[i]-m)*(s[i-lag]-m);for(const x of s)d+=(x-m)**2;return d?n/d:0}
-function runsZ(s){if(s.length<8)return 0;let r=1;for(let i=1;i<s.length;i++)if(s[i]!==s[i-1])r++;const n1=s.reduce((a,b)=>a+b,0),n0=s.length-n1;if(!n1||!n0)return 4;const mu=1+2*n1*n0/(n1+n0),v=2*n1*n0*(2*n1*n0-n1-n0)/(((n1+n0)**2)*(n1+n0-1));return v>0?(r-mu)/Math.sqrt(v):0}
-function drift(s){if(s.length<20)return 0;const k=Math.max(8,Math.floor(s.length*.25));return Math.abs(mean(s.slice(-k))-mean(s.slice(-2*k,-k)))}
-function condProb(s,k){if(s.length<=k)return .5;const key=s.slice(-k).join('');const arr=[];for(let i=k;i<s.length;i++)if(s.slice(i-k,i).join('')===key)arr.push(s[i]);return arr.length?(arr.reduce((a,b)=>a+b,1))/(arr.length+2):.5}
-function patternProb(s,len=5){if(s.length<len+2)return .5;const key=s.slice(-len);let score=0,w=0;for(let i=len;i<s.length;i++){let sim=0;for(let j=0;j<len;j++)if(s[i-len+j]===key[j])sim++;if(sim>=len-1){const ww=sim/len;score+=s[i]*ww;w+=ww}}return w?score/w:.5}
-function modelVotes(s){const n=s.length,p=mean(s),last=s[n-1]??1,r5=mean(s.slice(-5)),r12=mean(s.slice(-12)),r30=mean(s.slice(-30)),e=entropy(s),ac=autocorr(s),dz=drift(s);let streak=1;for(let i=n-1;i>0&&s[i]===s[i-1];i--)streak++;const alt4=n>=4&&s.slice(-4).every((x,i,a)=>i===0||x!==a[i-1]);const pat22=n>=6&&s.slice(-6).every((x,i,a)=>i<2||x===a[i-2]);const first=mean(s.slice(0,Math.floor(n/2))),second=mean(s.slice(Math.floor(n/2)));const adaptive=[5,8,12,20,30].map(k=>({k,p:mean(s.slice(-k))})).sort((a,b)=>Math.abs(b.p-.5)-Math.abs(a.p-.5))[0]?.p??.5;const arr=[.5+(p-.5)*.65,.5+(r5-.5)*.85,.5+(r12-.5)*.78,.5+(r30-.5)*.65,condProb(s,1),condProb(s,2),condProb(s,3),(s.reduce((a,b)=>a+b,0)+2)/(n+4),streak>=4?(last?.44:.56):(last?.53:.47),alt4?(last?.34:.66):.5,pat22?(last?.38:.62):.5,.5+(p-.5)*(1.2-e),.5+(last?1:-1)*ac*.24,.5+(second-first)*.5,.5+(adaptive-.5)*.85,patternProb(s,5),.5+(condProb(s,2)-.5)*.55+(ac*(last?1:-1))*.08,.5+(r5-.5)*.38+(r12-.5)*.27+(condProb(s,2)-.5)*.35];return arr.map((prob,i)=>({name:MODEL_NAMES[i],prob:clamp(prob,.05,.95),weight:state.weights?.[i]??1}))}
-function analyze(s=state.sequence){const votes=modelVotes(s);let ws=0,ps=0;votes.forEach(v=>{ws+=v.weight;ps+=v.prob*v.weight});let prob=ws?ps/ws:.5;const decisive=votes.filter(v=>Math.abs(v.prob-.5)>=.04),tai=decisive.filter(v=>v.prob>.5).length,xiu=decisive.filter(v=>v.prob<.5).length,margin=Math.abs(prob-.5),agree=Math.max(tai,xiu)/18,e=entropy(s),d=drift(s),val=state.validation;const accuracy=val?.accuracy??.5,brier=val?.brier??.25;let confidence=clamp((agree-.45)*.8+margin*2.5+(1-e)*.12+(accuracy-.5)*.8+(0.25-brier)*.8-d*.4);confidence=Math.round(confidence*100);const gates=[['Đủ ít nhất 20 ván',s.length>=20],['Đồng thuận ít nhất 10/18',Math.max(tai,xiu)>=10],['Biên điểm tối thiểu 3%',margin>=.03],['Drift không quá cao',d<.22],['Backtest không dưới 48%',!val||val.accuracy>=.48]];const pass=gates.every(x=>x[1]);let label='CHƯA RÕ',side='neutral',strength='Chưa đủ cơ sở';if(pass){label=prob>.5?'TÀI':'XỈU';side=prob>.5?'tai':'xiu';strength=margin<.055?'Nhẹ':margin<.095?'Trung bình':'Mạnh'}return{votes,prob,tai,xiu,decisive:decisive.length,label,side,strength,confidence,gates,pass,entropy:e,drift:d}}
-function render(){state.last=analyze();const r=state.last;$('#sequenceInput').value=state.sequence.map(x=>x?'T':'X').join(' ');$('#roundCount').textContent=state.sequence.length;$('#taiCount').textContent=state.sequence.filter(Boolean).length;$('#xiuCount').textContent=state.sequence.filter(x=>!x).length;$('#checksum').textContent=checksum(state.sequence);$('#mainPrediction').textContent=r.label;$('#mainPrediction').className='prediction '+r.side;$('#ensembleScore').textContent=Math.round(r.prob*100)+'/100';$('#consensus').textContent=Math.max(r.tai,r.xiu)+'/18';$('#strength').textContent=r.strength;$('#confidence').textContent=r.confidence+'%';$('#signalState').textContent=r.pass?'ACTIVE':'NO SIGNAL';$('#probBar').style.width=Math.round(r.prob*100)+'%';$('#modelSummary').textContent=`Tài ${r.tai} • Xỉu ${r.xiu} • Trung lập ${18-r.decisive}`;$('#modelList').innerHTML=r.votes.map(v=>{const d=Math.abs(v.prob-.5)<.04?'neutral':v.prob>.5?'tai':'xiu',t=d==='neutral'?'TRUNG LẬP':d==='tai'?'TÀI':'XỈU';return `<div class="model-row"><div>${v.name}<small class="muted"> ×${v.weight.toFixed(2)}</small></div><div class="model-vote ${d}">${t}</div><div class="model-score">${Math.round(v.prob*100)}</div></div>`}).join('');const reasons=[];if(state.sequence.length<20)reasons.push('Cần tối thiểu 20 ván để kích hoạt cổng tín hiệu.');reasons.push(`${Math.max(r.tai,r.xiu)}/18 mô hình đang cùng nghiêng một phía.`);reasons.push(`Điểm tổng hợp sau trọng số thích nghi: ${Math.round(r.prob*100)}/100.`);reasons.push(`Entropy ${r.entropy.toFixed(3)}; drift ${r.drift.toFixed(3)}.`);if(!r.pass)reasons.push('V30 chủ động từ chối phát tín hiệu vì có ít nhất một cổng an toàn chưa đạt.');else reasons.push(`Tín hiệu được phép hiển thị ở mức ${r.strength.toLowerCase()}.`);$('#reasons').innerHTML=reasons.map(x=>`<li>${x}</li>`).join('');$('#entropyValue').textContent=state.sequence.length?r.entropy.toFixed(3):'—';$('#autocorrValue').textContent=state.sequence.length>3?autocorr(state.sequence).toFixed(3):'—';$('#runsValue').textContent=state.sequence.length>7?runsZ(state.sequence).toFixed(2):'—';$('#driftValue').textContent=state.sequence.length>19?r.drift.toFixed(3):'—';$('#gateList').innerHTML=r.gates.map(g=>`<div class="gate-row ${g[1]?'ok':'bad'}"><span>${g[0]}</span><b>${g[1]?'ĐẠT':'CHƯA ĐẠT'}</b></div>`).join('');renderRanking();renderJournal();drawSequence();save()}
-function trainWeights(){const s=state.sequence;if(s.length<35){state.weights=Array(18).fill(1);state.validation=null;render();return}const correct=Array(18).fill(0),count=Array(18).fill(0);let ensCorrect=0,total=0,brier=0,streak=0,maxStreak=0,points=[];const old=state.weights;state.weights=Array(18).fill(1);for(let i=20;i<s.length;i++){const vs=modelVotes(s.slice(0,i));vs.forEach((v,j)=>{correct[j]+=(v.prob>=.5)==s[i];count[j]++});const rr=analyze(s.slice(0,i));if(rr.pass){const pred=rr.prob>=.5,ok=pred==s[i];ensCorrect+=ok;total++;brier+=(rr.prob-s[i])**2;streak=ok?streak+1:0;maxStreak=Math.max(maxStreak,streak);points.push(ensCorrect/total)}}state.weights=correct.map((c,i)=>clamp(.55+(count[i]?c/count[i]:.5),.7,1.55));state.validation={count:total,accuracy:total?ensCorrect/total:0,brier:total?brier/total:.25,maxStreak,points};$('#btCount').textContent=total;$('#btAccuracy').textContent=total?Math.round(state.validation.accuracy*100)+'%':'—';$('#btBrier').textContent=total?state.validation.brier.toFixed(3):'—';$('#btStreak').textContent=maxStreak;drawBacktest(points);render()}
-function renderRanking(){const rows=MODEL_NAMES.map((n,i)=>({n,w:state.weights?.[i]??1})).sort((a,b)=>b.w-a.w);$('#ranking').innerHTML=rows.map((x,i)=>`<div class="rank-row"><span>#${i+1} ${x.n}</span><b>${x.w.toFixed(2)}×</b></div>`).join('')}
-function drawSequence(){const c=$('#sequenceChart'),ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);const s=state.sequence.slice(-100);if(!s.length)return;const gap=w/Math.max(s.length,1);ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--line');for(let y=50;y<h;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke()}ctx.lineWidth=3;ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--accent');ctx.beginPath();s.forEach((x,i)=>{const px=i*gap+gap/2,py=x?70:h-70;i?ctx.lineTo(px,py):ctx.moveTo(px,py)});ctx.stroke();s.forEach((x,i)=>{ctx.beginPath();ctx.arc(i*gap+gap/2,x?70:h-70,5,0,Math.PI*2);ctx.fillStyle=x?'#32d3aa':'#ff6e82';ctx.fill()})}
-function drawBacktest(p){const c=$('#backtestChart'),ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);if(!p.length)return;ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--accent');ctx.lineWidth=3;ctx.beginPath();p.forEach((v,i)=>{const x=i/Math.max(p.length-1,1)*w,y=h-v*h;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke()}
-function monte(){const p=state.last?.prob??.5;let t=0,N=50000;for(let i=0;i<N;i++)t+=Math.random()<p;$('#mcTai').textContent=(t/N*100).toFixed(1)+'%';$('#mcXiu').textContent=((N-t)/N*100).toFixed(1)+'%'}
-function checksum(s){let h=2166136261;for(const x of s){h^=x+49;h=Math.imul(h,16777619)}return s.length?(h>>>0).toString(16).toUpperCase().slice(0,8):'—'}
-function renderJournal(){const b=$('#journalBody');if(!state.journal.length){b.innerHTML='<tr><td colspan="6" class="muted">Chưa có tín hiệu.</td></tr>';return}b.innerHTML=state.journal.slice().reverse().map((j,k)=>`<tr><td>${j.time}</td><td>${j.n}</td><td>${j.label}</td><td>${j.score}</td><td>${j.confidence}%</td><td><select data-j="${state.journal.length-1-k}"><option value="">Chưa nhập</option><option ${j.actual==='TÀI'?'selected':''}>TÀI</option><option ${j.actual==='XỈU'?'selected':''}>XỈU</option></select></td></tr>`).join('');document.querySelectorAll('[data-j]').forEach(e=>e.onchange=()=>{state.journal[+e.dataset.j].actual=e.value;save()})}
-function download(n,t,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type}));a.download=n;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
-$('#analyzeBtn').onclick=()=>{state.sequence=parseInput($('#sequenceInput').value);trainWeights()};$('#addTBtn').onclick=()=>{state.sequence.push(1);render()};$('#addXBtn').onclick=()=>{state.sequence.push(0);render()};$('#undoBtn').onclick=()=>{state.sequence.pop();render()};$('#clearBtn').onclick=()=>{if(confirm('Xóa toàn bộ dữ liệu?')){state.sequence=[];state.validation=null;state.weights=null;render()}};$('#sampleBtn').onclick=()=>{state.sequence='T X T T X X T T T X T X X T T X T T X X T T X T X X T T T X T X T T X X T T X T'.split(' ').map(x=>x==='T'?1:0);trainWeights()};$('#runBacktestBtn').onclick=trainWeights;$('#runMonteBtn').onclick=monte;$('#lockSignalBtn').onclick=()=>{const r=state.last;if(!r||!state.sequence.length)return;state.journal.push({time:new Date().toLocaleString('vi-VN'),n:state.sequence.length,label:r.label,score:Math.round(r.prob*100),confidence:r.confidence,actual:''});render()};$('#exportBtn').onclick=()=>{const rows=[['Thời gian','Số ván','Nghiêng về','Điểm','Tin cậy','Kết quả'],...state.journal.map(j=>[j.time,j.n,j.label,j.score,j.confidence,j.actual])];download('txa-v30-journal.csv','\uFEFF'+rows.map(r=>r.map(x=>'"'+String(x).replaceAll('"','""')+'"').join(',')).join('\n'),'text/csv;charset=utf-8')};$('#backupBtn').onclick=()=>download('txa-v30-backup.json',JSON.stringify({version:'V30',sequence:state.sequence,journal:state.journal,weights:state.weights},null,2),'application/json');$('#restoreInput').onchange=async e=>{try{const d=JSON.parse(await e.target.files[0].text());state.sequence=d.sequence||[];state.journal=d.journal||[];state.weights=d.weights||null;trainWeights()}catch{alert('Tệp sao lưu không hợp lệ')}};$('#modeSelect').onchange=e=>{document.body.dataset.mode=e.target.value;localStorage.setItem('v30.mode',e.target.value)};$('#themeBtn').onclick=()=>{document.documentElement.classList.toggle('light');localStorage.setItem('v30.light',document.documentElement.classList.contains('light')?'1':'0');render()};document.body.dataset.mode=localStorage.getItem('v30.mode')||'standard';$('#modeSelect').value=document.body.dataset.mode;if(localStorage.getItem('v30.light')==='1')document.documentElement.classList.add('light');if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js');render();if(state.sequence.length>=35)trainWeights();
+const KEY = 'txa-v20-history';
+let history = safeReadHistory();
+
+const $ = (id) => document.getElementById(id);
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+const sideName = (value) => value === 1 ? 'TÀI' : value === 0 ? 'XỈU' : 'TRUNG LẬP';
+const sideClass = (value) => value === 1 ? 'tai' : value === 0 ? 'xiu' : 'neutral';
+const mean = (values) => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0.5;
+const recent = (values, count) => values.slice(-Math.min(count, values.length));
+
+function safeReadHistory() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(KEY) || '[]');
+    return Array.isArray(parsed) ? parsed.filter((value) => value === 0 || value === 1) : [];
+  } catch {
+    return [];
+  }
+}
+
+function entropy(values) {
+  if (!values.length) return 1;
+  const probability = mean(values);
+  if (probability === 0 || probability === 1) return 0;
+  return -(probability * Math.log2(probability) + (1 - probability) * Math.log2(1 - probability));
+}
+
+function autocorr(values) {
+  if (values.length < 4) return 0;
+  const average = mean(values);
+  let numerator = 0;
+  let denominator = 0;
+  for (let index = 1; index < values.length; index += 1) {
+    numerator += (values[index] - average) * (values[index - 1] - average);
+  }
+  for (const value of values) denominator += (value - average) ** 2;
+  return denominator ? numerator / denominator : 0;
+}
+
+function runInfo(values) {
+  if (!values.length) return { current: 0, max: 0, side: null };
+  let max = 1;
+  let current = 1;
+  for (let index = 1; index < values.length; index += 1) {
+    current = values[index] === values[index - 1] ? current + 1 : 1;
+    max = Math.max(max, current);
+  }
+  let tail = 1;
+  for (let index = values.length - 1; index > 0 && values[index] === values[index - 1]; index -= 1) tail += 1;
+  return { current: tail, max, side: values.at(-1) };
+}
+
+function runsZ(values) {
+  const n1 = values.filter(Boolean).length;
+  const n0 = values.length - n1;
+  if (n1 === 0 || n0 === 0 || values.length < 4) return 0;
+  let runs = 1;
+  for (let index = 1; index < values.length; index += 1) {
+    if (values[index] !== values[index - 1]) runs += 1;
+  }
+  const expected = 1 + (2 * n1 * n0) / (n1 + n0);
+  const variance = (2 * n1 * n0 * (2 * n1 * n0 - n1 - n0)) / (((n1 + n0) ** 2) * (n1 + n0 - 1));
+  return variance > 0 ? (runs - expected) / Math.sqrt(variance) : 0;
+}
+
+function markov(values, order = 1) {
+  if (values.length < order + 3) return 0.5;
+  const key = values.slice(-order).join('');
+  let tai = 0;
+  let count = 0;
+  for (let index = order; index < values.length; index += 1) {
+    if (values.slice(index - order, index).join('') === key) {
+      tai += values[index];
+      count += 1;
+    }
+  }
+  return count ? tai / count : 0.5;
+}
+
+function patternScore(values) {
+  for (const length of [2, 3, 4]) {
+    if (values.length < length * 2 + 2) continue;
+    const pattern = values.slice(-length).join('');
+    let tai = 0;
+    let count = 0;
+    for (let index = length; index < values.length; index += 1) {
+      if (values.slice(index - length, index).join('') === pattern) {
+        tai += values[index];
+        count += 1;
+      }
+    }
+    if (count >= 2) return tai / count;
+  }
+  return 0.5;
+}
+
+function alternation(values) {
+  const window = recent(values, 8);
+  if (window.length < 4) return 0.5;
+  let changes = 0;
+  for (let index = 1; index < window.length; index += 1) {
+    if (window[index] !== window[index - 1]) changes += 1;
+  }
+  const rate = changes / (window.length - 1);
+  return rate > 0.7 ? 1 - window.at(-1) : rate < 0.3 ? window.at(-1) : 0.5;
+}
+
+function runModel(values) {
+  const run = runInfo(values);
+  if (!values.length) return 0.5;
+  if (run.current >= 4) return 1 - run.side;
+  if (run.current === 2 || run.current === 3) return run.side;
+  return 0.5;
+}
+
+function bayes(values) {
+  const window = recent(values, 30);
+  return (window.reduce((sum, value) => sum + value, 0) + 1) / (window.length + 2);
+}
+
+function windowBlend(values) {
+  return 0.5 * mean(recent(values, 5)) + 0.3 * mean(recent(values, 10)) + 0.2 * mean(recent(values, 20));
+}
+
+function changePoint(values) {
+  if (values.length < 12) return 0;
+  const midpoint = Math.floor(values.length / 2);
+  return Math.abs(mean(values.slice(0, midpoint)) - mean(values.slice(midpoint)));
+}
+
+function trend(values) {
+  const window = recent(values, 20);
+  if (window.length < 6) return 0.5;
+  let sumX = 0;
+  let sumY = 0;
+  let sumXY = 0;
+  let sumXX = 0;
+  for (let index = 0; index < window.length; index += 1) {
+    sumX += index;
+    sumY += window[index];
+    sumXY += index * window[index];
+    sumXX += index * index;
+  }
+  const count = window.length;
+  const slope = (count * sumXY - sumX * sumY) / (count * sumXX - sumX * sumX || 1);
+  return clamp(0.5 + slope * 2, 0, 1);
+}
+
+function contrarian(values) {
+  return clamp(1 - mean(recent(values, 10)), 0, 1);
+}
+
+function momentum(values) {
+  const window = recent(values, 6);
+  if (!window.length) return 0.5;
+  return 0.65 * mean(window) + 0.35 * (window.at(-1) ?? 0.5);
+}
+
+function noiseGate(values, probability) {
+  const value = entropy(recent(values, 30));
+  return 0.5 + (probability - 0.5) * (1.15 - value * 0.45);
+}
+
+function models(values) {
+  const definitions = [
+    ['Tần suất 20', mean(recent(values, 20)), 'Tỷ lệ Tài trong cửa sổ 20 ván'],
+    ['Bayesian', bayes(values), 'Làm mượt xác suất bằng prior Beta(1,1)'],
+    ['Markov bậc 1', markov(values, 1), 'Chuyển trạng thái theo 1 ván gần nhất'],
+    ['Markov bậc 2', markov(values, 2), 'Chuyển trạng thái theo 2 ván gần nhất'],
+    ['Mẫu lặp', patternScore(values), 'Tìm mẫu 2–4 bước đã xuất hiện'],
+    ['Đa khung', windowBlend(values), 'Kết hợp cửa sổ 5, 10 và 20'],
+    ['Bệt', runModel(values), 'Đánh giá độ dài chuỗi liên tiếp'],
+    ['Đảo nhịp', alternation(values), 'Đánh giá mức luân phiên Tài/Xỉu'],
+    ['Xu hướng', trend(values), 'Độ dốc của chuỗi gần đây'],
+    ['Động lượng', momentum(values), 'Ưu tiên dữ liệu gần nhất'],
+    ['Phản xu hướng', contrarian(values), 'Đối trọng khi phân bố lệch mạnh'],
+    ['Entropy gate', noiseGate(values, windowBlend(values)), 'Giảm biên độ khi dữ liệu nhiễu cao']
+  ];
+
+  return definitions.map(([name, probability, description]) => ({
+    name,
+    probability: clamp(probability, 0, 1),
+    description,
+    side: probability > 0.545 ? 1 : probability < 0.455 ? 0 : null,
+    confidence: Math.abs(probability - 0.5) * 200
+  }));
+}
+
+function checksum(values) {
+  let hash = 2166136261;
+  for (const value of values) {
+    hash ^= value + 48;
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, '0').toUpperCase();
+}
+
+function analyze() {
+  const modelList = models(history);
+  const usable = history.length >= 8;
+  const weighted = modelList.reduce((sum, model) => sum + (model.probability - 0.5) * (0.5 + model.confidence / 100), 0);
+  const denominator = modelList.reduce((sum, model) => sum + (0.5 + model.confidence / 100), 0);
+  const probability = clamp(0.5 + weighted / denominator, 0.05, 0.95);
+  const taiVotes = modelList.filter((model) => model.side === 1).length;
+  const xiuVotes = modelList.filter((model) => model.side === 0).length;
+  const maxVotes = Math.max(taiVotes, xiuVotes);
+  const stability = clamp(Math.round((1 - entropy(recent(history, 30)) * 0.45 - Math.min(changePoint(history), 0.5) * 0.4) * 100), 0, 100);
+
+  let decision = null;
+  if (usable && Math.abs(probability - 0.5) >= 0.055 && maxVotes >= 5) decision = probability > 0.5 ? 1 : 0;
+
+  const deviation = Math.abs(probability - 0.5);
+  const confidence = decision === null ? 'CHƯA ĐỦ DỮ LIỆU' : deviation >= 0.18 ? 'CAO' : deviation >= 0.1 ? 'TRUNG BÌNH' : 'THẤP';
+  render(modelList, { probability, taiVotes, xiuVotes, maxVotes, stability, decision, confidence });
+}
+
+function render(modelList, result) {
+  const score = Math.round(result.probability * 100);
+  $('decision').textContent = result.decision === null ? 'CHƯA RÕ' : sideName(result.decision);
+  $('decision').className = `decision ${sideClass(result.decision)}`;
+  $('confidenceText').textContent = result.confidence;
+  $('score').textContent = String(score);
+  $('signalMarker').style.left = `${score}%`;
+  $('consensus').textContent = `${result.maxVotes}/12`;
+  $('stability').textContent = `${history.length ? result.stability : 0}%`;
+
+  const trendValue = trend(history);
+  $('trendIcon').textContent = history.length < 6 ? '—' : trendValue > 0.56 ? '↗' : trendValue < 0.44 ? '↘' : '→';
+  $('trendIcon').setAttribute('aria-label', history.length < 6 ? 'Chưa đủ dữ liệu' : trendValue > 0.56 ? 'Tăng' : trendValue < 0.44 ? 'Giảm' : 'Đi ngang');
+
+  $('countBadge').textContent = `${history.length} ván`;
+  const visibleHistory = recent(history, 20);
+  $('history').innerHTML = visibleHistory.length
+    ? visibleHistory.map((value, index) => `<span class="chip ${value ? 'tai' : 'xiu'}" title="Ván ${history.length - visibleHistory.length + index + 1}: ${sideName(value)}">${value ? 'T' : 'X'}</span>`).join('')
+    : '<p class="empty-history">Chưa có dữ liệu</p>';
+
+  $('warning').textContent = history.length < 8
+    ? 'Chỉ phân tích dữ liệu lịch sử. Cần thêm dữ liệu để đánh giá tín hiệu.'
+    : 'Chỉ phân tích dữ liệu lịch sử. Không bảo đảm kết quả của ván tiếp theo.';
+
+  $('taiCount').textContent = String(history.filter(Boolean).length);
+  $('xiuCount').textContent = String(history.filter((value) => !value).length);
+  const run = runInfo(history);
+  $('currentRun').textContent = run.side === null ? '—' : `${sideName(run.side)} ×${run.current}`;
+  $('maxRun').textContent = history.length ? String(run.max) : '—';
+  $('entropy').textContent = history.length ? entropy(recent(history, 30)).toFixed(3) : '—';
+  $('autocorr').textContent = history.length ? autocorr(recent(history, 30)).toFixed(3) : '—';
+
+  const window = recent(history, 20);
+  const taiPercent = window.length ? Math.round(mean(window) * 100) : 50;
+  const xiuPercent = 100 - taiPercent;
+  $('taiPct').textContent = `${taiPercent}%`;
+  $('xiuPct').textContent = `${xiuPercent}%`;
+  $('taiBar').style.width = `${taiPercent}%`;
+  $('xiuBar').style.width = `${xiuPercent}%`;
+  $('windowLabel').textContent = `${window.length} ván`;
+
+  $('models').innerHTML = modelList.map((model) => `
+    <article class="model">
+      <div class="model-head">
+        <h4>${model.name}</h4>
+        <span class="vote ${sideClass(model.side)}">${sideName(model.side)}</span>
+      </div>
+      <small>${model.description} · Điểm Tài ${Math.round(model.probability * 100)}%</small>
+    </article>
+  `).join('');
+
+  $('runsZ').textContent = history.length ? runsZ(history).toFixed(2) : '—';
+  const point = changePoint(history);
+  $('changePoint').textContent = history.length < 12 ? '—' : point.toFixed(3);
+  $('noise').textContent = history.length < 6 ? '—' : entropy(recent(history, 30)) > 0.92 ? 'Cao' : entropy(recent(history, 30)) > 0.75 ? 'Trung bình' : 'Thấp';
+  $('sampleQuality').textContent = history.length >= 50 ? 'Tốt' : history.length >= 20 ? 'Khá' : history.length >= 8 ? 'Cơ bản' : 'Thiếu';
+  $('checksum').textContent = checksum(history);
+
+  $('undo').disabled = history.length === 0;
+  $('clear').disabled = history.length === 0;
+}
+
+function save() {
+  localStorage.setItem(KEY, JSON.stringify(history));
+  analyze();
+}
+
+function setPanel(open) {
+  $('settingsPanel').hidden = !open;
+  $('settingsBackdrop').hidden = !open;
+  document.body.classList.toggle('modal-open', open);
+  if (open) {
+    $('closeSettings').focus();
+  } else {
+    $('openSettings').focus();
+  }
+}
+
+function setConfirm(open) {
+  $('confirmModal').hidden = !open;
+  document.body.classList.toggle('modal-open', open);
+  if (open) $('cancelClear').focus();
+}
+
+function download(name, text, type = 'text/plain') {
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(new Blob([text], { type }));
+  link.download = name;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(link.href), 500);
+}
+
+$('addTai').addEventListener('click', () => { history.push(1); save(); });
+$('addXiu').addEventListener('click', () => { history.push(0); save(); });
+$('undo').addEventListener('click', () => { history.pop(); save(); });
+$('clear').addEventListener('click', () => { if (history.length) setConfirm(true); });
+$('cancelClear').addEventListener('click', () => setConfirm(false));
+$('confirmClear').addEventListener('click', () => { history = []; save(); setConfirm(false); });
+
+$('openSettings').addEventListener('click', () => setPanel(true));
+$('closeSettings').addEventListener('click', () => setPanel(false));
+$('settingsBackdrop').addEventListener('click', () => setPanel(false));
+
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape') return;
+  if (!$('confirmModal').hidden) setConfirm(false);
+  else if (!$('settingsPanel').hidden) setPanel(false);
+});
+
+$('exportCsv').addEventListener('click', () => {
+  download('txa-v20-history.csv', `van,ket_qua\n${history.map((value, index) => `${index + 1},${sideName(value)}`).join('\n')}`, 'text/csv;charset=utf-8');
+});
+
+$('exportJson').addEventListener('click', () => {
+  download('txa-v20-backup.json', JSON.stringify({ version: 'V20 Focus', exportedAt: new Date().toISOString(), history }, null, 2), 'application/json');
+});
+
+$('audit').addEventListener('click', () => {
+  const rows = models(history).map((model) => `${model.name},${model.probability.toFixed(4)},${sideName(model.side)},${model.confidence.toFixed(1)}`);
+  download('txa-v20-audit.csv', `model,p_tai,vote,confidence\n${rows.join('\n')}`, 'text/csv;charset=utf-8');
+});
+
+$('importJson').addEventListener('change', async (event) => {
+  try {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const data = JSON.parse(await file.text());
+    if (!Array.isArray(data.history) || data.history.some((value) => value !== 0 && value !== 1)) throw new Error('invalid');
+    history = data.history;
+    save();
+  } catch {
+    alert('Tệp JSON không hợp lệ.');
+  } finally {
+    event.target.value = '';
+  }
+});
+
+$('runMonte').addEventListener('click', () => {
+  const probability = windowBlend(history);
+  let tai = 0;
+  for (let index = 0; index < 10000; index += 1) if (Math.random() < probability) tai += 1;
+  $('mcTai').textContent = `${(tai / 100).toFixed(1)}%`;
+  $('mcXiu').textContent = `${((10000 - tai) / 100).toFixed(1)}%`;
+});
+
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+analyze();
