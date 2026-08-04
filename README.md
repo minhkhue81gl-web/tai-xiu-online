@@ -1,21 +1,21 @@
-# TXA V20 Focus Edition
+# TXA V20 Focus Production Compact Edition
 
-Phiên bản V20 chỉ giữ lại khu vực **“Ván tiếp theo nghiêng về”** trên một màn hình.
+Phiên bản thu gọn để toàn bộ màn hình chính nằm gọn trong một khung nhìn trên điện thoại, không cần cuộn.
 
-## Cách chạy
+## Thay đổi chính
+- Bố cục tự co theo chiều cao màn hình bằng `100dvh`.
+- Ba chỉ số nằm ngang trên điện thoại.
+- Đồng hồ, lịch sử và nút nhập được thu nhỏ linh hoạt.
+- Sao lưu, khôi phục và xóa dữ liệu chuyển vào phần Cài đặt để màn hình chính gọn hơn.
+- Vẫn giữ IndexedDB, PWA, rung phản hồi, nhập Tài/Xỉu và hoàn tác.
 
-Mở trực tiếp file `index.html` bằng Chrome, Edge hoặc Safari.
+## Chạy ứng dụng
+Nên chạy bằng một web server cục bộ để PWA và ES Modules hoạt động ổn định, ví dụ:
 
-## Tính năng
+```bash
+python3 -m http.server 8080
+```
 
-- Nhập kết quả Tài/Xỉu thủ công
-- Hiển thị Tài, Xỉu hoặc Chưa rõ
-- Điểm tín hiệu, đồng thuận 12 mô hình, độ ổn định và xu hướng
-- Lưu dữ liệu tự động bằng localStorage
-- Hoàn tác kết quả gần nhất
-- Responsive cho điện thoại và máy tính
-- Không cần cài đặt thư viện hay máy chủ
+Sau đó mở `http://localhost:8080`.
 
-## Lưu ý
-
-Ứng dụng chỉ phân tích dữ liệu lịch sử đã nhập. Kết quả “nghiêng về” không phải dự đoán chắc chắn.
+> Điểm tín hiệu chỉ là chỉ số tổng hợp từ dữ liệu lịch sử, không phải xác suất thắng.
