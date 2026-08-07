@@ -1,175 +1,49 @@
 <!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <meta name="theme-color" content="#041321" />
-  <meta name="color-scheme" content="dark" />
-  <title>TXA V20 Focus — Production Edition</title>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#07111f" />
+<title>TXA V20 Focus</title>
+<style>
+:root{--bg:#06101c;--card:#0a1726;--line:#18314a;--text:#f4f7fb;--muted:#92a4b8;--blue:#2486ff;--green:#58d64c;--red:#ff5148;--amber:#ffbf34}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:radial-gradient(circle at 50% 0,#10263d 0,#07131f 38%,#030912 100%);display:flex;flex-direction:column}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px clamp(18px,4vw,54px);border-bottom:1px solid #10243a;background:#050d17cc;backdrop-filter:blur(12px)}
+.brand b{font-size:clamp(20px,3vw,31px);letter-spacing:.4px}.brand span{color:var(--blue)}.brand small{display:block;color:#a9bbcd;margin-top:3px}.status{display:flex;align-items:center;gap:8px;color:#a9bbcd;font-size:14px}.dot{width:9px;height:9px;border-radius:99px;background:var(--green);box-shadow:0 0 14px var(--green)}
+main{width:min(920px,100%);margin:auto;padding:28px 18px 40px}.card{position:relative;overflow:hidden;background:linear-gradient(180deg,#0b1a2b,#071421);border:1px solid #20516a;border-radius:26px;padding:clamp(26px,5vw,56px);box-shadow:0 24px 70px #0008, inset 0 1px 0 #ffffff08}.card:before{content:"";position:absolute;inset:-35% 25% auto;height:300px;background:radial-gradient(circle,#1d7fff22,transparent 68%);pointer-events:none}.label{text-align:center;font-size:clamp(18px,3vw,29px);font-weight:800;letter-spacing:1.2px}.decision{text-align:center;font-size:clamp(82px,18vw,170px);font-weight:950;line-height:1;margin:28px 0 14px;text-shadow:0 0 34px currentColor}.decision.tai{color:var(--green)}.decision.xiu{color:var(--red)}.decision.neutral{color:#d7e0ea;font-size:clamp(52px,12vw,108px)}
+.strength{text-align:center}.pill{display:inline-block;border:1px solid #2a5943;border-radius:999px;padding:9px 20px;color:#dce9e2}.pill b{color:var(--green)}.gauge{margin:38px auto 26px;width:min(490px,100%)}.gauge-track{height:18px;border-radius:999px;background:linear-gradient(90deg,var(--red),var(--amber),#c7e846,var(--green));position:relative;box-shadow:inset 0 0 0 3px #ffffff10}.needle{position:absolute;top:-8px;width:4px;height:34px;background:#fff;border-radius:4px;transform:translateX(-50%);box-shadow:0 0 12px #fff}.score{text-align:center;margin-top:14px;color:#b9c5d3;font-size:18px}.score strong{font-size:44px;color:var(--green)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:28px}.metric{background:#091725;padding:18px;text-align:center}.metric span{display:block;color:var(--muted);font-size:14px;margin-bottom:8px}.metric strong{font-size:clamp(23px,4vw,34px)}.metric em{font-style:normal;color:var(--muted);font-size:12px;display:block;margin-top:5px}.controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:24px}.btn{appearance:none;border:0;border-radius:15px;padding:16px;font-weight:850;font-size:17px;color:white;cursor:pointer;transition:.18s}.btn:active{transform:scale(.98)}.btn.tai{background:linear-gradient(180deg,#65df58,#38ad32)}.btn.xiu{background:linear-gradient(180deg,#ff675f,#d93831)}.btn.ghost{background:#12263a;border:1px solid #26445f;color:#d8e3ee}.history{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:22px;min-height:34px}.chip{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-weight:900}.chip.tai{background:#173e22;color:#75e76d}.chip.xiu{background:#431b20;color:#ff7770}.note{text-align:center;color:#7f93a9;font-size:13px;line-height:1.55;margin:22px 10px 0}.footer{text-align:center;color:#60758b;font-size:12px;padding:0 16px 20px}@media(max-width:650px){header{padding:16px 18px}.status{display:none}.card{border-radius:20px}.metrics{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.controls .ghost{grid-column:1/-1}.metric{padding:14px}.decision{margin-top:22px}}
+</style>
 </head>
 <body>
-  <div class="app-shell">
-    <header class="topbar" aria-label="Thanh tiêu đề">
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true">TXA</div>
-        <div class="brand-copy">
-          <h1>TXA <span>V20 FOCUS</span></h1>
-          <p>Production Edition</p>
-        </div>
-      </div>
-      <button id="openSettings" class="icon-btn" type="button" aria-label="Mở cài đặt" aria-haspopup="dialog">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 0 0 0-6.8Zm8.15 4.73-1.64-.95c.03-.25.05-.5.05-.76s-.02-.51-.05-.76l1.64-.95a.72.72 0 0 0 .27-.96l-1.58-2.74a.72.72 0 0 0-.91-.31l-1.75.7a7.8 7.8 0 0 0-1.31-.76l-.27-1.86a.72.72 0 0 0-.71-.61h-3.16a.72.72 0 0 0-.71.61l-.27 1.86c-.47.21-.91.46-1.31.76l-1.75-.7a.72.72 0 0 0-.91.31L4.18 8.95a.72.72 0 0 0 .27.96l1.64.95c-.03.25-.05.5-.05.76s.02.51.05.76l-1.64.95a.72.72 0 0 0-.27.96l1.58 2.74c.18.31.57.45.91.31l1.75-.7c.4.3.84.55 1.31.76l.27 1.86c.05.35.35.61.71.61h3.16c.36 0 .66-.26.71-.61l.27-1.86c.47-.21.91-.46 1.31-.76l1.75.7c.34.14.73 0 .91-.31l1.58-2.74a.72.72 0 0 0-.27-.96Z"/></svg>
-      </button>
-    </header>
-
-    <main class="dashboard-card">
-      <section class="prediction" aria-labelledby="predictionLabel">
-        <p id="predictionLabel" class="eyebrow">VÁN TIẾP THEO NGHIÊNG VỀ</p>
-        <div id="decision" class="decision neutral" aria-live="polite">CHƯA RÕ</div>
-        <div class="confidence-pill">
-          <span>MỨC ĐỘ TỰ TIN:</span>
-          <strong id="confidenceText">CHƯA ĐỦ DỮ LIỆU</strong>
-        </div>
-      </section>
-
-      <section class="signal-card" aria-label="Điểm tín hiệu">
-        <p class="signal-label">ĐIỂM TÍN HIỆU</p>
-        <div class="signal-track" aria-hidden="true">
-          <div class="signal-gradient"></div>
-          <i id="signalMarker" class="signal-marker" style="left:50%"></i>
-        </div>
-        <div class="score-line"><strong id="score">50</strong><span>/100</span></div>
-      </section>
-
-      <section class="quick-metrics" aria-label="Chỉ số nhanh">
-        <article class="metric-card">
-          <p>ĐỒNG THUẬN</p>
-          <strong id="consensus">0/12</strong>
-          <span>Mô hình</span>
-        </article>
-        <article class="metric-card">
-          <p>ĐỘ ỔN ĐỊNH</p>
-          <strong id="stability">0%</strong>
-          <span>Chuỗi gần đây</span>
-        </article>
-        <article class="metric-card">
-          <p>XU HƯỚNG</p>
-          <strong id="trendIcon">—</strong>
-          <span>20 ván gần nhất</span>
-        </article>
-      </section>
-
-      <section class="recent-card" aria-labelledby="recentTitle">
-        <div class="recent-head">
-          <h2 id="recentTitle">20 VÁN GẦN NHẤT</h2>
-          <span id="countBadge">0 ván</span>
-        </div>
-        <div id="history" class="history" aria-live="polite">
-          <p class="empty-history">Chưa có dữ liệu</p>
-        </div>
-      </section>
-
-      <section class="actions" aria-label="Nhập kết quả">
-        <button id="addTai" class="action-btn tai" type="button">
-          <strong>TÀI</strong><span>Nhập kết quả</span>
-        </button>
-        <button id="addXiu" class="action-btn xiu" type="button">
-          <strong>XỈU</strong><span>Nhập kết quả</span>
-        </button>
-        <button id="undo" class="action-btn secondary" type="button">
-          <strong>HOÀN TÁC</strong><span>Xóa ván cuối</span>
-        </button>
-        <button id="clear" class="action-btn danger" type="button">
-          <strong>XÓA HẾT</strong><span>Toàn bộ dữ liệu</span>
-        </button>
-      </section>
-
-      <p id="warning" class="disclaimer">Chỉ phân tích dữ liệu lịch sử. Không bảo đảm kết quả của ván tiếp theo.</p>
-    </main>
-  </div>
-
-  <div id="settingsBackdrop" class="modal-backdrop" hidden></div>
-  <aside id="settingsPanel" class="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
-    <div class="settings-head">
-      <div>
-        <p class="settings-kicker">TXA V20 FOCUS</p>
-        <h2 id="settingsTitle">Cài đặt &amp; thống kê</h2>
-      </div>
-      <button id="closeSettings" class="icon-btn close-btn" type="button" aria-label="Đóng cài đặt">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6.7 5.3 12 12-1.4 1.4-12-12 1.4-1.4Zm10.6 0 1.4 1.4-12 12-1.4-1.4 12-12Z"/></svg>
-      </button>
-    </div>
-
-    <div class="settings-scroll">
-      <section class="settings-section">
-        <div class="section-title-row"><h3>Tổng quan phiên</h3><span class="mini-badge">Realtime</span></div>
-        <div class="stats-grid">
-          <div><span>Tài</span><strong id="taiCount">0</strong></div>
-          <div><span>Xỉu</span><strong id="xiuCount">0</strong></div>
-          <div><span>Bệt hiện tại</span><strong id="currentRun">—</strong></div>
-          <div><span>Bệt dài nhất</span><strong id="maxRun">—</strong></div>
-          <div><span>Entropy</span><strong id="entropy">—</strong></div>
-          <div><span>Tự tương quan</span><strong id="autocorr">—</strong></div>
-        </div>
-      </section>
-
-      <section class="settings-section">
-        <div class="section-title-row"><h3>Phân bố gần đây</h3><span id="windowLabel" class="mini-badge">0 ván</span></div>
-        <div class="distribution-row"><span>Tài</span><strong id="taiPct">50%</strong></div>
-        <div class="distribution-track"><i id="taiBar" class="tai-fill" style="width:50%"></i></div>
-        <div class="distribution-row"><span>Xỉu</span><strong id="xiuPct">50%</strong></div>
-        <div class="distribution-track"><i id="xiuBar" class="xiu-fill" style="width:50%"></i></div>
-      </section>
-
-      <section class="settings-section">
-        <div class="section-title-row"><h3>12 mô hình phân tích</h3><span class="mini-badge">Ensemble</span></div>
-        <div id="models" class="models"></div>
-      </section>
-
-      <section class="settings-section">
-        <div class="section-title-row"><h3>Kiểm định dữ liệu</h3><span id="checksum" class="mini-badge mono">—</span></div>
-        <div class="stats-grid">
-          <div><span>Runs test z</span><strong id="runsZ">—</strong></div>
-          <div><span>Change point</span><strong id="changePoint">—</strong></div>
-          <div><span>Độ nhiễu</span><strong id="noise">—</strong></div>
-          <div><span>Chất lượng mẫu</span><strong id="sampleQuality">—</strong></div>
-        </div>
-      </section>
-
-      <section class="settings-section">
-        <div class="section-title-row"><h3>Monte Carlo</h3><button id="runMonte" class="small-btn" type="button">Chạy 10.000 lần</button></div>
-        <div class="stats-grid two-cols">
-          <div><span>Tài mô phỏng</span><strong id="mcTai">—</strong></div>
-          <div><span>Xỉu mô phỏng</span><strong id="mcXiu">—</strong></div>
-        </div>
-      </section>
-
-      <section class="settings-section">
-        <h3>Dữ liệu &amp; báo cáo</h3>
-        <div class="data-actions">
-          <button id="exportCsv" class="small-btn" type="button">Xuất CSV</button>
-          <button id="exportJson" class="small-btn" type="button">Sao lưu JSON</button>
-          <label class="small-btn file-label">Khôi phục JSON<input id="importJson" type="file" accept="application/json" /></label>
-          <button id="audit" class="small-btn" type="button">Xuất audit CSV</button>
-        </div>
-      </section>
-    </div>
-  </aside>
-
-  <div id="confirmModal" class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" hidden>
-    <div class="confirm-box">
-      <h2 id="confirmTitle">Xóa toàn bộ dữ liệu?</h2>
-      <p>Thao tác này không thể hoàn tác.</p>
-      <div class="confirm-actions">
-        <button id="cancelClear" class="small-btn" type="button">Hủy</button>
-        <button id="confirmClear" class="small-btn destructive" type="button">Xóa hết</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="app.js"></script>
+<header><div class="brand"><b>TXA <span>V20</span> FOCUS</b><small>Tai Xiu Analytics</small></div><div class="status"><i class="dot"></i> Dữ liệu lưu trên thiết bị</div></header>
+<main>
+<section class="card">
+<div class="label">VÁN TIẾP THEO NGHIÊNG VỀ</div>
+<div id="decision" class="decision neutral">CHƯA RÕ</div>
+<div class="strength"><span class="pill">MỨC ĐỘ TỰ TIN: <b id="strength">CHƯA ĐỦ DỮ LIỆU</b></span></div>
+<div class="gauge"><div class="gauge-track"><i id="needle" class="needle" style="left:50%"></i></div><div class="score">ĐIỂM TÍN HIỆU<br><strong id="score">50</strong> /100</div></div>
+<div class="metrics">
+<div class="metric"><span>ĐỒNG THUẬN</span><strong id="consensus">0/12</strong><em>Mô hình cùng hướng</em></div>
+<div class="metric"><span>ĐỘ ỔN ĐỊNH</span><strong id="stability">0%</strong><em>Dựa trên dữ liệu gần nhất</em></div>
+<div class="metric"><span>XU HƯỚNG</span><strong id="trend">—</strong><em>20 ván gần nhất</em></div>
+</div>
+<div class="controls"><button class="btn tai" id="addTai">+ TÀI</button><button class="btn xiu" id="addXiu">+ XỈU</button><button class="btn ghost" id="undo">HOÀN TÁC</button></div>
+<div id="history" class="history"></div>
+<p class="note">Công cụ chỉ phân tích chuỗi kết quả đã nhập. “Nghiêng về” không đồng nghĩa với chắc chắn và không bảo đảm kết quả của ván tiếp theo.</p>
+</section>
+</main>
+<div class="footer">TXA V20 Focus Edition • Phiên bản một màn hình</div>
+<script>
+const KEY='txa_v20_focus_history';let data=JSON.parse(localStorage.getItem(KEY)||'[]');
+const $=id=>document.getElementById(id);function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+function entropy(a){if(!a.length)return 0;const p=a.filter(x=>x==='T').length/a.length;if(p===0||p===1)return 0;return -(p*Math.log2(p)+(1-p)*Math.log2(1-p))}
+function streak(a){if(!a.length)return 0;let n=1;for(let i=a.length-2;i>=0&&a[i]===a[a.length-1];i--)n++;return n}
+function analyze(){const a=data.slice(-60),n=a.length;if(n<8)return {side:'?',score:50,cons:0,stab:0,trend:'—'};const recent=a.slice(-20),t=recent.filter(x=>x==='T').length/recent.length;const last=a[a.length-1],run=streak(a);let votes=[];
+votes.push(t>=.5?'T':'X');votes.push((a.slice(-10).filter(x=>x==='T').length/Math.min(10,n))>=.5?'T':'X');votes.push(last);votes.push(run>=3?(last==='T'?'X':'T'):last);votes.push(entropy(recent)<.8?last:(t>.5?'T':'X'));
+for(let k=1;k<=7;k++){let same=0,total=0;for(let i=k;i<a.length;i++)if(a[i-k]===last){total++;if(a[i]==='T')same++}votes.push(total?((same/total)>=.5?'T':'X'):(t>=.5?'T':'X'))}
+const tv=votes.filter(x=>x==='T').length,xv=12-tv,side=tv===xv?'?':tv>xv?'T':'X',cons=Math.max(tv,xv);const raw=side==='T'?50+(cons-6)*8:50-(cons-6)*8;const score=Math.max(5,Math.min(95,raw));const stab=Math.round(Math.max(0,100-entropy(recent)*100));return{side,score,cons,stab,trend:t>.56?'Tăng':t<.44?'Giảm':'Đi ngang'}}
+function render(){const r=analyze(),d=$('decision');d.className='decision '+(r.side==='T'?'tai':r.side==='X'?'xiu':'neutral');d.textContent=r.side==='T'?'TÀI':r.side==='X'?'XỈU':'CHƯA RÕ';$('score').textContent=r.score;$('needle').style.left=r.score+'%';$('consensus').textContent=r.cons+'/12';$('stability').textContent=r.stab+'%';$('trend').textContent=r.trend;$('strength').textContent=data.length<8?'CHƯA ĐỦ DỮ LIỆU':r.cons>=10?'MẠNH':r.cons>=8?'TRUNG BÌNH':'NHẸ';$('history').innerHTML=data.slice(-20).map(x=>`<span class="chip ${x==='T'?'tai':'xiu'}">${x}</span>`).join('')}
+$('addTai').onclick=()=>{data.push('T');save()};$('addXiu').onclick=()=>{data.push('X');save()};$('undo').onclick=()=>{data.pop();save()};render();
+</script>
 </body>
 </html>

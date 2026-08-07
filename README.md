@@ -1,26 +1,21 @@
-# TXA V20 Focus — Production Edition
+# TXA V20 Focus Edition
 
-Bản nâng cấp giao diện theo mẫu màn hình Focus: tối ưu cho điện thoại, hiển thị điểm tín hiệu, đồng thuận, độ ổn định, xu hướng, 20 ván gần nhất và 4 nút thao tác chính.
+Phiên bản V20 chỉ giữ lại khu vực **“Ván tiếp theo nghiêng về”** trên một màn hình.
 
-## Chạy nhanh
+## Cách chạy
 
-Có thể mở trực tiếp `index.html`. Để dùng đầy đủ chế độ PWA/offline, chạy máy chủ tĩnh:
+Mở trực tiếp file `index.html` bằng Chrome, Edge hoặc Safari.
 
-```bash
-python3 -m http.server 8080
-```
+## Tính năng
 
-Sau đó mở `http://localhost:8080`.
-
-## Điểm mới
-
-- Giao diện Focus khổ dọc, responsive theo mẫu.
-- Thanh điểm tín hiệu gradient và mốc điểm động.
-- Lịch sử 20 ván gần nhất dạng chip.
-- Cài đặt dạng bảng trượt, chứa thống kê nâng cao, 12 mô hình, Monte Carlo và xuất/nhập dữ liệu.
-- Hộp xác nhận riêng khi xóa dữ liệu.
-- PWA/offline cache mới.
+- Nhập kết quả Tài/Xỉu thủ công
+- Hiển thị Tài, Xỉu hoặc Chưa rõ
+- Điểm tín hiệu, đồng thuận 12 mô hình, độ ổn định và xu hướng
+- Lưu dữ liệu tự động bằng localStorage
+- Hoàn tác kết quả gần nhất
+- Responsive cho điện thoại và máy tính
+- Không cần cài đặt thư viện hay máy chủ
 
 ## Lưu ý
 
-Ứng dụng chỉ phân tích dữ liệu lịch sử và không bảo đảm kết quả ngẫu nhiên của ván tiếp theo.
+Ứng dụng chỉ phân tích dữ liệu lịch sử đã nhập. Kết quả “nghiêng về” không phải dự đoán chắc chắn.
