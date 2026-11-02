@@ -1,49 +1,132 @@
 <!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="theme-color" content="#07111f" />
-<title>TXA V20 Focus</title>
-<style>
-:root{--bg:#06101c;--card:#0a1726;--line:#18314a;--text:#f4f7fb;--muted:#92a4b8;--blue:#2486ff;--green:#58d64c;--red:#ff5148;--amber:#ffbf34}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--text);background:radial-gradient(circle at 50% 0,#10263d 0,#07131f 38%,#030912 100%);display:flex;flex-direction:column}
-header{display:flex;justify-content:space-between;align-items:center;padding:20px clamp(18px,4vw,54px);border-bottom:1px solid #10243a;background:#050d17cc;backdrop-filter:blur(12px)}
-.brand b{font-size:clamp(20px,3vw,31px);letter-spacing:.4px}.brand span{color:var(--blue)}.brand small{display:block;color:#a9bbcd;margin-top:3px}.status{display:flex;align-items:center;gap:8px;color:#a9bbcd;font-size:14px}.dot{width:9px;height:9px;border-radius:99px;background:var(--green);box-shadow:0 0 14px var(--green)}
-main{width:min(920px,100%);margin:auto;padding:28px 18px 40px}.card{position:relative;overflow:hidden;background:linear-gradient(180deg,#0b1a2b,#071421);border:1px solid #20516a;border-radius:26px;padding:clamp(26px,5vw,56px);box-shadow:0 24px 70px #0008, inset 0 1px 0 #ffffff08}.card:before{content:"";position:absolute;inset:-35% 25% auto;height:300px;background:radial-gradient(circle,#1d7fff22,transparent 68%);pointer-events:none}.label{text-align:center;font-size:clamp(18px,3vw,29px);font-weight:800;letter-spacing:1.2px}.decision{text-align:center;font-size:clamp(82px,18vw,170px);font-weight:950;line-height:1;margin:28px 0 14px;text-shadow:0 0 34px currentColor}.decision.tai{color:var(--green)}.decision.xiu{color:var(--red)}.decision.neutral{color:#d7e0ea;font-size:clamp(52px,12vw,108px)}
-.strength{text-align:center}.pill{display:inline-block;border:1px solid #2a5943;border-radius:999px;padding:9px 20px;color:#dce9e2}.pill b{color:var(--green)}.gauge{margin:38px auto 26px;width:min(490px,100%)}.gauge-track{height:18px;border-radius:999px;background:linear-gradient(90deg,var(--red),var(--amber),#c7e846,var(--green));position:relative;box-shadow:inset 0 0 0 3px #ffffff10}.needle{position:absolute;top:-8px;width:4px;height:34px;background:#fff;border-radius:4px;transform:translateX(-50%);box-shadow:0 0 12px #fff}.score{text-align:center;margin-top:14px;color:#b9c5d3;font-size:18px}.score strong{font-size:44px;color:var(--green)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:28px}.metric{background:#091725;padding:18px;text-align:center}.metric span{display:block;color:var(--muted);font-size:14px;margin-bottom:8px}.metric strong{font-size:clamp(23px,4vw,34px)}.metric em{font-style:normal;color:var(--muted);font-size:12px;display:block;margin-top:5px}.controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:24px}.btn{appearance:none;border:0;border-radius:15px;padding:16px;font-weight:850;font-size:17px;color:white;cursor:pointer;transition:.18s}.btn:active{transform:scale(.98)}.btn.tai{background:linear-gradient(180deg,#65df58,#38ad32)}.btn.xiu{background:linear-gradient(180deg,#ff675f,#d93831)}.btn.ghost{background:#12263a;border:1px solid #26445f;color:#d8e3ee}.history{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:22px;min-height:34px}.chip{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;font-weight:900}.chip.tai{background:#173e22;color:#75e76d}.chip.xiu{background:#431b20;color:#ff7770}.note{text-align:center;color:#7f93a9;font-size:13px;line-height:1.55;margin:22px 10px 0}.footer{text-align:center;color:#60758b;font-size:12px;padding:0 16px 20px}@media(max-width:650px){header{padding:16px 18px}.status{display:none}.card{border-radius:20px}.metrics{grid-template-columns:1fr}.controls{grid-template-columns:1fr 1fr}.controls .ghost{grid-column:1/-1}.metric{padding:14px}.decision{margin-top:22px}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#07111f" />
+  <meta name="description" content="TXA V21: phân tích Tài Xỉu, kiểm chứng walk-forward và mô phỏng rủi ro vốn, chạy trên thiết bị." />
+  <title>TXA V21 | Validation & Risk</title>
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-<header><div class="brand"><b>TXA <span>V20</span> FOCUS</b><small>Tai Xiu Analytics</small></div><div class="status"><i class="dot"></i> Dữ liệu lưu trên thiết bị</div></header>
-<main>
-<section class="card">
-<div class="label">VÁN TIẾP THEO NGHIÊNG VỀ</div>
-<div id="decision" class="decision neutral">CHƯA RÕ</div>
-<div class="strength"><span class="pill">MỨC ĐỘ TỰ TIN: <b id="strength">CHƯA ĐỦ DỮ LIỆU</b></span></div>
-<div class="gauge"><div class="gauge-track"><i id="needle" class="needle" style="left:50%"></i></div><div class="score">ĐIỂM TÍN HIỆU<br><strong id="score">50</strong> /100</div></div>
-<div class="metrics">
-<div class="metric"><span>ĐỒNG THUẬN</span><strong id="consensus">0/12</strong><em>Mô hình cùng hướng</em></div>
-<div class="metric"><span>ĐỘ ỔN ĐỊNH</span><strong id="stability">0%</strong><em>Dựa trên dữ liệu gần nhất</em></div>
-<div class="metric"><span>XU HƯỚNG</span><strong id="trend">—</strong><em>20 ván gần nhất</em></div>
-</div>
-<div class="controls"><button class="btn tai" id="addTai">+ TÀI</button><button class="btn xiu" id="addXiu">+ XỈU</button><button class="btn ghost" id="undo">HOÀN TÁC</button></div>
-<div id="history" class="history"></div>
-<p class="note">Công cụ chỉ phân tích chuỗi kết quả đã nhập. “Nghiêng về” không đồng nghĩa với chắc chắn và không bảo đảm kết quả của ván tiếp theo.</p>
-</section>
-</main>
-<div class="footer">TXA V20 Focus Edition • Phiên bản một màn hình</div>
-<script>
-const KEY='txa_v20_focus_history';let data=JSON.parse(localStorage.getItem(KEY)||'[]');
-const $=id=>document.getElementById(id);function save(){localStorage.setItem(KEY,JSON.stringify(data));render()}
-function entropy(a){if(!a.length)return 0;const p=a.filter(x=>x==='T').length/a.length;if(p===0||p===1)return 0;return -(p*Math.log2(p)+(1-p)*Math.log2(1-p))}
-function streak(a){if(!a.length)return 0;let n=1;for(let i=a.length-2;i>=0&&a[i]===a[a.length-1];i--)n++;return n}
-function analyze(){const a=data.slice(-60),n=a.length;if(n<8)return {side:'?',score:50,cons:0,stab:0,trend:'—'};const recent=a.slice(-20),t=recent.filter(x=>x==='T').length/recent.length;const last=a[a.length-1],run=streak(a);let votes=[];
-votes.push(t>=.5?'T':'X');votes.push((a.slice(-10).filter(x=>x==='T').length/Math.min(10,n))>=.5?'T':'X');votes.push(last);votes.push(run>=3?(last==='T'?'X':'T'):last);votes.push(entropy(recent)<.8?last:(t>.5?'T':'X'));
-for(let k=1;k<=7;k++){let same=0,total=0;for(let i=k;i<a.length;i++)if(a[i-k]===last){total++;if(a[i]==='T')same++}votes.push(total?((same/total)>=.5?'T':'X'):(t>=.5?'T':'X'))}
-const tv=votes.filter(x=>x==='T').length,xv=12-tv,side=tv===xv?'?':tv>xv?'T':'X',cons=Math.max(tv,xv);const raw=side==='T'?50+(cons-6)*8:50-(cons-6)*8;const score=Math.max(5,Math.min(95,raw));const stab=Math.round(Math.max(0,100-entropy(recent)*100));return{side,score,cons,stab,trend:t>.56?'Tăng':t<.44?'Giảm':'Đi ngang'}}
-function render(){const r=analyze(),d=$('decision');d.className='decision '+(r.side==='T'?'tai':r.side==='X'?'xiu':'neutral');d.textContent=r.side==='T'?'TÀI':r.side==='X'?'XỈU':'CHƯA RÕ';$('score').textContent=r.score;$('needle').style.left=r.score+'%';$('consensus').textContent=r.cons+'/12';$('stability').textContent=r.stab+'%';$('trend').textContent=r.trend;$('strength').textContent=data.length<8?'CHƯA ĐỦ DỮ LIỆU':r.cons>=10?'MẠNH':r.cons>=8?'TRUNG BÌNH':'NHẸ';$('history').innerHTML=data.slice(-20).map(x=>`<span class="chip ${x==='T'?'tai':'xiu'}">${x}</span>`).join('')}
-$('addTai').onclick=()=>{data.push('T');save()};$('addXiu').onclick=()=>{data.push('X');save()};$('undo').onclick=()=>{data.pop();save()};render();
-</script>
+<body class="mode-standard">
+  <header class="topbar">
+    <div><p class="eyebrow">TXA ANALYTICS</p><h1>V21 • Validation & Risk</h1></div>
+    <select id="uiMode" aria-label="Chế độ giao diện">
+      <option value="simple">Đơn giản</option>
+      <option value="standard" selected>Tiêu chuẩn</option>
+      <option value="expert">Chuyên gia</option>
+    </select>
+  </header>
+  <main class="shell">
+    <section class="hero card">
+      <p class="section-label">TÍN HIỆU ĐANG HIỂN THỊ</p>
+      <div id="decision" class="decision neutral">CHƯA ĐỦ BẰNG CHỨNG</div>
+      <p id="rawSignal" class="muted">Tín hiệu thống kê chưa được kiểm chứng trực tiếp.</p>
+      <div class="hero-grid">
+        <div><span>Mức nghiêng</span><strong id="strength">—</strong></div>
+        <div><span>Đồng thuận</span><strong id="consensus">0/12</strong></div>
+        <div><span>Điểm mô hình*</span><strong id="score">50/100</strong></div>
+        <div><span>Độ ổn định</span><strong id="stability">—</strong></div>
+      </div>
+      <p id="warning" class="warning">*Điểm mô hình KHÔNG phải xác suất thắng. Không dùng phần mềm như bằng chứng chắc chắn cho một ván ngẫu nhiên.</p>
+    </section>
+
+    <section class="card input-card">
+      <div class="section-head"><div><p class="section-label">DỮ LIỆU KẾT QUẢ THỰC</p><h2>Nhập Tài / Xỉu theo thứ tự</h2></div><span id="countBadge" class="badge">0 ván</span></div>
+      <div class="actions primary-actions">
+        <button id="addTai" type="button" class="btn tai">+ TÀI</button>
+        <button id="addXiu" type="button" class="btn xiu">+ XỈU</button>
+        <button id="undo" type="button" class="btn ghost">Hoàn tác</button>
+        <button id="clear" type="button" class="btn danger">Xóa lịch sử</button>
+      </div>
+      <div id="history" class="history" aria-label="Các ván gần đây" aria-live="polite"></div>
+      <p class="muted">Khi nhập kết quả mới, hệ thống lưu dự đoán được tạo TRƯỚC kết quả đó vào nhật ký kiểm chứng trực tiếp. Nhập lại dữ liệu cũ chỉ dùng cho kiểm chứng lịch sử.</p>
+    </section>
+
+    <section class="card validation-card">
+      <div class="section-head"><div><p class="section-label">OUT-OF-SAMPLE / WALK-FORWARD</p><h2>Kiểm chứng tỷ lệ đúng</h2></div><span id="backtestStatus" class="badge">Chưa đủ dữ liệu</span></div>
+      <div class="metric-grid">
+        <div class="metric"><span>Số ván kiểm tra lịch sử</span><strong id="oosTotal">0</strong></div>
+        <div class="metric"><span>Tín hiệu lịch sử</span><strong id="oosSignals">0</strong></div>
+        <div class="metric"><span>Đúng / đã phát tín hiệu</span><strong id="oosHit">—</strong></div>
+        <div class="metric"><span>Khoảng tin cậy 95%</span><strong id="oosCI">—</strong></div>
+      </div>
+      <div class="metric-grid second-metrics">
+        <div class="metric"><span>Tín hiệu ghi nhận trực tiếp</span><strong id="liveSignals">0</strong></div>
+        <div class="metric"><span>Tỷ lệ đúng trực tiếp</span><strong id="liveAccuracy">—</strong></div>
+        <div class="metric"><span>Khoảng tin cậy trực tiếp</span><strong id="liveCI">—</strong></div>
+        <div class="metric"><span>Ngưỡng kiểm chứng trực tiếp</span><strong>100 tín hiệu</strong></div>
+      </div>
+      <p id="validationMsg" class="notice">Cần dữ liệu ván thực tế để đánh giá.</p>
+      <p class="muted">Backtest: mỗi dự đoán cho ván thứ n chỉ dùng các ván từ 1 đến n−1; bắt đầu kiểm tra khi đã có ít nhất 30 ván. Kiểm chứng trực tiếp ghi nhận dự đoán trước khi bạn nhập kết quả tiếp theo. Cận dưới Wilson 95% trên 50% chỉ là dấu hiệu thống kê, chưa chứng minh lợi thế bền vững.</p>
+      <div class="standard-block">
+        <h3 class="subhead">12 mô hình: kết quả kiểm chứng lịch sử</h3>
+        <div class="table-scroll"><table class="data-table"><thead><tr><th>Mô hình</th><th>Tín hiệu</th><th>Tỷ lệ đúng</th><th>Wilson 95%</th></tr></thead><tbody id="modelTable"><tr><td colspan="4">Chưa có dữ liệu</td></tr></tbody></table></div>
+      </div>
+      <div class="expert-block">
+        <h3 class="subhead">Tín hiệu trực tiếp gần đây</h3><div class="table-scroll"><table class="data-table"><thead><tr><th>Ván</th><th>Trước ván</th><th>Kết quả</th><th>Đánh giá</th></tr></thead><tbody id="liveHistory"></tbody></table></div>
+      </div>
+    </section>
+
+    <section class="card tracker-card">
+      <div class="section-head"><div><p class="section-label">CHỈ THEO DÕI THỦ CÔNG / KHÔNG ĐẶT CƯỢC</p><h2>Quản lý vốn ảo 200.000đ</h2></div><span id="trackDay" class="badge">—</span></div>
+      <div class="tracker-headline"><div><span>Vốn đang ghi nhận</span><strong id="virtualBank">200.000đ</strong></div><div><span>Lãi/lỗ lũy kế trong ngày</span><strong id="virtualProfit">0đ</strong></div></div>
+      <div class="meter"><i id="goalProgress" style="width:0%"></i></div>
+      <div class="metric-grid tracker-metrics">
+        <div class="metric"><span>Số phiên đã mở</span><strong id="sessCount">0/10</strong></div>
+        <div class="metric"><span>Lãi/lỗ phiên hiện tại</span><strong id="sessPnl">—</strong></div>
+        <div class="metric"><span>Chu kỳ thắng</span><strong id="cycleWins">0</strong></div>
+        <div class="metric"><span>Chu kỳ thua hết</span><strong id="cycleLosses">0/5</strong></div>
+      </div>
+      <div class="actions wrap tracker-actions">
+        <button id="startSession" type="button" class="btn confirm">Bắt đầu phiên</button>
+        <button id="winCycle" type="button" class="btn tai">Ghi thắng chu kỳ +1k</button>
+        <button id="lossCycle" type="button" class="btn danger">Ghi thua chu kỳ −31k</button>
+        <button id="endSession" type="button" class="btn ghost">Đóng phiên</button>
+        <button id="resetDay" type="button" class="btn ghost">Ngày mới / Đặt lại</button>
+      </div>
+      <p id="riskStatus" class="notice" role="status">Bắt đầu phiên để ghi nhận kết quả.</p>
+      <p id="breakTime" class="muted">Mục tiêu mỗi phiên +15k; mục tiêu ngày +30k; thua 5 chu kỳ trong một phiên thì dừng; nghỉ 30 phút giữa các phiên. Không gấp thêm cược ngoài dãy 1–2–4–8–16k.</p>
+      <h3 class="subhead">Nhật ký phiên</h3><div id="sessionArchive" class="archive-list"><p class="muted">Chưa có phiên nào.</p></div>
+      <p class="muted">Mỗi lần bấm “thắng chu kỳ” có nghĩa là chuỗi tối đa 5 lệnh đã kết thúc với tổng lãi +1k. “Thua chu kỳ” nghĩa là cả 5 lệnh đều thua, mất 31k. Tracker chỉ ghi tay, không liên kết sàn và không tự giao dịch.</p>
+    </section>
+
+    <section class="card simulator-card">
+      <div class="section-head"><div><p class="section-label">MONTE CARLO • VỐN GIỚI HẠN</p><h2>Mô phỏng 10.000 ngày</h2></div><span class="badge">Kịch bản giả định</span></div>
+      <div class="sim-controls"><label for="roundOdds">Giả định tỷ lệ thắng một ván</label><select id="roundOdds"><option value="0.4861111111111111">48,61% • Tài/Xỉu 3 xúc xắc, bộ ba thua</option><option value="0.5">50,00% • Công bằng lý tưởng</option><option value="0.51">51,00% • Chỉ để kiểm tra độ nhạy</option><option value="0.52">52,00% • Chỉ để kiểm tra độ nhạy</option></select><button id="simulate" class="btn confirm" type="button">Chạy mô phỏng</button></div>
+      <div class="metric-grid"><div class="metric"><span>Đạt mục tiêu +30k</span><strong id="simGoal">—</strong></div><div class="metric"><span>Ngày kết thúc âm tiền</span><strong id="simLoss">—</strong></div><div class="metric"><span>Không đủ 31k để tiếp tục</span><strong id="simInsufficient">—</strong></div><div class="metric"><span>Lãi/lỗ bình quân</span><strong id="simAvg">—</strong></div></div>
+      <p id="simSpread" class="notice">Bấm “Chạy mô phỏng” để hiển thị phân vị 5%, 50%, 95%.</p>
+      <p class="muted">Giả định: các ván độc lập, trả thưởng 1:1, 5 mức cược cố định, đạt +15k một phiên thì dừng phiên, thua 5 chu kỳ thì đóng phiên, tối đa 10 phiên/ngày, đủ 30k lãi ròng thì dừng ngày, không nạp thêm vốn. Khoảng nghỉ 30 phút không làm thay đổi xác suất. Kết quả mô phỏng không chứng minh hiệu quả TXA.</p>
+    </section>
+
+    <section class="grid two standard-block">
+      <article class="card"><div class="section-head"><h2>Tổng quan dữ liệu</h2><span class="badge">Lịch sử</span></div><div class="metric-grid mini">
+        <div class="metric"><span>Tài</span><strong id="taiCount">0</strong></div><div class="metric"><span>Xỉu</span><strong id="xiuCount">0</strong></div>
+        <div class="metric"><span>Bệt hiện tại</span><strong id="currentRun">—</strong></div><div class="metric"><span>Bệt dài nhất</span><strong id="maxRun">—</strong></div>
+        <div class="metric"><span>Entropy</span><strong id="entropy">—</strong></div><div class="metric"><span>Tự tương quan</span><strong id="autocorr">—</strong></div>
+      </div></article>
+      <article class="card"><div class="section-head"><h2>Phân bố gần đây</h2><span id="windowLabel" class="badge">0 ván</span></div><div class="bar-wrap">
+        <div class="bar-label"><span>Tài</span><strong id="taiPct">50%</strong></div><div class="bar"><i id="taiBar" class="tai-fill" style="width:50%"></i></div>
+        <div class="bar-label"><span>Xỉu</span><strong id="xiuPct">50%</strong></div><div class="bar"><i id="xiuBar" class="xiu-fill" style="width:50%"></i></div>
+      </div></article>
+    </section>
+    <section class="card standard-block extra-card"><div class="section-head"><h2>12 mô hình phân tích hiện tại</h2><span class="badge">Chỉ tham khảo</span></div><div id="models" class="models"></div></section>
+    <section class="grid two expert-block">
+      <article class="card"><div class="section-head"><h2>Monte Carlo cũ</h2><button id="runMonte" class="btn ghost small" type="button">Chạy 10.000 lượt</button></div><div class="metric-grid mini"><div class="metric"><span>Tài theo tỷ lệ lịch sử</span><strong id="mcTai">—</strong></div><div class="metric"><span>Xỉu</span><strong id="mcXiu">—</strong></div></div><p class="muted">Đây chỉ là lấy mẫu Bernoulli từ tần suất lịch sử, không dự đoán ván tiếp theo.</p></article>
+      <article class="card"><div class="section-head"><h2>Kiểm định chuỗi</h2><span id="checksum" class="badge mono">—</span></div><div class="metric-grid mini"><div class="metric"><span>Runs test z</span><strong id="runsZ">—</strong></div><div class="metric"><span>Change point</span><strong id="changePoint">—</strong></div><div class="metric"><span>Độ nhiễu</span><strong id="noise">—</strong></div><div class="metric"><span>Chất lượng mẫu</span><strong id="sampleQuality">—</strong></div></div></article>
+    </section>
+    <section class="card export-card"><div class="section-head"><h2>Dữ liệu & báo cáo</h2><span class="badge">Lưu trên thiết bị</span></div><div class="actions wrap">
+      <button id="exportCsv" class="btn ghost" type="button">Xuất CSV kết quả</button>
+      <button id="exportJson" class="btn ghost" type="button">Sao lưu JSON V21</button>
+      <label class="btn ghost file-label">Khôi phục JSON V20/V21 <input id="importJson" type="file" accept=".json,application/json" /></label>
+      <button id="audit" class="btn ghost" type="button">Xuất CSV kiểm chứng</button>
+    </div></section>
+  </main>
+  <footer>TXA V21 • Công cụ nghiên cứu thống kê và quản lý vốn ảo • Không phải công cụ kiếm tiền hay cam kết tỷ lệ thắng.</footer>
+  <script src="engine.js"></script>
+  <script src="risk-engine.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

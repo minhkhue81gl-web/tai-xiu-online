@@ -1,17 +1,10 @@
 {
-  "name": "TXA V20 Focus — Production Edition",
-  "short_name": "TXA V20 Focus",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#020c16",
-  "theme_color": "#041321",
-  "lang": "vi",
-  "icons": [
-    {
-      "src": "assets/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
+  "name":"TXA V21 Validation & Risk",
+  "short_name":"TXA V21",
+  "start_url":"./",
+  "display":"standalone",
+  "background_color":"#050b14",
+  "theme_color":"#07111f",
+  "description":"12 mô hình phân tích, kiểm chứng tuần tự, mô phỏng rủi ro và quản lý vốn ảo, hoạt động ngoại tuyến.",
+  "icons":[{"src":"assets/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
 }

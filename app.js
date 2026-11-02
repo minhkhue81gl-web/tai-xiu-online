@@ -1,367 +1,188 @@
-const KEY = 'txa-v20-history';
-let history = safeReadHistory();
-
-const $ = (id) => document.getElementById(id);
-const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
-const sideName = (value) => value === 1 ? 'TÀI' : value === 0 ? 'XỈU' : 'TRUNG LẬP';
-const sideClass = (value) => value === 1 ? 'tai' : value === 0 ? 'xiu' : 'neutral';
-const mean = (values) => values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : 0.5;
-const recent = (values, count) => values.slice(-Math.min(count, values.length));
-
-function safeReadHistory() {
-  try {
-    const parsed = JSON.parse(localStorage.getItem(KEY) || '[]');
-    return Array.isArray(parsed) ? parsed.filter((value) => value === 0 || value === 1) : [];
-  } catch {
-    return [];
+/* TXA V21 application: local, offline, no API and no automated wagering. */
+'use strict';
+const E=window.TXAEngine;
+const R=window.TXARisk;
+const $=id=>document.getElementById(id);
+const STORAGE='txa-v21-state';
+const LEGACY='txa-v20-history';
+const MODE='txa-v21-mode';
+const MAX_HISTORY=3000;
+const fmt=v=>`${Math.round(v).toLocaleString('vi-VN')}đ`;
+const signed=v=>(v>0?'+':'')+fmt(v);
+const pct=p=>p===null?'—':(p*100).toFixed(1)+'%';
+const range=t=>t.signals?`${pct(t.ci.lower)} – ${pct(t.ci.upper)}`:'—';
+const nameSide=v=>E.sideName(v);
+const sideClass=v=>v===1?'tai':v===0?'xiu':'neutral';
+function readJSON(key) {try {return JSON.parse(localStorage.getItem(key));}catch{return null;}}
+function cleanHistory(v){return Array.isArray(v)&&v.length<=MAX_HISTORY&&v.every(x=>x===0||x===1)?v.slice():null;}
+function cleanLive(v,h){
+  if(!Array.isArray(v))return [];
+  return v.filter(r=>r&&Number.isInteger(r.index)&&r.index>=0&&r.index<h.length&&(r.pred===null||r.pred===0||r.pred===1)&&(r.actual===0||r.actual===1)&&r.actual===h[r.index]).slice(-MAX_HISTORY).map(r=>({index:r.index,pred:r.pred,actual:r.actual,at:String(r.at||'')}));
+}
+function cleanLog(v){
+  if(!v||typeof v!=='object'||typeof v.day!=='string'||v.initial!==R.DEFAULTS.initial||!Array.isArray(v.sessions)||v.sessions.length>10)return null;
+  for(const s of v.sessions){
+    if(!s||typeof s.startedAt!=='string'||(s.closedAt!==null&&typeof s.closedAt!=='string')||!Array.isArray(s.cycles)||s.cycles.length>200||s.cycles.some(c=>!c||!['win','loss'].includes(c.outcome)||typeof c.at!=='string'))return null;
   }
+  return JSON.parse(JSON.stringify(v));
 }
-
-function entropy(values) {
-  if (!values.length) return 1;
-  const probability = mean(values);
-  if (probability === 0 || probability === 1) return 0;
-  return -(probability * Math.log2(probability) + (1 - probability) * Math.log2(1 - probability));
+const saved=readJSON(STORAGE);
+let outcomes=cleanHistory(saved?.history)||cleanHistory(readJSON(LEGACY))||[];
+let liveRecords=cleanLive(saved?.liveRecords,outcomes);
+let paper=cleanLog(saved?.paper)||R.newLog();
+let backtest=null;
+function save(){
+  try{localStorage.setItem(STORAGE,JSON.stringify({version:'V21',history:outcomes,liveRecords,paper}));}
+  catch(e){alert('Không lưu được trên thiết bị: '+e.message);}
 }
-
-function autocorr(values) {
-  if (values.length < 4) return 0;
-  const average = mean(values);
-  let numerator = 0;
-  let denominator = 0;
-  for (let index = 1; index < values.length; index += 1) {
-    numerator += (values[index] - average) * (values[index - 1] - average);
-  }
-  for (const value of values) denominator += (value - average) ** 2;
-  return denominator ? numerator / denominator : 0;
+function download(filename,content,type='text/plain;charset=utf-8'){
+  const url=URL.createObjectURL(new Blob(['\ufeff',content],{type}));
+  const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-
-function runInfo(values) {
-  if (!values.length) return { current: 0, max: 0, side: null };
-  let max = 1;
-  let current = 1;
-  for (let index = 1; index < values.length; index += 1) {
-    current = values[index] === values[index - 1] ? current + 1 : 1;
-    max = Math.max(max, current);
-  }
-  let tail = 1;
-  for (let index = values.length - 1; index > 0 && values[index] === values[index - 1]; index -= 1) tail += 1;
-  return { current: tail, max, side: values.at(-1) };
+function displayHistory(){
+  const recent=outcomes.slice(-150),offset=outcomes.length-recent.length;
+  $('history').innerHTML=recent.map((v,i)=>`<span class="chip ${sideClass(v)}" title="Ván ${offset+i+1}">${v?'T':'X'}</span>`).join('');
+  $('countBadge').textContent=`${outcomes.length} ván`;
 }
-
-function runsZ(values) {
-  const n1 = values.filter(Boolean).length;
-  const n0 = values.length - n1;
-  if (n1 === 0 || n0 === 0 || values.length < 4) return 0;
-  let runs = 1;
-  for (let index = 1; index < values.length; index += 1) {
-    if (values[index] !== values[index - 1]) runs += 1;
-  }
-  const expected = 1 + (2 * n1 * n0) / (n1 + n0);
-  const variance = (2 * n1 * n0 * (2 * n1 * n0 - n1 - n0)) / (((n1 + n0) ** 2) * (n1 + n0 - 1));
-  return variance > 0 ? (runs - expected) / Math.sqrt(variance) : 0;
+function renderAnalysis(){
+  const f=E.forecast(outcomes),d=E.descriptive(outcomes);
+  const live=E.summarizeLive(liveRecords);
+  const proved=live.signals>=100&&live.ci.lower>.5;
+  const show=f.decision!==null&&proved;
+  $('decision').textContent=show?nameSide(f.decision):f.decision===null?'CHƯA RÕ':'CHƯA ĐỦ BẰNG CHỨNG';
+  $('decision').className='decision '+sideClass(show?f.decision:null);
+  $('rawSignal').textContent=f.decision===null?'12 mô hình chưa đồng thuận đủ để đưa ra nhận định.':`Mức nghiêng lịch sử: ${nameSide(f.decision)}. ${proved?'Có tín hiệu kiểm chứng, nhưng không bảo đảm ván kế.':'Đây là nhận định THỬ NGHIỆM; chưa đủ xác thực thực tế.'}`;
+  $('strength').textContent=f.strength;
+  $('consensus').textContent=`${f.maxVotes}/12`;
+  $('score').textContent=`${Math.round(f.p*100)}/100`;
+  $('stability').textContent=`${f.stab}%`;
+  $('warning').textContent='Điểm mô hình KHÔNG phải xác suất thắng. Không dùng chuỗi cược gấp đôi để suy luận có lợi thế hoặc bảo đảm lợi nhuận.';
+  $('taiCount').textContent=d.tai;$('xiuCount').textContent=d.xiu;
+  $('currentRun').textContent=d.run.side===null?'—':`${nameSide(d.run.side)} ×${d.run.current}`;
+  $('maxRun').textContent=d.run.max||'—';
+  $('entropy').textContent=outcomes.length?d.entropy.toFixed(3):'—';
+  $('autocorr').textContent=outcomes.length?d.autocorr.toFixed(3):'—';
+  const w=E.recent(outcomes,20),tp=w.length?Math.round(E.mean(w)*100):50;
+  $('taiPct').textContent=`${tp}%`;$('xiuPct').textContent=`${100-tp}%`;
+  $('taiBar').style.width=`${tp}%`;$('xiuBar').style.width=`${100-tp}%`;
+  $('windowLabel').textContent=`${w.length} ván`;
+  $('models').innerHTML=f.models.map(m=>`<article class="model"><div class="model-head"><h3>${m.name}</h3><span class="vote ${sideClass(m.side)}">${nameSide(m.side)}</span></div><small>${m.desc}<br>Điểm mô hình Tài: ${Math.round(m.p*100)} /100</small></article>`).join('');
+  $('runsZ').textContent=outcomes.length?d.runsZ.toFixed(2):'—';
+  $('changePoint').textContent=outcomes.length<12?'—':d.changePoint.toFixed(3);
+  $('noise').textContent=outcomes.length<6?'—':d.entropy>.92?'Cao':d.entropy>.75?'Trung bình':'Thấp';
+  $('sampleQuality').textContent=outcomes.length>=100?'Đủ để kiểm tra sơ bộ':outcomes.length>=30?'Ít':outcomes.length>=8?'Rất ít':'Thiếu';
+  $('checksum').textContent=d.checksum;
+  displayHistory();
 }
-
-function markov(values, order = 1) {
-  if (values.length < order + 3) return 0.5;
-  const key = values.slice(-order).join('');
-  let tai = 0;
-  let count = 0;
-  for (let index = order; index < values.length; index += 1) {
-    if (values.slice(index - order, index).join('') === key) {
-      tai += values[index];
-      count += 1;
-    }
-  }
-  return count ? tai / count : 0.5;
+function renderValidation(){
+  backtest=E.validateChronological(outcomes,30);
+  const b=backtest.overall,live=E.summarizeLive(liveRecords);
+  $('oosTotal').textContent=backtest.total.toLocaleString('vi-VN');
+  $('oosSignals').textContent=b.signals.toLocaleString('vi-VN');
+  $('oosHit').textContent=b.signals?`${b.correct}/${b.signals} (${pct(b.rate)})`:'—';
+  $('oosCI').textContent=range(b);
+  $('liveSignals').textContent=live.signals.toLocaleString('vi-VN');
+  $('liveAccuracy').textContent=live.signals?`${live.correct}/${live.signals} (${pct(live.rate)})`:'—';
+  $('liveCI').textContent=range(live);
+  $('backtestStatus').textContent=live.signals>=100?'Đã đủ 100 tín hiệu':'Chưa đủ 100 tín hiệu trực tiếp';
+  const el=$('validationMsg');el.className='notice';
+  if(outcomes.length<31){el.textContent='Cần ít nhất 31 kết quả lịch sử để có một dự đoán kiểm thử (30 ván trước + 1 kết quả).';}
+  else if(live.signals<100){el.textContent=`Chỉ mới có ${live.signals}/100 tín hiệu trực tiếp. Tỷ lệ đúng trên lịch sử (${pct(b.rate)}) chưa đủ để xác nhận hiệu quả ngoài thực tế.`;}
+  else if(live.ci.lower>.5){el.classList.add('good');el.textContent=`Tín hiệu trực tiếp có tỷ lệ đúng ${pct(live.rate)}; cận dưới Wilson 95% ${pct(live.ci.lower)} > 50%. Chỉ là bằng chứng thống kê sơ bộ, có thể bị sai lệch chọn mẫu và chưa chứng minh tính bền vững.`;}
+  else{el.classList.add('bad');el.textContent=`Đã có ${live.signals} tín hiệu trực tiếp, nhưng cận dưới Wilson 95% là ${pct(live.ci.lower)}, chưa vượt 50%. Không có cơ sở khẳng định lợi thế khi trả thưởng 1:1.`;}
+  $('modelTable').innerHTML=backtest.perModel.map(m=>`<tr><td>${m.name}</td><td>${m.signals}</td><td>${pct(m.rate)}</td><td>${range(m)}</td></tr>`).join('');
+  $('liveHistory').innerHTML=liveRecords.slice(-25).reverse().map(r=>`<tr><td>${r.index+1}</td><td>${r.pred===null?'Không phát':nameSide(r.pred)}</td><td>${nameSide(r.actual)}</td><td>${r.pred===null?'—':r.pred===r.actual?'Đúng':'Sai'}</td></tr>`).join('')||'<tr><td colspan="4">Chưa có dự đoán được ghi nhận trực tiếp.</td></tr>';
 }
-
-function patternScore(values) {
-  for (const length of [2, 3, 4]) {
-    if (values.length < length * 2 + 2) continue;
-    const pattern = values.slice(-length).join('');
-    let tai = 0;
-    let count = 0;
-    for (let index = length; index < values.length; index += 1) {
-      if (values.slice(index - length, index).join('') === pattern) {
-        tai += values[index];
-        count += 1;
-      }
-    }
-    if (count >= 2) return tai / count;
-  }
-  return 0.5;
+function addOutcome(side){
+  if(outcomes.length>=MAX_HISTORY){alert(`Đã đạt giới hạn ${MAX_HISTORY} ván. Xuất bản sao trước khi xóa lịch sử.`);return;}
+  const pred=E.forecast(outcomes);
+  const index=outcomes.length;
+  outcomes.push(side);
+  if(index>=8)liveRecords.push({index,pred:pred.decision,actual:side,at:new Date().toISOString()});
+  save();renderValidation();renderAnalysis();
 }
-
-function alternation(values) {
-  const window = recent(values, 8);
-  if (window.length < 4) return 0.5;
-  let changes = 0;
-  for (let index = 1; index < window.length; index += 1) {
-    if (window[index] !== window[index - 1]) changes += 1;
-  }
-  const rate = changes / (window.length - 1);
-  return rate > 0.7 ? 1 - window.at(-1) : rate < 0.3 ? window.at(-1) : 0.5;
+$('addTai').onclick=()=>addOutcome(1);
+$('addXiu').onclick=()=>addOutcome(0);
+$('undo').onclick=()=>{if(!outcomes.length)return;const index=outcomes.length-1;outcomes.pop();liveRecords=liveRecords.filter(r=>r.index!==index);save();renderValidation();renderAnalysis();};
+$('clear').onclick=()=>{if(confirm('Xóa toàn bộ lịch sử Tài/Xỉu và nhật ký kiểm chứng trực tiếp? Dashboard vốn ảo sẽ được giữ.')){outcomes=[];liveRecords=[];save();renderValidation();renderAnalysis();}};
+function reasonName(reason){return ({'daily-target':'Đạt +30k ngày','session-target':'Đạt +15k phiên','five-loss-cycles':'Thua 5 chu kỳ','insufficient-capital':'Thiếu vốn cho chuỗi','manual':'Đóng thủ công'})[reason]||'Đang mở';}
+function renderTracker(){
+  const s=R.summary(paper);const total=paper.sessions.length;const last=s.active||paper.sessions.at(-1);
+  $('trackDay').textContent=paper.day;
+  $('virtualBank').textContent=fmt(s.bankroll);
+  $('virtualProfit').textContent=signed(s.pnl);
+  $('virtualProfit').className=s.pnl>0?'positive':s.pnl<0?'negative':'';
+  $('sessCount').textContent=`${s.sessionCount}/10`;
+  $('sessPnl').textContent=s.active?signed(s.sessionBalance):'—';
+  $('cycleWins').textContent=s.active?s.active.cycles.filter(c=>c.outcome==='win').length:'0';
+  $('cycleLosses').textContent=`${s.failed}/5`;
+  $('goalProgress').style.width=Math.max(0,Math.min(100,s.pnl/R.DEFAULTS.dailyTarget*100))+'%';
+  const oldDay=paper.day!==R.localDay();
+  const status=$('riskStatus');status.className='notice';
+  if(oldDay){status.textContent=`Nhật ký thuộc ngày ${paper.day}. Bấm “Ngày mới / Đặt lại” để tạo ngày hôm nay. Dữ liệu phiên cũ không bị xóa tự động.`;}
+  else if(s.active){status.textContent=`Phiên ${total} đang mở: lãi/lỗ ${signed(s.sessionBalance)}, thua ${s.failed}/5 chu kỳ. Ghi nhận thủ công sau khi KẾT THÚC chuỗi 1–2–4–8–16.`;}
+  else if(s.blocked){status.textContent=s.blocked;if(s.blocked.includes('không đủ'))status.classList.add('bad');}
+  else if(total){status.textContent=`Phiên gần nhất: ${reasonName(last.reason)}. Có thể mở phiên tiếp theo nếu đủ điều kiện.`;}
+  else{status.textContent='Chưa bắt đầu phiên. Đây là vốn ảo dùng để kiểm tra cách quản lý rủi ro.';}
+  const canUse=!oldDay;
+  $('startSession').disabled=!canUse||!s.canStart;
+  $('winCycle').disabled=!canUse||!s.canRecord;
+  $('lossCycle').disabled=!canUse||!s.canRecord;
+  $('endSession').disabled=!canUse||!s.active;
+  if(!oldDay&&!s.active&&s.nextAt>Date.now()){
+    $('breakTime').textContent=`Nghỉ 30 phút: có thể bắt đầu phiên mới sau ${new Date(s.nextAt).toLocaleString('vi-VN')}. Thời gian nghỉ không làm tăng xác suất thắng.`;
+  }else $('breakTime').textContent='Mỗi phiên chốt +15k hoặc đóng sau 5 chu kỳ thua hết. Dừng ngày khi lãi ròng +30k, tối đa 10 phiên, nghỉ giữa các phiên 30 phút.';
+  $('sessionArchive').innerHTML=paper.sessions.slice().reverse().map((p,j)=>{
+    const no=paper.sessions.length-j,profit=R.sessionPnl(p);
+    return `<div class="archive-row"><div><strong>Phiên ${no}</strong><br><small>${new Date(p.startedAt).toLocaleTimeString('vi-VN',{hour:'2-digit',minute:'2-digit'})} • ${reasonName(p.reason)}</small></div><div class="${profit>0?'positive':profit<0?'negative':''}"><strong>${signed(profit)}</strong><br><small>${p.cycles.length} chu kỳ</small></div></div>`;
+  }).join('')||'<p class="muted">Chưa có phiên nào.</p>';
 }
-
-function runModel(values) {
-  const run = runInfo(values);
-  if (!values.length) return 0.5;
-  if (run.current >= 4) return 1 - run.side;
-  if (run.current === 2 || run.current === 3) return run.side;
-  return 0.5;
-}
-
-function bayes(values) {
-  const window = recent(values, 30);
-  return (window.reduce((sum, value) => sum + value, 0) + 1) / (window.length + 2);
-}
-
-function windowBlend(values) {
-  return 0.5 * mean(recent(values, 5)) + 0.3 * mean(recent(values, 10)) + 0.2 * mean(recent(values, 20));
-}
-
-function changePoint(values) {
-  if (values.length < 12) return 0;
-  const midpoint = Math.floor(values.length / 2);
-  return Math.abs(mean(values.slice(0, midpoint)) - mean(values.slice(midpoint)));
-}
-
-function trend(values) {
-  const window = recent(values, 20);
-  if (window.length < 6) return 0.5;
-  let sumX = 0;
-  let sumY = 0;
-  let sumXY = 0;
-  let sumXX = 0;
-  for (let index = 0; index < window.length; index += 1) {
-    sumX += index;
-    sumY += window[index];
-    sumXY += index * window[index];
-    sumXX += index * index;
-  }
-  const count = window.length;
-  const slope = (count * sumXY - sumX * sumY) / (count * sumXX - sumX * sumX || 1);
-  return clamp(0.5 + slope * 2, 0, 1);
-}
-
-function contrarian(values) {
-  return clamp(1 - mean(recent(values, 10)), 0, 1);
-}
-
-function momentum(values) {
-  const window = recent(values, 6);
-  if (!window.length) return 0.5;
-  return 0.65 * mean(window) + 0.35 * (window.at(-1) ?? 0.5);
-}
-
-function noiseGate(values, probability) {
-  const value = entropy(recent(values, 30));
-  return 0.5 + (probability - 0.5) * (1.15 - value * 0.45);
-}
-
-function models(values) {
-  const definitions = [
-    ['Tần suất 20', mean(recent(values, 20)), 'Tỷ lệ Tài trong cửa sổ 20 ván'],
-    ['Bayesian', bayes(values), 'Làm mượt xác suất bằng prior Beta(1,1)'],
-    ['Markov bậc 1', markov(values, 1), 'Chuyển trạng thái theo 1 ván gần nhất'],
-    ['Markov bậc 2', markov(values, 2), 'Chuyển trạng thái theo 2 ván gần nhất'],
-    ['Mẫu lặp', patternScore(values), 'Tìm mẫu 2–4 bước đã xuất hiện'],
-    ['Đa khung', windowBlend(values), 'Kết hợp cửa sổ 5, 10 và 20'],
-    ['Bệt', runModel(values), 'Đánh giá độ dài chuỗi liên tiếp'],
-    ['Đảo nhịp', alternation(values), 'Đánh giá mức luân phiên Tài/Xỉu'],
-    ['Xu hướng', trend(values), 'Độ dốc của chuỗi gần đây'],
-    ['Động lượng', momentum(values), 'Ưu tiên dữ liệu gần nhất'],
-    ['Phản xu hướng', contrarian(values), 'Đối trọng khi phân bố lệch mạnh'],
-    ['Entropy gate', noiseGate(values, windowBlend(values)), 'Giảm biên độ khi dữ liệu nhiễu cao']
-  ];
-
-  return definitions.map(([name, probability, description]) => ({
-    name,
-    probability: clamp(probability, 0, 1),
-    description,
-    side: probability > 0.545 ? 1 : probability < 0.455 ? 0 : null,
-    confidence: Math.abs(probability - 0.5) * 200
-  }));
-}
-
-function checksum(values) {
-  let hash = 2166136261;
-  for (const value of values) {
-    hash ^= value + 48;
-    hash = Math.imul(hash, 16777619);
-  }
-  return (hash >>> 0).toString(16).padStart(8, '0').toUpperCase();
-}
-
-function analyze() {
-  const modelList = models(history);
-  const usable = history.length >= 8;
-  const weighted = modelList.reduce((sum, model) => sum + (model.probability - 0.5) * (0.5 + model.confidence / 100), 0);
-  const denominator = modelList.reduce((sum, model) => sum + (0.5 + model.confidence / 100), 0);
-  const probability = clamp(0.5 + weighted / denominator, 0.05, 0.95);
-  const taiVotes = modelList.filter((model) => model.side === 1).length;
-  const xiuVotes = modelList.filter((model) => model.side === 0).length;
-  const maxVotes = Math.max(taiVotes, xiuVotes);
-  const stability = clamp(Math.round((1 - entropy(recent(history, 30)) * 0.45 - Math.min(changePoint(history), 0.5) * 0.4) * 100), 0, 100);
-
-  let decision = null;
-  if (usable && Math.abs(probability - 0.5) >= 0.055 && maxVotes >= 5) decision = probability > 0.5 ? 1 : 0;
-
-  const deviation = Math.abs(probability - 0.5);
-  const confidence = decision === null ? 'CHƯA ĐỦ DỮ LIỆU' : deviation >= 0.18 ? 'CAO' : deviation >= 0.1 ? 'TRUNG BÌNH' : 'THẤP';
-  render(modelList, { probability, taiVotes, xiuVotes, maxVotes, stability, decision, confidence });
-}
-
-function render(modelList, result) {
-  const score = Math.round(result.probability * 100);
-  $('decision').textContent = result.decision === null ? 'CHƯA RÕ' : sideName(result.decision);
-  $('decision').className = `decision ${sideClass(result.decision)}`;
-  $('confidenceText').textContent = result.confidence;
-  $('score').textContent = String(score);
-  $('signalMarker').style.left = `${score}%`;
-  $('consensus').textContent = `${result.maxVotes}/12`;
-  $('stability').textContent = `${history.length ? result.stability : 0}%`;
-
-  const trendValue = trend(history);
-  $('trendIcon').textContent = history.length < 6 ? '—' : trendValue > 0.56 ? '↗' : trendValue < 0.44 ? '↘' : '→';
-  $('trendIcon').setAttribute('aria-label', history.length < 6 ? 'Chưa đủ dữ liệu' : trendValue > 0.56 ? 'Tăng' : trendValue < 0.44 ? 'Giảm' : 'Đi ngang');
-
-  $('countBadge').textContent = `${history.length} ván`;
-  const visibleHistory = recent(history, 20);
-  $('history').innerHTML = visibleHistory.length
-    ? visibleHistory.map((value, index) => `<span class="chip ${value ? 'tai' : 'xiu'}" title="Ván ${history.length - visibleHistory.length + index + 1}: ${sideName(value)}">${value ? 'T' : 'X'}</span>`).join('')
-    : '<p class="empty-history">Chưa có dữ liệu</p>';
-
-  $('warning').textContent = history.length < 8
-    ? 'Chỉ phân tích dữ liệu lịch sử. Cần thêm dữ liệu để đánh giá tín hiệu.'
-    : 'Chỉ phân tích dữ liệu lịch sử. Không bảo đảm kết quả của ván tiếp theo.';
-
-  $('taiCount').textContent = String(history.filter(Boolean).length);
-  $('xiuCount').textContent = String(history.filter((value) => !value).length);
-  const run = runInfo(history);
-  $('currentRun').textContent = run.side === null ? '—' : `${sideName(run.side)} ×${run.current}`;
-  $('maxRun').textContent = history.length ? String(run.max) : '—';
-  $('entropy').textContent = history.length ? entropy(recent(history, 30)).toFixed(3) : '—';
-  $('autocorr').textContent = history.length ? autocorr(recent(history, 30)).toFixed(3) : '—';
-
-  const window = recent(history, 20);
-  const taiPercent = window.length ? Math.round(mean(window) * 100) : 50;
-  const xiuPercent = 100 - taiPercent;
-  $('taiPct').textContent = `${taiPercent}%`;
-  $('xiuPct').textContent = `${xiuPercent}%`;
-  $('taiBar').style.width = `${taiPercent}%`;
-  $('xiuBar').style.width = `${xiuPercent}%`;
-  $('windowLabel').textContent = `${window.length} ván`;
-
-  $('models').innerHTML = modelList.map((model) => `
-    <article class="model">
-      <div class="model-head">
-        <h4>${model.name}</h4>
-        <span class="vote ${sideClass(model.side)}">${sideName(model.side)}</span>
-      </div>
-      <small>${model.description} · Điểm Tài ${Math.round(model.probability * 100)}%</small>
-    </article>
-  `).join('');
-
-  $('runsZ').textContent = history.length ? runsZ(history).toFixed(2) : '—';
-  const point = changePoint(history);
-  $('changePoint').textContent = history.length < 12 ? '—' : point.toFixed(3);
-  $('noise').textContent = history.length < 6 ? '—' : entropy(recent(history, 30)) > 0.92 ? 'Cao' : entropy(recent(history, 30)) > 0.75 ? 'Trung bình' : 'Thấp';
-  $('sampleQuality').textContent = history.length >= 50 ? 'Tốt' : history.length >= 20 ? 'Khá' : history.length >= 8 ? 'Cơ bản' : 'Thiếu';
-  $('checksum').textContent = checksum(history);
-
-  $('undo').disabled = history.length === 0;
-  $('clear').disabled = history.length === 0;
-}
-
-function save() {
-  localStorage.setItem(KEY, JSON.stringify(history));
-  analyze();
-}
-
-function setPanel(open) {
-  $('settingsPanel').hidden = !open;
-  $('settingsBackdrop').hidden = !open;
-  document.body.classList.toggle('modal-open', open);
-  if (open) {
-    $('closeSettings').focus();
-  } else {
-    $('openSettings').focus();
-  }
-}
-
-function setConfirm(open) {
-  $('confirmModal').hidden = !open;
-  document.body.classList.toggle('modal-open', open);
-  if (open) $('cancelClear').focus();
-}
-
-function download(name, text, type = 'text/plain') {
-  const link = document.createElement('a');
-  link.href = URL.createObjectURL(new Blob([text], { type }));
-  link.download = name;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  setTimeout(() => URL.revokeObjectURL(link.href), 500);
-}
-
-$('addTai').addEventListener('click', () => { history.push(1); save(); });
-$('addXiu').addEventListener('click', () => { history.push(0); save(); });
-$('undo').addEventListener('click', () => { history.pop(); save(); });
-$('clear').addEventListener('click', () => { if (history.length) setConfirm(true); });
-$('cancelClear').addEventListener('click', () => setConfirm(false));
-$('confirmClear').addEventListener('click', () => { history = []; save(); setConfirm(false); });
-
-$('openSettings').addEventListener('click', () => setPanel(true));
-$('closeSettings').addEventListener('click', () => setPanel(false));
-$('settingsBackdrop').addEventListener('click', () => setPanel(false));
-
-document.addEventListener('keydown', (event) => {
-  if (event.key !== 'Escape') return;
-  if (!$('confirmModal').hidden) setConfirm(false);
-  else if (!$('settingsPanel').hidden) setPanel(false);
-});
-
-$('exportCsv').addEventListener('click', () => {
-  download('txa-v20-history.csv', `van,ket_qua\n${history.map((value, index) => `${index + 1},${sideName(value)}`).join('\n')}`, 'text/csv;charset=utf-8');
-});
-
-$('exportJson').addEventListener('click', () => {
-  download('txa-v20-backup.json', JSON.stringify({ version: 'V20 Focus', exportedAt: new Date().toISOString(), history }, null, 2), 'application/json');
-});
-
-$('audit').addEventListener('click', () => {
-  const rows = models(history).map((model) => `${model.name},${model.probability.toFixed(4)},${sideName(model.side)},${model.confidence.toFixed(1)}`);
-  download('txa-v20-audit.csv', `model,p_tai,vote,confidence\n${rows.join('\n')}`, 'text/csv;charset=utf-8');
-});
-
-$('importJson').addEventListener('change', async (event) => {
-  try {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    const data = JSON.parse(await file.text());
-    if (!Array.isArray(data.history) || data.history.some((value) => value !== 0 && value !== 1)) throw new Error('invalid');
-    history = data.history;
-    save();
-  } catch {
-    alert('Tệp JSON không hợp lệ.');
-  } finally {
-    event.target.value = '';
-  }
-});
-
-$('runMonte').addEventListener('click', () => {
-  const probability = windowBlend(history);
-  let tai = 0;
-  for (let index = 0; index < 10000; index += 1) if (Math.random() < probability) tai += 1;
-  $('mcTai').textContent = `${(tai / 100).toFixed(1)}%`;
-  $('mcXiu').textContent = `${((10000 - tai) / 100).toFixed(1)}%`;
-});
-
-if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
-
-analyze();
+function riskAction(fn){try{fn();save();renderTracker();}catch(e){alert(e.message);renderTracker();}}
+$('startSession').onclick=()=>riskAction(()=>R.start(paper));
+$('winCycle').onclick=()=>riskAction(()=>R.record(paper,'win'));
+$('lossCycle').onclick=()=>riskAction(()=>R.record(paper,'loss'));
+$('endSession').onclick=()=>riskAction(()=>R.close(paper));
+$('resetDay').onclick=()=>{if(confirm('Bắt đầu nhật ký vốn ảo mới tại 200.000đ? Nhật ký vốn ngày cũ sẽ bị thay thế. Hãy sao lưu JSON nếu muốn giữ lại.')){paper=R.newLog();save();renderTracker();}};
+$('simulate').onclick=()=>{
+  const p=Number($('roundOdds').value);
+  const sim=R.simulate(p,10000);
+  $('simGoal').textContent=pct(sim.hitRate);
+  $('simLoss').textContent=pct(sim.negativeRate);
+  $('simInsufficient').textContent=pct(sim.insufficientRate);
+  $('simAvg').textContent=signed(sim.mean);
+  $('simAvg').className=sim.mean<0?'negative':'positive';
+  $('simSpread').textContent=`Sau ${sim.runs.toLocaleString('vi-VN')} ngày giả định: phân vị 5% = ${signed(sim.p05)}, trung vị = ${signed(sim.p50)}, phân vị 95% = ${signed(sim.p95)}. Đây là kết quả mô phỏng, không phải xác suất đo được của TXA.`;
+};
+$('runMonte').onclick=()=>{const p=E.windowBlend(outcomes);let t=0;for(let i=0;i<10000;i++)if(Math.random()<p)t++;$('mcTai').textContent=pct(t/10000);$('mcXiu').textContent=pct((10000-t)/10000);};
+$('exportCsv').onclick=()=>download('txa-v21-history.csv','van,ket_qua\n'+outcomes.map((v,i)=>`${i+1},${nameSide(v)}`).join('\n'),'text/csv;charset=utf-8');
+$('exportJson').onclick=()=>download('txa-v21-backup.json',JSON.stringify({version:'V21',exportedAt:new Date().toISOString(),history:outcomes,liveRecords,paper},null,2),'application/json');
+$('audit').onclick=()=>{
+  const b=backtest||E.validateChronological(outcomes);
+  const quote=s=>'"'+String(s).replaceAll('"','""')+'"';
+  const rows=[['model','signals','correct','hit_rate','wilson95_lower','wilson95_upper'],['TXA ensemble',b.overall.signals,b.overall.correct,b.overall.rate??'',b.overall.ci.lower,b.overall.ci.upper],...b.perModel.map(m=>[m.name,m.signals,m.correct,m.rate??'',m.ci.lower,m.ci.upper])];
+  const live=E.summarizeLive(liveRecords);
+  rows.push(['LIVE ensemble',live.signals,live.correct,live.rate??'',live.ci.lower,live.ci.upper]);
+  download('txa-v21-validation-audit.csv',rows.map(r=>r.map(quote).join(',')).join('\n'),'text/csv;charset=utf-8');
+};
+$('importJson').onchange=async ev=>{
+  const file=ev.target.files[0];if(!file)return;
+  try{
+    const json=JSON.parse(await file.text());
+    const imported=cleanHistory(json.history);
+    if(!imported)throw new Error(`Tệp không có dữ liệu hợp lệ (chỉ 0/1, tối đa ${MAX_HISTORY} ván).`);
+    if(!confirm('Khôi phục dữ liệu từ tệp? Lịch sử hiện có sẽ bị thay thế.'))return;
+    outcomes=imported;
+    liveRecords=json.version==='V21'?cleanLive(json.liveRecords,imported):[];
+    const log=cleanLog(json.paper);
+    if(log)paper=log;
+    save();renderValidation();renderAnalysis();renderTracker();
+  }catch(e){alert('Lỗi khi nhập JSON: '+e.message);}
+  finally{ev.target.value='';}
+};
+$('uiMode').value=localStorage.getItem(MODE)||localStorage.getItem('txa-v20-mode')||'standard';
+function applyMode(){document.body.className='mode-'+$('uiMode').value;try{localStorage.setItem(MODE,$('uiMode').value);}catch{}}
+$('uiMode').onchange=applyMode;applyMode();
+renderValidation();renderAnalysis();renderTracker();
+$('simulate').click();
+setInterval(()=>{const s=R.summary(paper);if(!s.active&&s.nextAt>Date.now()||paper.day!==R.localDay())renderTracker();},20000);
+if('serviceWorker' in navigator && location.protocol!=='file:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
